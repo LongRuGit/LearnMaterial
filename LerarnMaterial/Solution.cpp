@@ -157,6 +157,65 @@ int Solution::divide(int dividend, int divisor)
 	return res;
 }
 
+void Solution::nextPermutation(vector<int>& nums)
+{
+	if (nums.empty())
+	{
+		return;
+	}
+	int ipos=-1;
+	//找到最后一个逆序对，在ipos之后一定为降序,然后在ipos之后找到一个比ipos大的最小数
+	for (int i = 1; i < nums.size();++i)
+	{
+		if (nums[i]>nums[i-1])
+		{
+			ipos = i;
+		}
+	}
+	if (ipos != -1)
+	{
+		//按照字典序找到更小的数与之交换
+		int iNewPos = ipos;
+		int minNumber = INT_MAX;
+		for (int i = ipos + 1; i < nums.size(); ++i)
+		{
+			if (nums[i]>nums[ipos-1] && nums[i] < minNumber)
+			{
+				minNumber = nums[i];
+				iNewPos = i;
+			}
+		}
+		swap(nums[ipos - 1], nums[iNewPos]);
+		sort(nums.begin()+ipos,nums.end());
+	}
+	else
+		sort(nums.begin(), nums.end());
+}
+
+int Solution::search(vector<int>& nums, int target)
+{
+	if (nums.empty())
+	{
+		return -1;
+	}
+	int left = 0, right = nums.size() - 1;
+	while (left<right)
+	{
+		int mid = left + (right - left) / 2;
+		if (target>nums[mid]&&target<nums[0])
+		{
+			left = mid + 1;
+		}
+		else if (nums[0] <= nums[mid] && (target>nums[mid] || target < nums[0]))
+		{
+			left = mid + 1;
+		}
+		else
+			right = mid;
+	}
+	return left==right&&nums[left]==target?left:-1;
+}
+
 int Solution::expandAroundCenter(const string &s, int left, int right)
 {
 	int L = left, R = right;

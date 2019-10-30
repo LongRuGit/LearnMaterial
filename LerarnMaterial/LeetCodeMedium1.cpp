@@ -1,6 +1,7 @@
 #include "Common.h"
 #include "Solution.h"
 #include <tuple>
+#include <random>
 #include <regex>
 
 int main()
@@ -22,6 +23,9 @@ int main()
 	{
 		cout << results.str() << endl;
 	}
+	default_random_engine e;
+	vector<int> nums1 = { 4, 5, 6, 7, 0, 1, 2 };
+	s_ptr->search(nums1,0);
 	system("pause");
 	return 0;
 }
