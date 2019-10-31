@@ -79,6 +79,35 @@ public:
 	 日    期： 2019/10/30
 	******************************************************************************/
 	int search(vector<int>& nums, int target);
+	/******************************************************************************
+	 函数名称： searchRange
+	 功能说明： 在一个升序数组中找到最左和最右为target的数
+	 参    数： vector<int> & nums 
+	 参    数： int target 
+	 返 回 值： std::vector<int>
+	 作    者： Ru Long
+	 日    期： 2019/10/31
+	******************************************************************************/
+	vector<int> searchRange(vector<int>& nums, int target);
+	/******************************************************************************
+	 函数名称： isValidSudoku
+	 功能说明： 判断是否是一个有效的数独，其中每一行和每一列1-9只能出现一次,在3*3的方格中也只能出现一次
+	 参    数： vector<vector<char>> & board 
+	 返 回 值： bool
+	 作    者： Ru Long
+	 日    期： 2019/10/31
+	******************************************************************************/
+	bool isValidSudoku(vector<vector<char>>& board);
+	/******************************************************************************
+	 函数名称： combinationSum
+	 功能说明： 给定一个数组和目标值，使得数组中的值要等于target，数组中的值可以无限选择
+	 参    数： vector<int> & candidates 
+	 参    数： int target 
+	 返 回 值： std::vector<std::vector<int>>
+	 作    者： Ru Long
+	 日    期： 2019/10/31
+	******************************************************************************/
+	vector<vector<int>> combinationSum(vector<int>& candidates, int target);
 private:
 	int expandAroundCenter(const string &s, int left, int right);
 	

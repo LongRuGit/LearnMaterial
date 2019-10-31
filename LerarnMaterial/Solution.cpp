@@ -216,6 +216,88 @@ int Solution::search(vector<int>& nums, int target)
 	return left==right&&nums[left]==target?left:-1;
 }
 
+std::vector<int> Solution::searchRange(vector<int>& nums, int target)
+{
+	if (nums.empty())
+	{
+		return{ -1, -1 };
+	}
+	//找到最边的数
+	int leftPos = -1, rightPos = -1;
+	int lo = 0, hi = nums.size() - 1;
+	while (lo < hi)
+	{
+		int mid = lo + (hi - lo) / 2;
+		if (nums[mid] <target)
+		{
+			lo = mid + 1;
+		}
+		else 
+		{
+			hi = mid;
+		}
+	}
+	if (nums[lo] != target)
+	{
+		return{ -1, -1 };
+	}
+	leftPos = lo;
+	lo = 0, hi = nums.size() - 1;
+	while (lo<hi)
+	{
+		int mid = lo + (hi - lo) / 2;
+		if (nums[mid] <= target)
+		{
+			lo = mid + 1;
+		}
+		else 
+		{
+			hi = mid;
+		}
+	}
+	rightPos =(nums[lo]==target)?lo:--lo;
+	return {leftPos,rightPos};
+}
+
+bool Solution::isValidSudoku(vector<vector<char>>& board)
+{
+	if (board.empty())
+	{
+		return true;
+	}
+	//通过分区域来判断
+	vector<unordered_set<int>> row(9), colun(9), block(9);
+	for (int i = 0; i < 9;++i)
+	{
+		for (int j = 0; j < 9;++j)
+		{
+			int iblo = (i / 3) * 3 + j / 3;
+			if (board[i][j]>='1'&&board[i][j]<='9')
+			{
+				if (row[i].count(board[i][j]) || colun[j].count(board[i][j]) || block[iblo].count(board[i][j]))
+				{
+					return false;
+				}
+				row[i].insert(board[i][j]);
+				colun[j].insert(board[i][j]);
+				block[iblo].insert(board[i][j]);
+			}
+		}
+	}
+	return true;
+}
+
+std::vector<std::vector<int>> Solution::combinationSum(vector<int>& candidates, int target)
+{
+	if (candidates.empty())
+	{
+		return{};
+	}
+	std::vector<std::vector<int>> res;
+	sort(candidates.begin(), candidates.end());
+	return res;
+}
+
 int Solution::expandAroundCenter(const string &s, int left, int right)
 {
 	int L = left, R = right;
