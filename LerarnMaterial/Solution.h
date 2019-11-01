@@ -98,9 +98,10 @@ public:
 	 日    期： 2019/10/31
 	******************************************************************************/
 	bool isValidSudoku(vector<vector<char>>& board);
+	void DFSSum(int start, int target);
 	/******************************************************************************
 	 函数名称： combinationSum
-	 功能说明： 给定一个数组和目标值，使得数组中的值要等于target，数组中的值可以无限选择
+	 功能说明： 给定一个无重复数组和目标值，使得数组中的值要等于target，数组中的值可以无限选择,采用回溯算法
 	 参    数： vector<int> & candidates 
 	 参    数： int target 
 	 返 回 值： std::vector<std::vector<int>>
@@ -108,9 +109,102 @@ public:
 	 日    期： 2019/10/31
 	******************************************************************************/
 	vector<vector<int>> combinationSum(vector<int>& candidates, int target);
+	void DFSSum2(int start, int target);
+	/******************************************************************************
+	 函数名称： combinationSum2
+	 功能说明： 给定一个数组和目标值，使得数组中的值要等于target，数组中的值只能使用一次,元素有重复
+	 参    数： vector<int> & candidates 
+	 参    数： int target 
+	 返 回 值： std::vector<std::vector<int>>
+	 作    者： Ru Long
+	 日    期： 2019/11/01
+	******************************************************************************/
+	vector<vector<int>> combinationSum2(vector<int>& candidates, int target);
+	/******************************************************************************
+	 函数名称： multiply
+	 功能说明： 大数相乘，两个字符串的乘积
+	 参    数： string num1 
+	 参    数： string num2 
+	 返 回 值： std::string
+	 作    者： Ru Long
+	 日    期： 2019/11/01
+	******************************************************************************/
+	string multiply(string num1, string num2);
+	/******************************************************************************
+	 函数名称： Select
+	 功能说明： 寻找第k小的元素
+	 参    数： T a[] 
+	 参    数： int n 
+	 参    数： int k 
+	 返 回 值： T
+	 作    者： Ru Long
+	 日    期： 2019/11/01
+	******************************************************************************/
+	template<typename T>
+	T Select(T a[], int n, int k);
 private:
 	int expandAroundCenter(const string &s, int left, int right);
+	template<typename T>
+	T Select(T a[], int leftEnd, int rightEnd, int k);
 	
 };
+
+template<typename T>
+T Solution::Select(T a[], int n, int k)
+{
+	if (k<1||k>n)
+	{
+		return T[0];
+	}
+	int maxPos = 0;
+	for (int i = 1; i < n;++i)
+	{
+		if (a[i]>a[maxPos])
+		{
+			maxPos = i;
+		}
+	}
+	swap(a[n - 1], a[maxPos]);
+	return Select(a, 0, n - 1, k);
+}
+
+template<typename T>
+T Solution::Select(T a[], int leftEnd, int rightEnd, int k)
+{
+	if (leftEnd>=rightEnd)
+	{
+		return a[leftEnd];
+	}
+	int leftCur = leftEnd;
+	int rightCur = rightEnd + 1;
+	T privot = a[leftEnd];
+	while (true)
+	{
+		do 
+		{
+			++leftCur;
+		} while (a[leftCur]<privot);
+		do 
+		{
+			--rightCur;
+		} while (a[rightCur]>privot);
+		if (leftCur>=rightCur)
+		{
+			break;
+		}
+		swap(a[leftCur], a[rightCur]);
+	}
+	if (rightCur-leftEnd+1==k)
+	{
+		return privot;
+	}
+	a[leftEnd] = a[rightCur];
+	a[rightCur] = privot;
+	if (rightCur-leftEnd+1<k)
+	{
+		return Select(a, rightCur + 1, rightEnd, k - rightEnd + leftEnd -1);
+	}
+	return Select(a,leftEnd,rightCur-1,k);
+}
 
 #endif 

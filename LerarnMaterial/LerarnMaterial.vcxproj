@@ -66,10 +66,12 @@
   <ItemGroup>
     <ClInclude Include="Common.h" />
     <ClInclude Include="Solution.h" />
+    <ClInclude Include="SortClass.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="LeetCodeMedium1.cpp" />
     <ClCompile Include="Solution.cpp" />
+    <ClCompile Include="SortClass.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

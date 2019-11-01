@@ -3,9 +3,11 @@
 #include <tuple>
 #include <random>
 #include <regex>
+#include "SortClass.h"
 
 int main()
 {
+	//使用智能指针
 	shared_ptr<Solution> s_ptr;
 	s_ptr->generateParenthesis(3);
 	tuple<int, double, string> tupStruct;
@@ -23,9 +25,24 @@ int main()
 	{
 		cout << results.str() << endl;
 	}
+	//确定随机数的范围
+	uniform_int_distribution<unsigned> u(0, 100);
 	default_random_engine e;
 	vector<int> nums1 = { 4, 5, 6, 7, 0, 1, 2 };
 	s_ptr->search(nums1,0);
+	int nums[7] = {0};
+	for (int i = 0; i < 7;i++)
+	{
+		nums[i] = u(e);
+	}
+	unique_ptr<SortClass> uniSolt_ptr;
+	uniSolt_ptr->MergeSort(nums, 7);
+	for (auto iter = begin(nums); iter != end(nums); ++iter)
+	{
+		cout << *iter << " ";
+	}
+	cout << endl;
+	s_ptr->multiply("123", "456");
 	system("pause");
 	return 0;
 }

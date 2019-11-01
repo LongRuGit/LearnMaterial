@@ -165,7 +165,7 @@ void Solution::nextPermutation(vector<int>& nums)
 	}
 	int ipos=-1;
 	//找到最后一个逆序对，在ipos之后一定为降序,然后在ipos之后找到一个比ipos大的最小数
-	for (int i = 1; i < nums.size();++i)
+	for (size_t i = 1; i < nums.size();++i)
 	{
 		if (nums[i]>nums[i-1])
 		{
@@ -177,7 +177,7 @@ void Solution::nextPermutation(vector<int>& nums)
 		//按照字典序找到更小的数与之交换
 		int iNewPos = ipos;
 		int minNumber = INT_MAX;
-		for (int i = ipos + 1; i < nums.size(); ++i)
+		for (size_t i = ipos + 1; i < nums.size(); ++i)
 		{
 			if (nums[i]>nums[ipos-1] && nums[i] < minNumber)
 			{
@@ -286,6 +286,23 @@ bool Solution::isValidSudoku(vector<vector<char>>& board)
 	}
 	return true;
 }
+std::vector<std::vector<int>> res;
+vector<int> path;
+vector<int> candiatesTemp;
+void Solution::DFSSum(int start, int target)
+{
+	if (target==0)
+	{
+		res.push_back(path);
+		return;
+	}
+	for (size_t i = start; i < candiatesTemp.size() && target - candiatesTemp[i] >= 0;++i)
+	{
+		path.push_back(candiatesTemp[i]);
+		DFSSum(i, target - candiatesTemp[i]);
+		path.pop_back();
+	}
+}
 
 std::vector<std::vector<int>> Solution::combinationSum(vector<int>& candidates, int target)
 {
@@ -293,14 +310,104 @@ std::vector<std::vector<int>> Solution::combinationSum(vector<int>& candidates, 
 	{
 		return{};
 	}
-	std::vector<std::vector<int>> res;
 	sort(candidates.begin(), candidates.end());
+	candiatesTemp = candidates;
+	DFSSum(0, target);
+	return res;
+}
+
+void Solution::DFSSum2(int start, int target)
+{
+	if (target == 0)
+	{
+		res.push_back(path);
+		return;
+	}
+	for (size_t i = start; i < candiatesTemp.size()&&target - candiatesTemp[i] >= 0;++i)
+	{
+		//去重
+		if (i>start&&candiatesTemp[i]==candiatesTemp[i-1])
+		{
+			continue;
+		}
+		path.push_back(candiatesTemp[i]);
+		DFSSum2(i + 1, target - candiatesTemp[i]);
+		path.pop_back();
+	}
+}
+
+std::vector<std::vector<int>> Solution::combinationSum2(vector<int>& candidates, int target)
+{
+	if (candidates.empty())
+	{
+		return{};
+	}
+	sort(candidates.begin(), candidates.end());
+	candiatesTemp = candidates;
+	DFSSum2(0, target);
+	return res;
+}
+
+std::string Solution::multiply(string num1, string num2)
+{
+	if (num1.empty()||num2.empty())
+	{
+		return "";
+	}
+	int iKey = 0;
+	int icout = 0;
+	string res;
+	for (int i = num2.size() - 1; i >= 0; --i)
+	{
+		string strTemp;
+		for (int j = num1.size() - 1; j >= 0; --j)
+		{
+			int  iTemp = (num1[j] - '0')*(num2[i] - '0');
+			iTemp += iKey;
+			iKey = iTemp / 10;
+			iTemp %= 10;
+			strTemp.push_back(iTemp+'0');
+		}
+		if (iKey!=0)
+		{
+			strTemp.push_back(iKey + '0');
+		}
+		iKey = 0;
+		reverse(strTemp.begin(), strTemp.end());
+		if (!res.empty())
+		{
+			for (int l = 1; l < icout+1;l++)
+			{
+				strTemp.push_back(res[res.size() - l-1]);
+			}
+			strTemp.push_back(res[res.size() - 1]);
+			int k = strTemp.size() - icout;
+			int m = res.size() - icout;
+			while (k>=0||m>=0)
+			{
+				int a = (m >= 0) ? (res[m] - '0') : 0;
+				int b = (k >= 0) ? (strTemp[k] - '0') : 0;
+				int  iTemp = a+b+iKey;
+				iKey = iTemp / 10;
+				iTemp %= 10;
+				strTemp[k] = char(iTemp + '0');
+				--k;
+				--m;
+			}
+			if (iKey != 0)
+			{
+				strTemp = (char)(iKey + '0') + strTemp;
+			}
+		}
+		icout++;
+		res = strTemp;
+	}
 	return res;
 }
 
 int Solution::expandAroundCenter(const string &s, int left, int right)
 {
-	int L = left, R = right;
+	size_t L = left, R = right;
 	while (L>=0&&R<s.size()&&s[L]==s[R])
 	{
 		--L;
