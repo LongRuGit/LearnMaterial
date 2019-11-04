@@ -326,7 +326,7 @@ void Solution::DFSSum2(int start, int target)
 	for (size_t i = start; i < candiatesTemp.size()&&target - candiatesTemp[i] >= 0;++i)
 	{
 		//去重
-		if (i>start&&candiatesTemp[i]==candiatesTemp[i-1])
+		if (i>(size_t)start&&candiatesTemp[i] == candiatesTemp[i - 1])
 		{
 			continue;
 		}
@@ -354,54 +354,440 @@ std::string Solution::multiply(string num1, string num2)
 	{
 		return "";
 	}
-	int iKey = 0;
-	int icout = 0;
-	string res;
-	for (int i = num2.size() - 1; i >= 0; --i)
+	if (num1=="0"||num2=="0")
 	{
-		string strTemp;
-		for (int j = num1.size() - 1; j >= 0; --j)
-		{
-			int  iTemp = (num1[j] - '0')*(num2[i] - '0');
-			iTemp += iKey;
-			iKey = iTemp / 10;
-			iTemp %= 10;
-			strTemp.push_back(iTemp+'0');
-		}
-		if (iKey!=0)
-		{
-			strTemp.push_back(iKey + '0');
-		}
-		iKey = 0;
-		reverse(strTemp.begin(), strTemp.end());
-		if (!res.empty())
-		{
-			for (int l = 1; l < icout+1;l++)
-			{
-				strTemp.push_back(res[res.size() - l-1]);
-			}
-			strTemp.push_back(res[res.size() - 1]);
-			int k = strTemp.size() - icout;
-			int m = res.size() - icout;
-			while (k>=0||m>=0)
-			{
-				int a = (m >= 0) ? (res[m] - '0') : 0;
-				int b = (k >= 0) ? (strTemp[k] - '0') : 0;
-				int  iTemp = a+b+iKey;
-				iKey = iTemp / 10;
-				iTemp %= 10;
-				strTemp[k] = char(iTemp + '0');
-				--k;
-				--m;
-			}
-			if (iKey != 0)
-			{
-				strTemp = (char)(iKey + '0') + strTemp;
-			}
-		}
-		icout++;
-		res = strTemp;
+		return "0";
 	}
+	vector<int> vecRes;
+	vecRes.resize(num1.length() + num2.length());
+	for (int i = num1.size() - 1; i >= 0;--i)
+	{
+		for (int j = num2.size() - 1; j >= 0; --j)
+		{
+			vecRes[i + j + 1] += (num1[i] - '0')*(num2[j] - '0');
+		}
+	}
+	int up = 0;
+	for (int i = vecRes.size() - 1; i >= 0;--i)
+	{
+		vecRes[i] += up;
+		up = vecRes[i] / 10;
+		vecRes[i] %= 10;
+	}
+	string res;
+	//将首位的0去除
+	for (size_t i = 0; i < vecRes.size();++i)
+	{
+		if (vecRes[i]!=0)
+		{
+			for (size_t j = i; j < vecRes.size();++j)
+			{
+				res.push_back((char)(vecRes[j] + '0'));
+			}
+			break;
+		}
+		
+	}
+	return res;
+}
+std::vector<std::vector<int>> resPer;
+int iSize = 0;
+void Solution::DFSpermute(vector<int> path, int i, unordered_map<int, bool> &hashM)
+{
+	if (i == iSize)
+	{
+		resPer.push_back(path);
+		return;
+	}
+	for (auto iter = hashM.begin(); iter != hashM.end();++iter)
+	{
+		if (iter->second==true)
+		{
+			//状态转换,将其在待选序列中去除
+			iter->second = false;
+			path.push_back(iter->first);
+			DFSpermute(path, i + 1, hashM);
+			path.pop_back();
+			iter->second = true;
+		}
+	}
+}
+
+std::vector<std::vector<int>> Solution::permute(vector<int>& nums)
+{
+	if (nums.empty())
+	{
+		return {};
+	}
+	iSize = nums.size();
+	unordered_map<int, bool> hashM;
+	for (auto it:nums)
+	{
+		hashM[it] = true;
+	}
+	vector<int> path;
+	DFSpermute(path, 0, hashM);
+	return resPer;
+}
+
+void Solution::DFSpermuteUnique(vector<int> path, int i, vector<pair<int, int>> &iInt)
+{
+	if (i == iSize)
+	{
+		resPer.push_back(path);
+		return;
+	}
+	//去重
+	int ipos = -1;
+	for (size_t j = 0; j < iInt.size(); ++j)
+	{
+		if (ipos>=0&&iInt[j].first == iInt[ipos].first&&i == path.size())
+		{
+			continue;
+		}
+		if (iInt[j].second==0)
+		{
+			iInt[j].second = 1;
+			path.push_back(iInt[j].first);
+			DFSpermuteUnique(path, i + 1, iInt);
+			ipos = j;
+			path.pop_back();
+			iInt[j].second = 0;
+		}
+	}
+}
+
+std::vector<std::vector<int>> Solution::permuteUnique(vector<int>& nums)
+{
+	if (nums.empty())
+	{
+		return{};
+	}
+	iSize = nums.size();
+	sort(nums.begin(), nums.end());
+	vector<pair<int, int>> VecInt;
+	for (auto it : nums)
+	{
+		VecInt.push_back(make_pair(it, 0));
+	}
+	vector<int> path;
+	DFSpermuteUnique(path, 0,VecInt);
+	return resPer;
+}
+
+void Solution::rotate(vector<vector<int>>& matrix)
+{
+	if (matrix.empty()||matrix.size()==1)
+	{
+		return;
+	}
+	int length = matrix.size();
+	//转置矩阵后，在反转
+	/*for (int i = 0; i <length;++i)
+	{
+	for (int j = i; j < length;++j)
+	{
+	swap(matrix[i][j], matrix[j][i]);
+	}
+	}
+	for (int i = 0; i < length;++i)
+	{
+	reverse(matrix[i].begin(), matrix[i].end());
+	}*/
+	//一层一层旋转
+	for (int loop = 0; loop < length / 2; ++loop)
+	{
+		for (int i = loop, j = loop; i < length - 1 - loop;++i)
+		{
+			int pre = matrix[i][j];
+			for (int time = 1; time <= 4; ++time)
+			{
+				int temp = i;
+				i = j;
+				j = length - temp - 1;
+				swap(pre, matrix[i][j]);
+			}
+		}
+	}
+}
+
+std::vector<std::vector<std::string>> Solution::groupAnagrams(vector<string>& strs)
+{
+	if (strs.empty())
+	{
+		return{};
+	}
+	unordered_map<string, vector<string>> hashM;
+	for (auto it : strs)
+	{
+		string strTemp = it;
+		sort(strTemp.begin(), strTemp.end());
+		hashM[strTemp].push_back(it);
+	}
+	vector<vector<string>> res;
+	for (auto it:hashM)
+	{
+		res.push_back(it.second);
+	}
+	return res;
+}
+
+double Solution::myPow(double x, int n)
+{
+	if (n==0)
+	{
+		return 1;
+	}
+	if (n==1)
+	{
+		return x;
+	}
+	if (n==-1)
+	{
+		return 1 / x;
+	}
+	double dhalf = myPow(x, n / 2);
+	double rest = myPow(x, n % 2);
+	return rest*dhalf*dhalf;
+}
+
+std::vector<int> Solution::spiralOrder(vector<vector<int>>& matrix)
+{
+	if (matrix.empty())
+	{
+		return {};
+	}
+	//一下4个数分别为4个角的边界
+	int u = 0;                      //上边界
+	int d = matrix.size() - 1;      //下边界
+	int l = 0;                      //左边界
+	int r = matrix[0].size() - 1;   //右边界
+	vector<int> res;
+	while (true)
+	{
+		for (int i = l; i <= r;++i)
+		{
+			res.push_back(matrix[u][i]);
+		}
+		if (++u>d)
+		{
+			break;
+		}
+		for (int i = u; i <= d;++i)
+		{
+			res.push_back(matrix[i][r]);
+		}
+		if (--r<l)
+		{
+			break;
+		}
+		for (int i = r; i >= l;--i)
+		{
+			res.push_back(matrix[d][i]);
+		}
+		if (--d<u)
+		{
+			break;
+		}
+		for (int i = d; i >= u;--i)
+		{
+			res.push_back(matrix[i][l]);
+		}
+		if (++l>r)
+		{
+			break;
+		}
+	}
+	return res;
+}
+
+bool Solution::canJump(vector<int>& nums)
+{
+	if (nums.empty())
+	{
+		return true;
+	}
+	if (nums[0]==0)
+	{
+		if (nums.size() == 1)
+		{
+			return true;
+		}
+		else
+			return false;
+	}
+	for (size_t i = 0; i < nums.size();++i)
+	{
+		if (nums[i]==0)
+		{
+			bool bkey = false;
+			for (int j = i - 1; j >= 0;--j)
+			{
+				if (j+nums[j]>(int)i||(j+nums[j])==nums.size()-1)
+				{
+					bkey = true;
+					break;
+				}
+			}
+			if (!bkey)
+			{
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
+std::vector<std::vector<int>> Solution::merge(vector<vector<int>>& intervals)
+{
+	if (intervals.empty())
+	{
+		return{};
+	}
+	map<int, int> hashM;
+	//将最大的区间找到
+	for (auto it:intervals)
+	{
+		if (hashM.count(it[0]))
+		{
+			hashM[it[0]] = max(it[1], hashM[it[0]]);
+		}
+		else
+		{
+			hashM[it[0]] = it[1];
+		}
+	}
+	vector<vector<int>> res;
+	for (auto iter = hashM.begin(); iter != hashM.end();)
+	{
+		auto it = iter;
+		it++;
+		int maxDistance = iter->second;
+		//将能覆盖的最远距离存放
+		while (it!=hashM.end()&&it->first<=maxDistance)
+		{
+			maxDistance = max(it->second,maxDistance);
+			++it;
+		}
+		vector<int> vecTemp;
+		vecTemp.push_back(iter->first);
+		vecTemp.push_back(maxDistance);
+		iter = it;
+		res.push_back(vecTemp);
+	}
+	return res;
+}
+
+std::vector<std::vector<int>> Solution::generateMatrix(int n)
+{
+	if (n==0)
+	{
+		return {};
+	}
+	int topLine = 0;  //上边线
+	int rightLine = n - 1;//右边线
+	int lowerLine = n - 1;//下边线
+	int leftLine = 0;//左边线
+	int icount = 1;
+	vector<vector<int>> res(n, vector<int>(n));
+	while (true)
+	{
+		//给上边线赋值
+		for (int i = leftLine; i <=rightLine;++i)
+		{
+			res[topLine][i] = icount++;
+		}
+		if (++topLine>lowerLine)
+		{
+			break;
+		}
+		//给右边线赋值
+		for (int i = topLine; i <= lowerLine; ++i)
+		{
+			res[i][rightLine] = icount++;
+		}
+		if (--rightLine < leftLine)
+		{
+			break;
+		}
+		//给下边线赋值
+		for (int i = rightLine; i >= leftLine;--i)
+		{
+			res[lowerLine][i] = icount++;
+		}
+		if (--lowerLine<topLine)
+		{
+			break;
+		}
+		//给左边线赋值
+		for (int i = lowerLine; i >= topLine; --i)
+		{
+			res[i][leftLine] = icount++;
+		}
+		if (++leftLine > rightLine)
+		{
+			break;
+		}
+	}
+	return res;
+}
+
+void Solution::DfsGetPermutation(set<int> &iSet, int iNumber, string &res)
+{
+	if (iSet.size()==1)
+	{
+		res += to_string(*iSet.begin());
+		return;
+	}
+	int length = iSet.size()-1;
+	int m = 1;
+	for (int i = 1; i <= length;++i)
+	{
+		m *= i;
+	}
+	if (m*(m + 1)<iNumber)
+	{
+		return;
+	}
+	int quo = iNumber / m;
+	int remain = iNumber % m;
+	if (remain == 0)
+	{
+		auto it = iSet.begin();
+		while (--quo>0)
+		{
+			++it;
+		}
+		res += to_string(*it);
+		iSet.erase(it);
+	}
+	else
+	{
+		auto it = iSet.begin();
+		while (quo>0)
+		{
+			++it;
+			--quo;
+		}
+		res += to_string(*it);
+		iSet.erase(it);
+	}
+	DfsGetPermutation(iSet, remain, res);
+}
+
+std::string Solution::getPermutation(int n, int k)
+{
+	if (n<=0)
+	{
+		return "";
+	}
+	set<int> hash;
+	for (int i = 1; i <= n;++i)
+	{
+		hash.insert(i);
+	}
+	string res;
+	DfsGetPermutation(hash, k, res);
 	return res;
 }
 

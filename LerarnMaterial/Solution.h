@@ -130,6 +130,26 @@ public:
 	 日    期： 2019/11/01
 	******************************************************************************/
 	string multiply(string num1, string num2);
+	void DFSpermute(vector<int> path, int i,unordered_map<int,bool> &hashM);
+	/******************************************************************************
+	 函数名称： permute
+	 功能说明： 无重复数字的数组生成全排列
+	 参    数： vector<int> & nums 
+	 返 回 值： std::vector<std::vector<int>>
+	 作    者： Ru Long
+	 日    期： 2019/11/02
+	******************************************************************************/
+	vector<vector<int>> permute(vector<int>& nums);
+	void DFSpermuteUnique(vector<int> path, int i, vector<pair<int, int>> &iInt);
+	/******************************************************************************
+	 函数名称： permuteUnique
+	 功能说明： 可重复数字生成全排列，序列不能重复
+	 参    数： vector<int> & nums 
+	 返 回 值： std::vector<std::vector<int>>
+	 作    者： Ru Long
+	 日    期： 2019/11/02
+	******************************************************************************/
+	vector<vector<int>> permuteUnique(vector<int>& nums);
 	/******************************************************************************
 	 函数名称： Select
 	 功能说明： 寻找第k小的元素
@@ -142,11 +162,85 @@ public:
 	******************************************************************************/
 	template<typename T>
 	T Select(T a[], int n, int k);
+	/******************************************************************************
+	 函数名称： rotate
+	 功能说明： 一个n*n的矩阵顺时针旋转90°
+	 参    数： vector<vector<int>> & matrix 
+	 返 回 值： void
+	 作    者： Ru Long
+	 日    期： 2019/11/02
+	******************************************************************************/
+	void rotate(vector<vector<int>>& matrix);
+	/******************************************************************************
+	 函数名称： groupAnagrams
+	 功能说明： 将字母异位词放在一起，字母组成相同，位置不同
+	 参    数： vector<string> & strs 
+	 返 回 值： std::vector<std::vector<std::string>>
+	 作    者： Ru Long
+	 日    期： 2019/11/02
+	******************************************************************************/
+	vector<vector<string>> groupAnagrams(vector<string>& strs);
+	/******************************************************************************
+	 函数名称： myPow
+	 功能说明： 计算X的幂级数
+	 参    数： double x 
+	 参    数： int n 
+	 返 回 值： double
+	 作    者： Ru Long
+	 日    期： 2019/11/02
+	******************************************************************************/
+	double myPow(double x, int n);
+	/******************************************************************************
+	 函数名称： spiralOrder
+	 功能说明： 返回螺旋矩阵的值
+	 参    数： vector<vector<int>> & matrix 
+	 返 回 值： std::vector<int>
+	 作    者： Ru Long
+	 日    期： 2019/11/02
+	******************************************************************************/
+	vector<int> spiralOrder(vector<vector<int>>& matrix);
+	/******************************************************************************
+	 函数名称： canJump
+	 功能说明： 判断能否跳到最后一步
+	 参    数： vector<int> & nums 
+	 返 回 值： bool
+	 作    者： Ru Long
+	 日    期： 2019/11/04
+	******************************************************************************/
+	bool canJump(vector<int>& nums);
+	/******************************************************************************
+	 函数名称： merge
+	 功能说明： 合并有重叠的区间
+	 参    数： vector<vector<int>> & intervals 
+	 返 回 值： std::vector<std::vector<int>>
+	 作    者： Ru Long
+	 日    期： 2019/11/04
+	******************************************************************************/
+	vector<vector<int>> merge(vector<vector<int>>& intervals);
+	/******************************************************************************
+	 函数名称： generateMatrix
+	 功能说明： 给定一个正整数，生成一个包含1到n2的所有元素，按照顺时针螺旋矩阵排列
+	 参    数： int n 
+	 返 回 值： std::vector<std::vector<int>>
+	 作    者： Ru Long
+	 日    期： 2019/11/04
+	******************************************************************************/
+	vector<vector<int>> generateMatrix(int n);
+	void DfsGetPermutation(set<int> &iSet,int iNumber,string &res);
+	/******************************************************************************
+	 函数名称： getPermutation
+	 功能说明： 给出元素的所有排列，找到从大到小排的第k个
+	 参    数： int n 
+	 参    数： int k 
+	 返 回 值： std::string
+	 作    者： Ru Long
+	 日    期： 2019/11/04
+	******************************************************************************/
+	string getPermutation(int n, int k);
 private:
 	int expandAroundCenter(const string &s, int left, int right);
 	template<typename T>
 	T Select(T a[], int leftEnd, int rightEnd, int k);
-	
 };
 
 template<typename T>
