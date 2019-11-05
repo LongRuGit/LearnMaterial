@@ -42,7 +42,7 @@ int main()
 		cout << *iter << " ";
 	}
 	cout << endl;
-	s_ptr->getPermutation(3,2);
+	s_ptr->getPermutation(3,3);
 	system("pause");
 	return 0;
 }

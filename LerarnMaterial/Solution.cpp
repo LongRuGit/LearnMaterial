@@ -732,63 +732,97 @@ std::vector<std::vector<int>> Solution::generateMatrix(int n)
 	return res;
 }
 
-void Solution::DfsGetPermutation(set<int> &iSet, int iNumber, string &res)
-{
-	if (iSet.size()==1)
-	{
-		res += to_string(*iSet.begin());
-		return;
-	}
-	int length = iSet.size()-1;
-	int m = 1;
-	for (int i = 1; i <= length;++i)
-	{
-		m *= i;
-	}
-	if (m*(m + 1)<iNumber)
-	{
-		return;
-	}
-	int quo = iNumber / m;
-	int remain = iNumber % m;
-	if (remain == 0)
-	{
-		auto it = iSet.begin();
-		while (--quo>0)
-		{
-			++it;
-		}
-		res += to_string(*it);
-		iSet.erase(it);
-	}
-	else
-	{
-		auto it = iSet.begin();
-		while (quo>0)
-		{
-			++it;
-			--quo;
-		}
-		res += to_string(*it);
-		iSet.erase(it);
-	}
-	DfsGetPermutation(iSet, remain, res);
-}
-
 std::string Solution::getPermutation(int n, int k)
 {
-	if (n<=0)
+	string result;
+	string num = "123456789";
+	vector<int> f(n, 1);
+	//保存i的阶乘
+	for (auto i = 1; i < n;++i)
 	{
-		return "";
+		f[i] = f[i - 1] * i;
 	}
-	set<int> hash;
-	for (int i = 1; i <= n;++i)
+	--k; //为了使[0,i!-1]个排列对应到num[i-1]
+	for (int i = n; i >= 1;--i)
 	{
-		hash.insert(i);
+		int j = k / f[i - 1];
+		k %= f[i - 1];
+		result.push_back(num[j]);
+		num.erase(j, 1);
 	}
-	string res;
-	DfsGetPermutation(hash, k, res);
-	return res;
+	return result;
+}
+
+ListNode* Solution::rotateRight(ListNode* head, int k)
+{
+	if (head == nullptr)
+	{
+		return head;
+	}
+	int len = 1;
+	ListNode * back = head;
+	while (back->next != nullptr)
+	{
+		back = back->next;
+		len++;
+	}
+	back->next = head;
+	k = k%len;
+	for (int i = 1; i < len - k + 1; ++i)
+	{
+		back = back->next;
+		head = head->next;
+	}
+	back->next = NULL;
+	return head;
+}
+
+int Solution::uniquePaths(int m, int n)
+{
+	vector<vector<int>> dp(m+1, vector<int>(n+1));
+	for (int i = 1; i <= m;i++)
+	{
+		for (int j = 1; j <= n;j++)
+		{
+			if (i == 1 || j == 1)
+			{
+				dp[i][j] = 1;
+			}
+			else
+			{
+				dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+			}
+		}
+	}
+	return dp[m][n];
+}
+
+int Solution::minPathSum(vector<vector<int>>& grid)
+{
+	if (grid.empty())
+	{
+		return 0;
+	}
+	vector<vector<int>> dp(grid.size() + 1, vector<int>(grid[0].size() + 1));
+	for (auto i = 1; i <= grid.size(); i++)
+	{
+		for (auto j = 1; j <= grid[0].size(); j++)
+		{
+			if (i == 1)
+			{
+				dp[i][j] = dp[i][j - 1] + grid[i - 1][j - 1];
+			}
+			else if (j==1)
+			{
+				dp[i][j] = dp[i-1][j] + grid[i - 1][j - 1];
+			}
+			else
+			{
+				dp[i][j] = min(dp[i - 1][j], dp[i][j - 1]) + grid[i - 1][j - 1];
+			}
+		}
+	}
+	return dp[grid.size()][grid[0].size()];
 }
 
 int Solution::expandAroundCenter(const string &s, int left, int right)
