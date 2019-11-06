@@ -42,7 +42,7 @@ int main()
 		cout << *iter << " ";
 	}
 	cout << endl;
-	s_ptr->getPermutation(3,3);
+	s_ptr->simplifyPath("/a//b////c/d//././/..");
 	system("pause");
 	return 0;
 }

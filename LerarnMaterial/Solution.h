@@ -265,6 +265,24 @@ public:
 	 日    期： 2019/11/05
 	******************************************************************************/
 	int minPathSum(vector<vector<int>>& grid);
+	/******************************************************************************
+	 函数名称： simplifyPath
+	 功能说明： 获取简化后的路径，在UNIX下的风格
+	 参    数： string path 
+	 返 回 值： std::string
+	 作    者： Ru Long
+	 日    期： 2019/11/06
+	******************************************************************************/
+	string simplifyPath(string path);
+	/******************************************************************************
+	 函数名称： setZeroes
+	 功能说明： 矩阵置0，如果有一个0则将所在的行和列都为0
+	 参    数： vector<vector<int>> & matrix 
+	 返 回 值： void
+	 作    者： Ru Long
+	 日    期： 2019/11/06
+	******************************************************************************/
+	void setZeroes(vector<vector<int>>& matrix);
 private:
 	int expandAroundCenter(const string &s, int left, int right);
 	template<typename T>

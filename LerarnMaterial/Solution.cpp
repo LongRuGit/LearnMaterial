@@ -825,6 +825,91 @@ int Solution::minPathSum(vector<vector<int>>& grid)
 	return dp[grid.size()][grid[0].size()];
 }
 
+std::string Solution::simplifyPath(string path)
+{
+	if (path.empty())
+	{
+		return path;
+	}
+	path.append("/");
+	stack<string> stac;
+	int len = 0;
+	for (int i = 0; i < path.size();++i)
+	{
+		if (path[i] == '/')
+		{
+			if (len!=0)
+			{
+				string tmp = path.substr(i - len, len);
+				if (tmp == ".")
+				{
+
+				}
+				else if (tmp == "..")
+				{
+					if (!stac.empty())
+					{
+						stac.pop();
+					}
+				}
+				else
+				{
+					stac.push(tmp);
+				}
+			}
+			len = 0;
+		}
+		else
+			len++;
+	}
+	if (stac.empty())
+	{
+		return "/";
+	}
+	string res;
+	while (!stac.empty())
+	{
+		res = '/' + stac.top() + res;
+		stac.pop();
+	}
+	return res;
+}
+
+void Solution::setZeroes(vector<vector<int>>& matrix)
+{
+	if (matrix.empty())
+	{
+		return;
+	}
+	set<int> row;
+	set<int> col;
+	for (int i = 0; i < matrix.size();++i)
+	{
+		for (int j = 0; j < matrix[i].size();++j)
+		{
+			if (matrix[i][j]==0)
+			{
+				row.insert(i);
+				col.insert(j);
+			}
+		}
+	}
+	for (auto it:row)
+	{
+		for (auto &iter:matrix[it])
+		{
+			iter = 0;
+		}
+	}
+	for (int i = 0; i < matrix.size();++i)
+	{
+		for (auto it:col)
+		{
+			matrix[i][it] = 0;
+		}
+	}
+}
+
 int Solution::expandAroundCenter(const string &s, int left, int right)
 {
 	size_t L = left, R = right;
