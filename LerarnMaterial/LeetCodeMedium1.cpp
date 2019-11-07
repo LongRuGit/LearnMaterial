@@ -28,7 +28,7 @@ int main()
 	//确定随机数的范围
 	uniform_int_distribution<unsigned> u(0, 100);
 	default_random_engine e;
-	vector<int> nums1 = { 2,0,0};
+	vector<int> nums1 = { 2, 0, 2, 1, 1, 0 };
 	s_ptr->search(nums1,0);
 	int nums[7] = {0};
 	for (int i = 0; i < 7;i++)
@@ -42,7 +42,7 @@ int main()
 		cout << *iter << " ";
 	}
 	cout << endl;
-	s_ptr->simplifyPath("/a//b////c/d//././/..");
+	s_ptr->combine(4,2);
 	system("pause");
 	return 0;
 }

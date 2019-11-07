@@ -910,6 +910,163 @@ void Solution::setZeroes(vector<vector<int>>& matrix)
 	}
 }
 
+bool Solution::searchMatrix(vector<vector<int>>& matrix, int target)
+{
+	//2次二分查找
+	if (matrix.empty()||matrix[0].empty())
+	{
+		return false;
+	}
+	int rowl = 0,rowr=matrix.size();
+	int coll = 0, colr = matrix[0].size();
+	while (rowl<rowr)
+	{
+		int midrow = rowl + (rowr - rowl) / 2;
+		if (matrix[midrow][matrix[midrow].size()-1]<target)
+		{
+			rowl = midrow + 1;
+		}
+		else if (matrix[midrow][matrix[midrow].size() - 1]>target)
+		{
+			rowr = midrow;
+		}
+		else
+		{
+			return true;
+		}
+	}
+	if (rowl==matrix.size())
+	{
+		return false;
+	}
+	while (coll<colr)
+	{
+		int midclo = coll + (colr - coll) / 2;
+		if (matrix[rowl][midclo]<target)
+		{
+			coll = midclo + 1;
+		}
+		else if (matrix[rowl][midclo]>target)
+		{
+			colr = midclo;
+		}
+		else
+		{
+			return true;
+		}
+	}
+	if (coll==matrix[0].size())
+	{
+		return false;
+	}
+	return matrix[rowl][coll] == target;
+}
+
+void Solution::sortColors(vector<int>& nums)
+{
+	//3路快排
+	if (nums.empty())
+	{
+		return;
+	}
+	int ipos = -1;
+	int left = 0, right = nums.size();
+	while (left<right)
+	{
+		if (nums[left] == 0)
+		{
+			swap(nums[++ipos], nums[left++]);
+		}
+		else if (nums[left] == 2)
+		{
+			swap(nums[left], nums[--right]);
+		}
+		else
+		{
+			left++;
+		}
+	}
+}
+
+void Solution::DFSCombine(std::vector<vector<int>> & res, std::vector<int> &number, int start, int k, vector<int> &path)
+{
+	if (path.size() == k)
+	{
+		res.push_back(path);
+		return;
+	}
+	if (start==number.size())
+	{
+		return;
+	}
+	//剪枝做优化
+	for (int i = start; i <=number.size()-(k-path.size());i++)
+	{
+		path.push_back(number[i]);
+		DFSCombine(res, number, i + 1, k, path);
+		path.pop_back();
+	}
+}
+
+std::vector<std::vector<int>> Solution::combine(int n, int k)
+{
+	if (n<k||k==0)
+	{
+		return{};
+	}
+	vector<int> numNumber;
+	for (int i = 1; i <= n;++i)
+	{
+		numNumber.push_back(i);
+	}
+	vector<vector<int>> res;
+	vector<int> path;
+	DFSCombine(res, numNumber, 0, k, path);
+	return res;
+}
+vector<int> numNumber;
+void Solution::DFSSubsets(std::vector<vector<int>> & res, int start, vector<int> &path)
+{
+	res.push_back(path);
+	//剪枝做优化
+	for (int i = start; i < numNumber.size(); i++)
+	{
+		path.push_back(numNumber[i]);
+		DFSSubsets(res, i + 1, path);
+		path.pop_back();
+	}
+}
+
+std::vector<std::vector<int>> Solution::subsets(vector<int>& nums)
+{
+	//按位进行运算
+	int total = 1 << nums.size();
+	std::vector<vector<int>>  res(total);
+	for (int i = 0; i < total;++i)
+	{
+		for (int j = i, k = 0; j; j >>= 1,k++)
+		{
+			if (j&1==1)
+			{
+				res[i].push_back(nums[k]);
+			}
+		}
+	}
+	return res;
+}
+
+bool Solution::exist(vector<vector<char>>& board, string word)
+{
+	if (word.empty())
+	{
+		return true;
+	}
+	if (board.empty())
+	{
+		return false;
+	}
+}
+
 int Solution::expandAroundCenter(const string &s, int left, int right)
 {
 	size_t L = left, R = right;

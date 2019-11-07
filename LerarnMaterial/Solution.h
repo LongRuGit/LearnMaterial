@@ -283,6 +283,56 @@ public:
 	 日    期： 2019/11/06
 	******************************************************************************/
 	void setZeroes(vector<vector<int>>& matrix);
+	/******************************************************************************
+	 函数名称： searchMatrix
+	 功能说明： 搜索2维矩阵
+	 参    数： vector<vector<int>> & matrix 
+	 参    数： int target 
+	 返 回 值： bool
+	 作    者： Ru Long
+	 日    期： 2019/11/07
+	******************************************************************************/
+	bool searchMatrix(vector<vector<int>>& matrix, int target);
+	/******************************************************************************
+	 函数名称： sortColors
+	 功能说明： 按照颜色进行排序，相同颜色放在一起,00,11,22
+	 参    数： vector<int> & nums 
+	 返 回 值： void
+	 作    者： Ru Long
+	 日    期： 2019/11/07
+	******************************************************************************/
+	void sortColors(vector<int>& nums);
+	void DFSCombine(std::vector<vector<int>> & res, std::vector<int> &number, int start, int k,vector<int> &path);
+	/******************************************************************************
+	 函数名称： combine
+	 功能说明： 返回1-n中所有可能的k个数的组合
+	 参    数： int n 
+	 参    数： int k 
+	 返 回 值： std::vector<std::vector<int>>
+	 作    者： Ru Long
+	 日    期： 2019/11/07
+	******************************************************************************/
+	vector<vector<int>> combine(int n, int k);
+	void DFSSubsets(std::vector<vector<int>> & res, int start, vector<int> &path);
+	/******************************************************************************
+	 函数名称： subsets
+	 功能说明： 返回一个元素所有的子集
+	 参    数： vector<int> & nums 
+	 返 回 值： std::vector<std::vector<int>>
+	 作    者： Ru Long
+	 日    期： 2019/11/07
+	******************************************************************************/
+	vector<vector<int>> subsets(vector<int>& nums);
+	/******************************************************************************
+	 函数名称： exist
+	 功能说明： 判断单词能否由相邻的字母构成
+	 参    数： vector<vector<char>> & board 
+	 参    数： string word 
+	 返 回 值： bool
+	 作    者： Ru Long
+	 日    期： 2019/11/07
+	******************************************************************************/
+	bool exist(vector<vector<char>>& board, string word);
 private:
 	int expandAroundCenter(const string &s, int left, int right);
 	template<typename T>
