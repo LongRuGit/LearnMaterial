@@ -1054,6 +1054,32 @@ std::vector<std::vector<int>> Solution::subsets(vector<int>& nums)
 	}
 	return res;
 }
+int dir[4][4] = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
+bool Solution::DFSexist(int x, int y, int index, vector<vector<char>>&board, string &word, vector<vector<bool>>&visit)
+{
+	if (index==word.size()-1)
+	{
+		return word[index] == board[x][y];
+	}
+	if (word[index]==board[x][y])
+	{
+		visit[x][y] = false;
+		for (int i = 0; i < 4;++i)
+		{
+			int newx = x + dir[i][0];
+			int newy = y + dir[i][1];
+			if (newx>=0&&newx<board.size()&&newy>=0&&newy<board[0].size()&&visit[newx][newy])
+			{
+				if (DFSexist(newx, newy, index + 1, board, word, visit))
+				{
+					return true;
+				}
+			}
+		}
+		visit[x][y] = true;
+	}
+	return false;
+}
 
 bool Solution::exist(vector<vector<char>>& board, string word)
 {
@@ -1065,6 +1091,39 @@ bool Solution::exist(vector<vector<char>>& board, string word)
 	{
 		return false;
 	}
+	std::vector<std::vector<bool>> vecPos(board.size(),std::vector<bool>(board[0].size(),true));
+	for (int i = 0; i < board.size();++i)
+	{
+		for (int j = 0; j < board[i].size();++j)
+		{
+			if (DFSexist(i, j, 0, board, word, vecPos))
+			{
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+int Solution::removeDuplicates(vector<int>& nums)
+{
+	if (nums.empty())
+	{
+		return 0;
+	}
+	int ipos = 1;
+	if (nums.size()<=2)
+	{
+		return nums.size();
+	}
+	for (int i = 2; i < nums.size();++i)
+	{
+		if (nums[i]!=nums[ipos-1])
+		{
+			nums[++ipos] = nums[i];
+		}
+	}
+	return ipos+1;
 }
 
 int Solution::expandAroundCenter(const string &s, int left, int right)

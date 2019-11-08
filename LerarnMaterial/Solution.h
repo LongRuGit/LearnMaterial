@@ -323,6 +323,7 @@ public:
 	 日    期： 2019/11/07
 	******************************************************************************/
 	vector<vector<int>> subsets(vector<int>& nums);
+	bool DFSexist(int x,int y,int index,vector<vector<char>>&board,string &word,vector<vector<bool>>&visit);
 	/******************************************************************************
 	 函数名称： exist
 	 功能说明： 判断单词能否由相邻的字母构成
@@ -333,6 +334,15 @@ public:
 	 日    期： 2019/11/07
 	******************************************************************************/
 	bool exist(vector<vector<char>>& board, string word);
+	/******************************************************************************
+	 函数名称： removeDuplicates
+	 功能说明： 输出排序数组，每个数组元素只能出现2次
+	 参    数： vector<int> & nums 
+	 返 回 值： int
+	 作    者： Ru Long
+	 日    期： 2019/11/08
+	******************************************************************************/
+	int removeDuplicates(vector<int>& nums);
 private:
 	int expandAroundCenter(const string &s, int left, int right);
 	template<typename T>
