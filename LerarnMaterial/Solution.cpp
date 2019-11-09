@@ -1126,6 +1126,85 @@ int Solution::removeDuplicates(vector<int>& nums)
 	return ipos+1;
 }
 
+
+ListNode* Solution::deleteDuplicates(ListNode* head)
+{
+	if (nullptr==head)
+	{
+		return head;
+	}
+	ListNode *newNode = new ListNode(0);
+	ListNode *l = head;
+	ListNode *r = head;
+	ListNode *p = newNode;
+	int len = 0;
+	while (r)
+	{
+		//判断是否相等，相等时就计数+1
+		if (r->val==l->val)
+		{
+			len++;
+			r = r->next;
+		}
+		else
+		{
+			if (len<=1)
+			{
+				p->next = l;
+				p = p->next;
+			}
+			l = r;
+			len = 0;
+		}
+	}
+	if (len>1)
+	{
+		p->next = NULL;
+	}
+	else
+	{
+		p->next = l;
+	}
+	return newNode->next;
+}
+
+ListNode* Solution::partition(ListNode* head, int x)
+{
+	if (head==nullptr)
+	{
+		return head;
+	}
+	ListNode *left = new ListNode(0);
+	ListNode * right = new ListNode(0);
+	ListNode * pl = left;
+	ListNode * pr = right;
+	while (head)
+	{
+		if (head->val<x)
+		{
+			pl->next = head;
+			pl = pl->next;
+		}
+		else
+		{
+			pr->next = head;
+			pr = pr->next;
+		}
+		head = head->next;
+	}
+	pr->next = nullptr;
+	pl->next = right->next;
+	return left->next;
+}
+
+std::vector<int> Solution::grayCode(int n)
+{
+	if (n==0)
+	{
+		return {0};
+	}
+}
+
 int Solution::expandAroundCenter(const string &s, int left, int right)
 {
 	size_t L = left, R = right;
