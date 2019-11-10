@@ -1203,6 +1203,98 @@ std::vector<int> Solution::grayCode(int n)
 	{
 		return {0};
 	}
+	vector<int> res(pow(2, n), 0);
+	for (int i = 1; i <= n;i++)
+	{
+		int len = pow(2, i);
+		for (int j = len; j >= len / 2; --j)
+		{
+			//ÄæÐòµÄ¸ñÀ×Âë
+			res[j] = res[len - 1 - j] + len/2;
+		}
+	}
+	return res;
+}
+
+ListNode * Solution::mergeTwoLsits(ListNode* p1, ListNode * p2)
+{
+	if (nullptr==p1)
+	{
+		return p2;
+	}
+	if (nullptr==p2)
+	{
+		return p1;
+	}
+	ListNode * newHead = new ListNode(0);
+	ListNode *Temp = newHead;
+	while (p1!=nullptr&&p2!=nullptr)
+	{
+		if (p1->val<p2->val)
+		{
+			Temp->next = p1;
+			p1 = p1->next;
+		}
+		else
+		{
+			Temp->next = p2;
+			p2 = p2->next;
+		}
+		Temp = Temp->next;
+	}
+	Temp->next = p1 == nullptr ? p2 : p1;
+	return newHead->next;
+}
+
+ListNode* Solution::mergeKLists(vector<ListNode*>& lists)
+{
+	if (lists.empty())
+	{
+		return nullptr;
+	}
+	ListNode * newNode = new ListNode(0);
+	newNode->next = lists[0];
+	for (int i = 1; i < lists.size();++i)
+	{
+		newNode->next = mergeTwoLsits(newNode->next, lists[i]);
+	}
+	return newNode->next;
+}
+std::vector<std::vector<int>> resultDup;
+vector<int> numsBer;
+void Solution::DFSWithDup(vector<int>&path, int start, int idepth)
+{
+	if (idepth == path.size())
+	{
+		resultDup.push_back(path);
+		return;
+	}
+	for (int i = start; i <= numsBer.size() - (idepth - path.size()); ++i)
+	{
+		if (i != start&&numsBer[i] == numsBer[i - 1])
+		{
+			continue;
+		}
+		path.push_back(numsBer[i]);
+		DFSWithDup(path, i + 1,idepth);
+		path.pop_back();
+	}
+}
+
+std::vector<std::vector<int>> Solution::subsetsWithDup(vector<int>& nums)
+{
+	if (nums.empty())
+	{
+		return{};
+	}
+	sort(nums.begin(), nums.end());
+	numsBer = nums;
+	for (int i = 0; i <=nums.size(); ++i)
+	{
+		vector<int> path;
+		DFSWithDup(path, 0,i);
+	}
+	return resultDup;
 }
 
 int Solution::expandAroundCenter(const string &s, int left, int right)

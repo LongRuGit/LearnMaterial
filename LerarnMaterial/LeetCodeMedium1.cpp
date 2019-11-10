@@ -28,7 +28,7 @@ int main()
 	//确定随机数的范围
 	uniform_int_distribution<unsigned> u(0, 100);
 	default_random_engine e;
-	vector<int> nums1 = { 1, 1, 1, 2, 2, 2, 3, 3 };
+	vector<int> nums1 = { 1,2,2 };
 	s_ptr->search(nums1,0);
 	int nums[7] = {0};
 	for (int i = 0; i < 7;i++)
@@ -36,13 +36,12 @@ int main()
 		nums[i] = u(e);
 	}
 	unique_ptr<SortClass> uniSolt_ptr;
-	uniSolt_ptr->MergeSort(nums, 7);
 	for (auto iter = begin(nums); iter != end(nums); ++iter)
 	{
 		cout << *iter << " ";
 	}
 	cout << endl;
-	s_ptr->removeDuplicates(nums1);
+	s_ptr->subsetsWithDup(nums1);
 	system("pause");
 	return 0;
 }

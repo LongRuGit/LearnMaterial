@@ -371,6 +371,18 @@ public:
 	 日    期： 2019/11/09
 	******************************************************************************/
 	vector<int> grayCode(int n);
+	ListNode * mergeTwoLsits(ListNode* p1,ListNode * p2);
+	ListNode* mergeKLists(vector<ListNode*>& lists);
+	void DFSWithDup(vector<int>&path, int start,int idepth);
+	//************************************
+	// Method:    subsetsWithDup
+	// FullName:  Solution::subsetsWithDup
+	// Access:    public 
+	// Returns:   std::vector<std::vector<int>>
+	// Qualifier:可能重复的序列里面找到所有的子集
+	// Parameter: vector<int> & nums
+	//************************************
+	vector<vector<int>> subsetsWithDup(vector<int>& nums);
 private:
 	int expandAroundCenter(const string &s, int left, int right);
 	template<typename T>
