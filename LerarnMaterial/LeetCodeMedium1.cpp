@@ -41,7 +41,7 @@ int main()
 		cout << *iter << " ";
 	}
 	cout << endl;
-	s_ptr->subsetsWithDup(nums1);
+	s_ptr->numTrees(2);
 	system("pause");
 	return 0;
 }

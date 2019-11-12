@@ -1297,6 +1297,241 @@ std::vector<std::vector<int>> Solution::subsetsWithDup(vector<int>& nums)
 	return resultDup;
 }
 
+ListNode* Solution::reverseBetween(ListNode* head, int m, int n)
+{
+	if (head==nullptr)
+	{
+		return head;
+	}
+	ListNode * newHead = new ListNode(0);
+	newHead->next = head;
+	int icount = 1;
+	ListNode * reverseStartBefore = nullptr;
+	while (head)
+	{
+		if (icount==m)
+		{
+			break;
+		}
+		reverseStartBefore = head;
+		head = head->next;
+		icount++;
+	}
+	//记录链表的4个节点
+	ListNode * reverseStart = head;
+	ListNode * pre = nullptr;
+	ListNode * cur = nullptr;
+	//反转链表
+	while (icount<=n&&head)
+	{
+		cur = head->next;
+		head->next = pre;
+		pre = head;
+		head = cur;
+		icount++;
+	}
+	reverseStart->next = head;
+	if (reverseStartBefore==nullptr)
+	{
+		return pre;
+	}
+	reverseStartBefore->next = pre;
+	return newHead->next;
+}
+
+void Solution::DFSToAddAdress(std::vector<std::string> &res, std::vector<string> &path, string &s, int istart, int iend)
+{
+	//iend表名还需要几个数
+	if (iend == 0)
+	{
+		if (istart!=s.size())
+		{
+			return;
+		}
+		string result;
+		for (int i = 0; i < path.size()-1; ++i)
+		{
+			result += path[i] + '.';
+		}
+		result += path[path.size() - 1];
+		res.push_back(result);
+		return;
+	}
+	iend--;
+	int num = 0;
+	for (int i = istart; i < s.size() - iend;++i)
+	{
+		num = num * 10 + s[i] - '0';
+		if (num>255)
+		{
+			break;
+		}
+		path.push_back(to_string(num));
+		DFSToAddAdress(res, path, s, i + 1, iend);
+		path.pop_back();
+		//IP地址不能以0开头
+		if (num==0)
+		{
+			break;
+		}
+	}
+}
+
+std::vector<std::string> Solution::restoreIpAddresses(string s)
+{
+	if (s.empty())
+	{
+		return {};
+	}
+	std::vector<std::string> res;
+	std::vector<string> path;
+	if (s.size()>=4)
+	{
+		DFSToAddAdress(res, path, s, 0, 4);
+	}
+	return res;
+}
+
+void Solution::DFSinorderTraversal(TreeNode * root, std::vector<int> &res)
+{
+	if (root==nullptr)
+	{
+		return;
+	}
+	if (root->left!=nullptr)
+	{
+		DFSinorderTraversal(root->left, res);
+	}
+	res.push_back(root->val);
+	if (root->right!=nullptr)
+	{
+		DFSinorderTraversal(root->right, res);
+	}
+}
+
+std::vector<int> Solution::inorderTraversal(TreeNode* root)
+{
+	//迭代版本的中序遍历
+	if (root==nullptr)
+	{
+		return{};
+	}
+	std::vector<int> res;
+	stack<TreeNode *> stacNode;
+	//先让左子树进栈，访问当前节点，在让右子树进栈
+	while (root)
+	{
+		stacNode.push(root);
+		root = root->left;
+	}
+	while (!stacNode.empty())
+	{
+		auto nodeTemp = stacNode.top();
+		res.push_back(nodeTemp->val);
+		stacNode.pop();
+		nodeTemp = nodeTemp->right;
+		while (nodeTemp)
+		{
+			stacNode.push(nodeTemp);
+			nodeTemp = nodeTemp->left;
+		}
+	}
+	return res;
+}
+
+std::vector<int> Solution::preorderTraversal(TreeNode* root)
+{
+	if (root==nullptr)
+	{
+		return{};
+	}
+	std::stack<TreeNode *> stac;
+	std::vector<int> res;
+	stac.push(root);
+	while (!stac.empty())
+	{
+		TreeNode * tempNode = stac.top();
+		stac.pop();
+		res.push_back(tempNode->val);
+		if (tempNode->right)
+		{
+			stac.push(tempNode->right);
+		}
+		if (tempNode->left)
+		{
+			stac.push(tempNode->left);
+		}
+	}
+	return res;
+}
+
+std::vector<TreeNode*> Solution::DFSGenerateTree(int left, int right)
+{
+	vector<TreeNode *> ans;
+	if (left>right)
+	{
+		ans.push_back(NULL);
+		return ans;
+	}
+	for (int i = left; i <= right;++i)
+	{
+		//找每个节点所对应的的左子树和右子树的几何
+		vector<TreeNode*> leftNodeVec = DFSGenerateTree(left, i - 1);
+		vector<TreeNode*> rightNodeVec = DFSGenerateTree(i+1, right);
+		for (auto itLeft:leftNodeVec)
+		{
+			for (auto itRight:rightNodeVec)
+			{
+				TreeNode * newNode = new TreeNode(i);
+				newNode->left = itLeft;
+				newNode->right = itRight;
+				ans.push_back(newNode);
+			}
+		}
+	}
+	return ans;
+}
+
+std::vector<TreeNode*> Solution::generateTrees(int n)
+{
+	if (n<=0)
+	{
+		return{};
+	}
+	return DFSGenerateTree(1, n);
+}
+
+int Solution::numTrees(int n)
+{
+	//卡特兰数
+	if (n <= 0)
+	{
+		return 0;
+	}
+	if (n==1)
+	{
+		return 1;
+	}
+	long C = 1;
+	for (int i = 0; i < n;++i)
+	{
+		C = C * 2 * (2 * i + 1) / (i + 2);
+	}
+	return C;
+}
+
+bool Solution::isValidBST(TreeNode* root)
+{
+	if (NULL==root)
+	{
+		return true;
+	}
+	if (root->left==NULL&&root->right==NULL)
+	{
+		return true;
+	}
+}
+
 int Solution::expandAroundCenter(const string &s, int left, int right)
 {
 	size_t L = left, R = right;

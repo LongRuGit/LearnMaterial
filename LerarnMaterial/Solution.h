@@ -374,15 +374,83 @@ public:
 	ListNode * mergeTwoLsits(ListNode* p1,ListNode * p2);
 	ListNode* mergeKLists(vector<ListNode*>& lists);
 	void DFSWithDup(vector<int>&path, int start,int idepth);
-	//************************************
-	// Method:    subsetsWithDup
-	// FullName:  Solution::subsetsWithDup
-	// Access:    public 
-	// Returns:   std::vector<std::vector<int>>
-	// Qualifier:可能重复的序列里面找到所有的子集
-	// Parameter: vector<int> & nums
-	//************************************
+	/******************************************************************************
+	 函数名称： subsetsWithDup
+	 功能说明： 可能重复的序列里面找到所有的子集
+	 参    数： vector<int> & nums 
+	 返 回 值： std::vector<std::vector<int>>
+	 作    者： Ru Long
+	 日    期： 2019/11/11
+	******************************************************************************/
 	vector<vector<int>> subsetsWithDup(vector<int>& nums);
+	/******************************************************************************
+	 函数名称： reverseBetween
+	 功能说明： 反转从m到n的链表
+	 参    数： ListNode * head 
+	 参    数： int m 
+	 参    数： int n 
+	 返 回 值： ListNode*
+	 作    者： Ru Long
+	 日    期： 2019/11/11
+	******************************************************************************/
+	ListNode* reverseBetween(ListNode* head, int m, int n);
+	void DFSToAddAdress(std::vector<std::string> &res, std::vector<string> &path, string &s, int istart, int iend);
+	/******************************************************************************
+	 函数名称： restoreIpAddresses
+	 功能说明： 复原IP地址
+	 参    数： string s 
+	 返 回 值： std::vector<std::string>
+	 作    者： Ru Long
+	 日    期： 2019/11/11
+	******************************************************************************/
+	vector<string> restoreIpAddresses(string s);
+	void DFSinorderTraversal(TreeNode * root, std::vector<int> &res);
+	/******************************************************************************
+	 函数名称： inorderTraversal
+	 功能说明： 
+	 参    数： TreeNode * root 
+	 返 回 值： std::vector<int>
+	 作    者： Ru Long
+	 日    期： 2019/11/11
+	******************************************************************************/
+	vector<int> inorderTraversal(TreeNode* root);
+	/******************************************************************************
+	 函数名称： preorderTraversal
+	 功能说明： 二叉树的先序遍历
+	 参    数： TreeNode * root 
+	 返 回 值： std::vector<int>
+	 作    者： Ru Long
+	 日    期： 2019/11/12
+	******************************************************************************/
+	vector<int> preorderTraversal(TreeNode* root);
+	vector<TreeNode*> DFSGenerateTree(int left, int right);
+	/******************************************************************************
+	 函数名称： generateTrees
+	 功能说明： 生成从1到n节点组成的所有的二叉搜索树
+	 参    数： int n 
+	 返 回 值： std::vector<TreeNode*>
+	 作    者： Ru Long
+	 日    期： 2019/11/12
+	******************************************************************************/
+	vector<TreeNode*> generateTrees(int n);
+	/******************************************************************************
+	 函数名称： numTrees
+	 功能说明： 给定一个整数n计算能组成多少种二叉搜索树
+	 参    数： int n 
+	 返 回 值： int
+	 作    者： Ru Long
+	 日    期： 2019/11/12
+	******************************************************************************/
+	int numTrees(int n);
+	/******************************************************************************
+	 函数名称： isValidBST
+	 功能说明： 判断一个二叉树是否是二叉搜索树
+	 参    数： TreeNode * root 
+	 返 回 值： bool
+	 作    者： Ru Long
+	 日    期： 2019/11/12
+	******************************************************************************/
+	bool isValidBST(TreeNode* root);
 private:
 	int expandAroundCenter(const string &s, int left, int right);
 	template<typename T>
