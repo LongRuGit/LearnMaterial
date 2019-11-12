@@ -1522,14 +1522,32 @@ int Solution::numTrees(int n)
 
 bool Solution::isValidBST(TreeNode* root)
 {
-	if (NULL==root)
+	std::stack<TreeNode *> stacNode;
+	TreeNode *pre = nullptr;
+	//利用二叉树搜索树的中序遍历是一个递增序列，记录上一次的节点值
+	//先让左子树进栈，访问当前节点，在让右子树进栈
+	while (root)
 	{
-		return true;
+		stacNode.push(root);
+		root = root->left;
 	}
-	if (root->left==NULL&&root->right==NULL)
+	while (!stacNode.empty())
 	{
-		return true;
+		TreeNode * tempNode = stacNode.top();
+		stacNode.pop();
+		if (pre!=nullptr&&tempNode->val<=pre->val)
+		{
+			return false;
+		}
+		pre = tempNode;
+		tempNode = tempNode->right;
+		while (tempNode)
+		{
+			stacNode.push(tempNode);
+			tempNode = tempNode->left;
+		}
 	}
+	return true;
 }
 
 int Solution::expandAroundCenter(const string &s, int left, int right)
