@@ -1532,6 +1532,191 @@ bool Solution::isValidBST(TreeNode* root)
 	}
 }
 
+void Solution::DFSGetPath(std::vector<TreeNode *> & vecPath, TreeNode * root, TreeNode * target, bool &ikey)
+{
+	if (ikey)
+	{
+		return;
+	}
+	if (root->val==target->val)
+	{
+		vecPath.push_back(root);
+		ikey = true;
+		return;
+	}
+	if (NULL==root)
+	{
+		return;
+	}
+	vecPath.push_back(root);
+	if (root->left)
+	{
+		DFSGetPath(vecPath, root->left, target, ikey);
+		if (!ikey)
+		{
+			vecPath.pop_back();
+		}
+		else
+		{
+			return;
+		}
+	}
+	if (root->right)
+	{
+		DFSGetPath(vecPath, root->right, target, ikey);
+		if (!ikey)
+		{
+			vecPath.pop_back();
+		}
+		else
+		{
+			return;
+		}
+	}
+}
+
+TreeNode* Solution::lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q)
+{
+// 	if (root==NULL)
+// 	{
+// 		return root;
+// 	}
+// 	if (p->val==q->val)
+// 	{
+// 		return q;
+// 	}
+// 	std::vector<TreeNode*> pathTar1;
+// 	std::vector<TreeNode*> pathTar2;
+// 	bool ibkey1 = false;
+// 	DFSGetPath(pathTar1, root, p, ibkey1);
+// 	bool ibkey2 = false;
+// 	DFSGetPath(pathTar2, root, q, ibkey2);
+// 	if (pathTar1.size()==1)
+// 	{
+// 		return pathTar1[0];
+// 	}
+// 	if (pathTar2.size() == 1)
+// 	{
+// 		return pathTar2[0];
+// 	}
+// 	if (pathTar1.size()>pathTar2.size())
+// 	{
+// 		int ipos = pathTar1.size() - 2;
+// 		for (; ipos >= 0; --ipos)
+// 		{
+// 			for (int j = pathTar2.size() - 2; j >= 0; --j)
+// 			{
+// 				if (pathTar1[ipos]->val == pathTar2[j]->val)
+// 				{
+// 					return pathTar1[ipos];
+// 				}
+// 			}
+// 		}
+// 	}
+// 	else
+// 	{
+// 		int ipos = pathTar2.size() - 2;
+// 		for (; ipos >= 0; --ipos)
+// 		{
+// 			for (int j = pathTar1.size() - 2; j >= 0; --j)
+// 			{
+// 				if (pathTar1[ipos]->val == pathTar2[j]->val)
+// 				{
+// 					return pathTar2[ipos];
+// 				}
+// 			}
+// 		}
+// 	}
+// 	return root;
+	//查找的目标节点可能在一侧或则是2侧
+	if (!root||root->val==p->val||root->val==q->val)
+	{
+		return root;
+	}
+	TreeNode * left = lowestCommonAncestor(root->left, p, q);
+	TreeNode * right = lowestCommonAncestor(root->right, p, q);
+	if (left&&right)
+	{
+		return root;
+	}
+	return left ? left : right;
+}
+
+TreeNode* Solution::buildTreeByPreAnIn(vector<int>& preorder, vector<int>& inorder)
+{
+	if (preorder.empty()||inorder.empty())
+	{
+		return NULL;
+	}
+	if (preorder.size()==1)
+	{
+		TreeNode * node=new TreeNode(preorder[0]);
+		node->left = NULL;
+		node->right = NULL;
+	}
+	TreeNode * root = new TreeNode(preorder[0]);
+	int it = find(inorder.begin(), inorder.end(), root->val) - inorder.begin();
+	vector<int> preLeft(preorder.begin()+1, preorder.begin() + it+1);
+	vector<int> preRight(preorder.begin() + it+1, preorder.end());
+	vector<int> inorderLeft(inorder.begin(), inorder.begin() + it);
+	vector<int> inorderRight(inorder.begin()+it+1, inorder.end());
+	root->left = buildTreeByPreAnIn(preLeft, inorderLeft);
+	root->right = buildTreeByPreAnIn(preRight, inorderRight);
+	return root;
+}
+
+TreeNode* Solution::buildTreeByInAnPos(vector<int>& inorder, vector<int>& postorder)
+{
+	if (inorder.empty() || postorder.empty())
+	{
+		return NULL;
+	}
+	if (postorder.size() == 1)
+	{
+		TreeNode * node = new TreeNode(postorder[0]);
+		node->left = NULL;
+		node->right = NULL;
+		return node;
+	}
+	TreeNode * root = new TreeNode(postorder[postorder.size()-1]);
+	int it = find(inorder.begin(), inorder.end(), root->val) - inorder.begin();
+	vector<int> inorderLeft(inorder.begin(), inorder.begin() + it);
+	vector<int> inorderRight(inorder.begin() + it + 1, inorder.end());
+	vector<int> posLeft(postorder.begin(), postorder.begin() + it);
+	vector<int> posRight(postorder.begin() + it, postorder.end()-1);
+	root->left = buildTreeByInAnPos(inorderLeft, posLeft);
+	root->right = buildTreeByInAnPos(inorderRight, posRight);
+	return root;
+}
+
+TreeNode* Solution::GenerateBST(std::vector<ListNode*> &vecNode, int left, int right)
+{
+	if (left == right)
+	{
+		return NULL;
+	}
+	int mid = left + (right - left)/2;
+	TreeNode * root = new TreeNode(vecNode[mid]->val);
+	root->left = GenerateBST(vecNode, left, mid);
+	root->right = GenerateBST(vecNode, mid+1, right);
+	return root;
+}
+
+TreeNode* Solution::sortedListToBST(ListNode* head)
+{
+	if (head==NULL)
+	{
+		return NULL;
+	}
+	std::vector<ListNode *> vecNode;
+	while (head)
+	{
+		vecNode.push_back(head);
+		head = head->next;
+	}
+	return GenerateBST(vecNode, 0, vecNode.size());
+}
+
 int Solution::expandAroundCenter(const string &s, int left, int right)
 {
 	size_t L = left, R = right;

@@ -451,6 +451,48 @@ public:
 	 日    期： 2019/11/12
 	******************************************************************************/
 	bool isValidBST(TreeNode* root);
+	void DFSGetPath(std::vector<TreeNode *> & vecPath, TreeNode * root, TreeNode * target,bool &ikey);
+	/******************************************************************************
+	 函数名称： lowestCommonAncestor
+	 功能说明： 对给定的二叉树，找到最近的公共节点
+	 参    数： TreeNode * root 
+	 参    数： TreeNode * p 
+	 参    数： TreeNode * q 
+	 返 回 值： TreeNode*
+	 作    者： Ru Long
+	 日    期： 2019/11/13
+	******************************************************************************/
+	TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q);
+	/******************************************************************************
+	 函数名称： buildTree
+	 功能说明： 通过二叉树的先序遍历加中序遍历重构二叉树
+	 参    数： vector<int> & preorder 
+	 参    数： vector<int> & inorder 
+	 返 回 值： TreeNode*
+	 作    者： Ru Long
+	 日    期： 2019/11/13
+	******************************************************************************/
+	TreeNode* buildTreeByPreAnIn(vector<int>& preorder, vector<int>& inorder);
+	/******************************************************************************
+	 函数名称： buildTree
+	 功能说明： 通过二叉树的中序遍历加后序遍历重构二叉树
+	 参    数： vector<int> & inorder 
+	 参    数： vector<int> & postorder 
+	 返 回 值： TreeNode*
+	 作    者： Ru Long
+	 日    期： 2019/11/13
+	******************************************************************************/
+	TreeNode* buildTreeByInAnPos(vector<int>& inorder, vector<int>& postorder);
+	TreeNode* GenerateBST(std::vector<ListNode*> &vecNode,int left,int right);
+	/******************************************************************************
+	 函数名称： sortedListToBST
+	 功能说明： 将排好序的链表转换为二叉搜索树
+	 参    数： ListNode * head 
+	 返 回 值： TreeNode*
+	 作    者： Ru Long
+	 日    期： 2019/11/13
+	******************************************************************************/
+	TreeNode* sortedListToBST(ListNode* head);
 private:
 	int expandAroundCenter(const string &s, int left, int right);
 	template<typename T>
