@@ -1725,6 +1725,7 @@ TreeNode* Solution::sortedListToBST(ListNode* head)
 	if (head==NULL)
 	{
 		return NULL;
+		return NULL;
 	}
 	std::vector<ListNode *> vecNode;
 	while (head)
@@ -1733,6 +1734,63 @@ TreeNode* Solution::sortedListToBST(ListNode* head)
 		head = head->next;
 	}
 	return GenerateBST(vecNode, 0, vecNode.size());
+}
+
+void Solution::DFSFindPath(std::vector<vector<int>> &res, std::vector<int> &path,TreeNode * root, int sum)
+{
+	if (root==NULL)
+	{
+		return;
+	}
+	path.push_back(root->val);
+	if (root->left==nullptr&&root->right==nullptr)
+	{
+		if (sum-root->val==0)
+		{
+			res.push_back(path);
+		}
+		return;
+	}
+	sum -= root->val;
+	if (root->left)
+	{
+		DFSFindPath(res, path, root->left, sum);
+		path.pop_back();
+	}
+	if (root->right)
+	{
+		DFSFindPath(res, path, root->right, sum);
+		path.pop_back();
+	}
+}
+
+std::vector<std::vector<int>> Solution::pathSum(TreeNode* root, int sum)
+{
+	if (root==NULL)
+	{
+		return {};
+	}
+	std::vector<vector<int>> result;
+	std::vector<int> path;
+	DFSFindPath(result, path, root, sum);
+	return result;
+}
+TreeNode* pre = NULL;
+void Solution::flatten(TreeNode* root)
+{
+	if (root==NULL)
+	{
+		return;
+	}
+	if (pre)
+	{
+		pre->left = NULL;
+		pre->right = root;
+	}
+	pre = root;
+	TreeNode * copyNode = pre->right;
+	flatten(root->left);
+	flatten(copyNode);
 }
 
 int Solution::expandAroundCenter(const string &s, int left, int right)

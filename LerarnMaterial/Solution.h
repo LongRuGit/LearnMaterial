@@ -493,6 +493,26 @@ public:
 	 日    期： 2019/11/13
 	******************************************************************************/
 	TreeNode* sortedListToBST(ListNode* head);
+	void DFSFindPath(std::vector<vector<int>> &res, std::vector<int> &path, TreeNode * root,int sum);
+	/******************************************************************************
+	 函数名称： pathSum
+	 功能说明： 返回到叶子节点路径总和
+	 参    数： TreeNode * root 
+	 参    数： int sum 
+	 返 回 值： std::vector<std::vector<int>>
+	 作    者： Ru Long
+	 日    期： 2019/11/14
+	******************************************************************************/
+	vector<vector<int>> pathSum(TreeNode* root, int sum);
+	/******************************************************************************
+	 函数名称： flatten
+	 功能说明： 给定一个二叉树，将其原地转换为链表
+	 参    数： TreeNode * root 
+	 返 回 值： void
+	 作    者： Ru Long
+	 日    期： 2019/11/14
+	******************************************************************************/
+	void flatten(TreeNode* root);
 private:
 	int expandAroundCenter(const string &s, int left, int right);
 	template<typename T>
