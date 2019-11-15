@@ -513,6 +513,13 @@ public:
 	 ÈÕ    ÆÚ£º 2019/11/14
 	******************************************************************************/
 	void flatten(TreeNode* root);
+	int minimumTotal(vector<vector<int>>& triangle);
+	int ladderLength(string beginWord, string endWord, vector<string>& wordList);
+	void DFSFindPathSumNumber(std::vector<int> &path, TreeNode * root, int &sum);
+	void DFSBoard(vector<vector<char>>& board,int x,int y);
+	void solve(vector<vector<char>>& board);
+	int sumNumbers(TreeNode* root);
+
 private:
 	int expandAroundCenter(const string &s, int left, int right);
 	template<typename T>

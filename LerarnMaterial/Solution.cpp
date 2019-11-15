@@ -1793,6 +1793,174 @@ void Solution::flatten(TreeNode* root)
 	flatten(copyNode);
 }
 
+int Solution::minimumTotal(vector<vector<int>>& triangle)
+{
+	if (triangle.empty())
+	{
+		return 0;
+	}
+	vector<int> dp(triangle.size()+1);
+	//从下向上的动态规划
+	for (int i = triangle.size() - 1; i >= 0;i--)
+	{
+		for (int j = 0; j < triangle[i].size();++j)
+		{
+			dp[j] =min(dp[j+1],dp[j])+triangle[i][j];
+		}
+	}
+	return dp[0];
+}
+
+int Solution::ladderLength(string beginWord, string endWord, vector<string>& wordList)
+{
+	//图的广度优先搜索
+	unordered_set<string> hashWord;
+	unordered_set<string> unSetWord;
+	for (auto it:wordList)
+	{
+		hashWord.insert(it);
+	}
+	if (hashWord.count(endWord)==0)
+	{
+		return 0;
+	}
+	unSetWord.insert(beginWord);
+	queue<string> queStr;
+	int len = 1;
+	queStr.push(beginWord);
+	while (!queStr.empty())
+	{
+		int iSize = queStr.size();
+		while (iSize--)
+		{
+			auto ss = queStr.front();
+			queStr.pop();
+			for (int i = 0; i < ss.size();++i)
+			{
+				string wordTemp = ss;
+				for (char ch = 'a'; ch <= 'z';++ch)
+				{
+					wordTemp[i] = ch;
+					if (hashWord.count(wordTemp) == 0 || unSetWord.count(wordTemp))
+					{
+						continue;
+					}
+					if (wordTemp==endWord)
+					{
+						return len + 1;
+					}
+					unSetWord.insert(wordTemp);
+					queStr.push(wordTemp);
+				}
+			}
+		}
+		len++;
+	}
+	return 0;
+}
+
+void Solution::DFSFindPathSumNumber(std::vector<int> &path, TreeNode * root, int &sum)
+{
+	if (root==nullptr)
+	{
+		return;
+	}
+	path.push_back(root->val);
+	if (root->left==nullptr&&root->right==nullptr)
+	{
+		int iNumber = 0;
+		for (auto it:path)
+		{
+			iNumber = 10 * iNumber + it;
+		}
+		sum += iNumber;
+		return;
+	}
+	if (root->left)
+	{
+		DFSFindPathSumNumber(path, root->left, sum);
+		path.pop_back();
+	}
+	if (root->right)
+	{
+		DFSFindPathSumNumber(path, root->right, sum);
+		path.pop_back();
+	}
+}
+
+void Solution::DFSBoard(vector<vector<char>>& board, int x, int y)
+{
+	if (board[x][y] =='Y')
+	{
+		return;
+	}
+	for (int i = 0; i < 4;++i)
+	{
+		int newx = x + dir[i][0];
+		int newy = y + dir[i][1];
+		if (newx >= 0 && newx < board.size()&&newy>=0&&newy<board[0].size())
+		{
+			DFSBoard(board, newx, newy);
+		}
+	}
+}
+
+void Solution::solve(vector<vector<char>>& board)
+{
+	if (board.empty())
+	{
+		return;
+	}
+	for (int i = 0; i < board[0].size(); ++i)
+	{
+		if (board[0][i] == 'O')
+		{
+			DFSBoard(board, 0, i);
+		}
+		if (board[board.size() - 1][i] == 'O')
+		{
+			DFSBoard(board, board.size() - 1, i);
+		}
+	}
+	for (int i = 0; i < board.size(); ++i)
+	{
+		if (board[i][0] == 'O')
+		{
+			DFSBoard(board, i, 0);
+		}
+		if (board[i][board[0].size() - 1] == 'O')
+		{
+			DFSBoard(board, i, board[0].size() - 1);
+		}
+	}
+	for (int i = 0; i < board.size(); ++i)
+	{
+		for (int j = 0; j < board[i].size(); ++j)
+		{
+			if (board[i][j] == 'Y')
+			{
+				board[i][j] = 'O';
+			}
+			else
+			{
+				board[i][j] = 'X';
+			}
+		}
+	}
+}
+
+int Solution::sumNumbers(TreeNode* root)
+{
+	if (root==NULL)
+	{
+		return 0;
+	}
+	int sum = 0;
+	vector<int> path;
+	DFSFindPathSumNumber(path, root, sum);
+	return sum;
+}
+
 int Solution::expandAroundCenter(const string &s, int left, int right)
 {
 	size_t L = left, R = right;
