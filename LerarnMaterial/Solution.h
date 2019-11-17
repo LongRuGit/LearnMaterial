@@ -519,7 +519,11 @@ public:
 	void DFSBoard(vector<vector<char>>& board,int x,int y);
 	void solve(vector<vector<char>>& board);
 	int sumNumbers(TreeNode* root);
-
+	void DFSpartitionStr(std::vector<vector<string>> & res, vector<string> & path, int start,string &s);
+	bool CheckStr(string & s, int left, int right);
+	vector<vector<string>> partitionStr(string s);
+	int canCompleteCircuit(vector<int>& gas, vector<int>& cost);
+	bool wordBreak(string s, vector<string>& wordDict);
 private:
 	int expandAroundCenter(const string &s, int left, int right);
 	template<typename T>

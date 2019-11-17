@@ -57,6 +57,16 @@ std::string Solution::longestPalindrome(string s)
 // 	}
 // 	return s.substr(istart, imaxlen);
 }
+int Solution::expandAroundCenter(const string &s, int left, int right)
+{
+	size_t L = left, R = right;
+	while (L >= 0 && R < s.size() && s[L] == s[R])
+	{
+		--L;
+		++R;
+	}
+	return R - L - 1;
+}
 int ilength = 0;
 void Solution::DfsParent(vector<string> &istrVec, string istr, int l, int r)
 {
@@ -1961,13 +1971,148 @@ int Solution::sumNumbers(TreeNode* root)
 	return sum;
 }
 
-int Solution::expandAroundCenter(const string &s, int left, int right)
+void Solution::DFSpartitionStr(std::vector<vector<string>> & res, vector<string> & path, int start, string &s)
 {
-	size_t L = left, R = right;
-	while (L>=0&&R<s.size()&&s[L]==s[R])
+	if (start==s.size())
 	{
-		--L;
-		++R;
+		res.push_back(path);
+		return;
 	}
-	return R-L-1;
+	int prePartion = start;
+	for (int i = start; i < s.size();++i)
+	{
+		if (!CheckStr(s,prePartion,i))
+		{
+			continue;
+		}
+		path.push_back(s.substr(prePartion, i-prePartion+ 1));
+		DFSpartitionStr(res, path, i + 1, s);
+		path.pop_back();
+	}
 }
+
+bool Solution::CheckStr(string & s, int left, int right)
+{
+	if (left>right)
+	{
+		return false;
+	}
+	while (left<right)
+	{
+		if (s[left] != s[right])
+		{
+			return false;
+		}
+		left++;
+		right--;
+	}
+	return true;
+}
+
+std::vector<std::vector<std::string>> Solution::partitionStr(string s)
+{
+	if (s.empty())
+	{
+		return{};
+	}
+	vector<vector<string>> res;
+	vector<string> path;
+	DFSpartitionStr(res, path, 0, s);
+	return res;
+}
+
+int Solution::canCompleteCircuit(vector<int>& gas, vector<int>& cost)
+{
+	if (gas.empty()||cost.empty())
+	{
+		return -1;
+	}
+	int total = 0;
+	int sum = 0;
+	int start = 0;
+	for (int i = 0; i < gas.size();++i)
+	{
+		total += gas[i] - cost[i];
+		if (sum>=0)
+		{
+			sum += gas[i] - cost[i];
+		}
+		else
+		{
+			//找到最长子序列和的起点
+			sum = gas[i] - cost[i];
+			start = i;
+		}
+	}
+	return total>=0?start:-1;
+}
+
+bool Solution::wordBreak(string s, vector<string>& wordDict)
+{
+	//宽度优先搜索
+// 	if (s.empty())
+// 	{
+// 		return true;
+// 	}
+// 	if (wordDict.empty())
+// 	{
+// 		return false;
+// 	}
+// 	unordered_set<string> unSet;
+// 	for (auto it : wordDict)
+// 	{
+// 		unSet.insert(it);
+// 	}
+// 	queue<int> q;
+// 	q.push(0);
+// 	std::vector<int> signVec(s.size() + 1, 0);
+// 	while (!q.empty())
+// 	{
+// 		int start = q.front();
+// 		q.pop();
+// 		if (signVec[start] == 0)
+// 		{
+// 			for (int end = start + 1; end <= s.size(); ++end)
+// 			{
+// 				if (unSet.count(s.substr(start, end - start)))
+// 				{
+// 					q.push(end);
+// 					if (end == s.size())
+// 					{
+// 						return true;
+// 					}
+// 				}
+// 			}
+// 			signVec[start] = 1;
+// 		}
+// 	}
+	//动态规划
+	if (s.empty())
+	{
+		return true;
+	}
+	if (wordDict.empty())
+	{
+		return false;
+	}
+	unordered_set<string> unSetWord;
+	for (auto it : wordDict)
+	{
+		unSetWord.insert(it);
+	}
+	std::vector<bool> dp(s.size() + 1, false);
+	dp[0] = true;
+	for (int i = 1; i <= s.size();++i)
+	{
+		for (int j = 0; j <i;++j)
+		{
+			if (dp[j] && unSetWord.count(s.substr(j,i-j)))
+			{
+				dp[i] = true;
+				break;
+			}
+		}
+	}
+	return false;
+}
+

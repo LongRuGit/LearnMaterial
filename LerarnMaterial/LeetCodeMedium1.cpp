@@ -28,8 +28,8 @@ int main()
 	//确定随机数的范围
 	uniform_int_distribution<unsigned> u(0, 100);
 	default_random_engine e;
-	vector<int> nums1 = { 1,2,2 };
-	s_ptr->search(nums1,0);
+	vector<int> nums1 = { 1, 2, 3, 4, 5 };
+	vector<int> nums2 = { 3, 4, 5, 1, 2 };
 	int nums[7] = {0};
 	for (int i = 0; i < 7;i++)
 	{
@@ -40,8 +40,8 @@ int main()
 	{
 		cout << *iter << " ";
 	}
+	s_ptr->canCompleteCircuit(nums1, nums2);
 	cout << endl;
-	s_ptr->numTrees(2);
 	system("pause");
 	return 0;
 }
