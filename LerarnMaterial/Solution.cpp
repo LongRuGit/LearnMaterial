@@ -2116,3 +2116,71 @@ bool Solution::wordBreak(string s, vector<string>& wordDict)
 	return false;
 }
 
+int Solution::singleNumber(vector<int>& nums)
+{
+	if (nums.empty())
+	{
+		return -1;
+	}
+	int res = 0;
+	for (int i = 0; i < 32;++i)
+	{
+		int mask = 1 << i;
+		int cnt = 0;
+		for (auto it:nums)
+		{
+			if (it&mask!=0)
+			{
+				cnt++;
+			}
+		}
+		if (cnt%3!=0)
+		{
+			//将结果复制到输出值中
+			res |= mask;
+		}
+	}
+	return res;
+}
+
+void Solution::reorderList(ListNode* head)
+{
+	if (head == NULL)
+	{
+		return;
+	}
+	ListNode * slow = head;
+	ListNode * fast = head;
+	while (fast&&fast->next)
+	{
+		fast = fast->next->next;
+		slow = slow->next;
+	}
+	//反转slow后的链表
+	ListNode * pre = NULL; 
+	ListNode * cur = nullptr;
+	while (slow)
+	{
+		cur = slow->next;
+		slow->next = pre;
+		pre = slow;
+		slow = cur;
+	}
+	ListNode * newHead = new ListNode(0);
+	newHead->next = head;
+	while (slow&&slow->next)
+	{
+		cur = head->next;
+		head->next = slow;
+		pre = slow->next;
+		slow->next = cur;
+		head = cur;
+		slow = pre;
+	}
+	if (!fast)
+	{
+		head->next->next = slow;
+	}
+	head = newHead->next;
+}
+

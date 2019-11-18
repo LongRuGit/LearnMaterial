@@ -513,17 +513,87 @@ public:
 	 日    期： 2019/11/14
 	******************************************************************************/
 	void flatten(TreeNode* root);
+	/******************************************************************************
+	 函数名称： minimumTotal
+	 功能说明： 三角形的最小路径和，从低向上使用动态规划
+	 参    数： vector<vector<int>> & triangle 
+	 返 回 值： int
+	 作    者： Ru Long
+	 日    期： 2019/11/18
+	******************************************************************************/
 	int minimumTotal(vector<vector<int>>& triangle);
+	/******************************************************************************
+	 函数名称： ladderLength
+	 功能说明： 给定开始和结束单词，用来单词接龙，使用BFS
+	 参    数： string beginWord 
+	 参    数： string endWord 
+	 参    数： vector<string> & wordList 
+	 返 回 值： int
+	 作    者： Ru Long
+	 日    期： 2019/11/18
+	******************************************************************************/
 	int ladderLength(string beginWord, string endWord, vector<string>& wordList);
 	void DFSFindPathSumNumber(std::vector<int> &path, TreeNode * root, int &sum);
 	void DFSBoard(vector<vector<char>>& board,int x,int y);
+	/******************************************************************************
+	 函数名称： solve
+	 功能说明： 求被环绕的区域，和二维找单词一样
+	 参    数： vector<vector<char>> & board 
+	 返 回 值： void
+	 作    者： Ru Long
+	 日    期： 2019/11/18
+	******************************************************************************/
 	void solve(vector<vector<char>>& board);
+	/******************************************************************************
+	 函数名称： sumNumbers
+	 功能说明： 由根节点到叶子节点的数字之和
+	 参    数： TreeNode * root 
+	 返 回 值： int
+	 作    者： Ru Long
+	 日    期： 2019/11/18
+	******************************************************************************/
 	int sumNumbers(TreeNode* root);
 	void DFSpartitionStr(std::vector<vector<string>> & res, vector<string> & path, int start,string &s);
 	bool CheckStr(string & s, int left, int right);
 	vector<vector<string>> partitionStr(string s);
+	/******************************************************************************
+	 函数名称： canCompleteCircuit
+	 功能说明： 环绕一圈
+	 参    数： vector<int> & gas 
+	 参    数： vector<int> & cost 
+	 返 回 值： int
+	 作    者： Ru Long
+	 日    期： 2019/11/18
+	******************************************************************************/
 	int canCompleteCircuit(vector<int>& gas, vector<int>& cost);
+	/******************************************************************************
+	 函数名称： wordBreak
+	 功能说明： 判断单词能否拆分成回文单词
+	 参    数： string s 
+	 参    数： vector<string> & wordDict 
+	 返 回 值： bool
+	 作    者： Ru Long
+	 日    期： 2019/11/18
+	******************************************************************************/
 	bool wordBreak(string s, vector<string>& wordDict);
+	/******************************************************************************
+	 函数名称： singleNumber
+	 功能说明： 找到数组中只出现一次的数字
+	 参    数： vector<int> & nums 
+	 返 回 值： int
+	 作    者： Ru Long
+	 日    期： 2019/11/18
+	******************************************************************************/
+	int singleNumber(vector<int>& nums);
+	/******************************************************************************
+	 函数名称： reorderList
+	 功能说明： 重拍单链表L0-Ln-L1-Ln-1
+	 参    数： ListNode * head 
+	 返 回 值： void
+	 作    者： Ru Long
+	 日    期： 2019/11/18
+	******************************************************************************/
+	void reorderList(ListNode* head);
 private:
 	int expandAroundCenter(const string &s, int left, int right);
 	template<typename T>
