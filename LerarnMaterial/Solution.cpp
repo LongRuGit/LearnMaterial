@@ -1475,6 +1475,33 @@ std::vector<int> Solution::preorderTraversal(TreeNode* root)
 	return res;
 }
 
+std::vector<int> Solution::postorderTraversal(TreeNode* root)
+{
+	if (NULL==root)
+	{
+		return{};
+	}
+	std::vector<int> res;
+	stack<TreeNode*> stacTree;
+	stacTree.push(root);
+	while (!stacTree.empty())
+	{
+		auto node = stacTree.top();
+		res.push_back(node->val);
+		stacTree.pop();
+		if (node->left)
+		{
+			stacTree.push(node->left);
+		}
+		if (node->right)
+		{
+			stacTree.push(node->right);
+		}
+	}
+	reverse(res.begin(),res.end());
+	return res;
+}
+
 std::vector<TreeNode*> Solution::DFSGenerateTree(int left, int right)
 {
 	vector<TreeNode *> ans;
@@ -2166,6 +2193,7 @@ void Solution::reorderList(ListNode* head)
 		pre = slow;
 		slow = cur;
 	}
+	slow = pre;
 	ListNode * newHead = new ListNode(0);
 	newHead->next = head;
 	while (slow&&slow->next)
@@ -2179,8 +2207,53 @@ void Solution::reorderList(ListNode* head)
 	}
 	if (!fast)
 	{
-		head->next->next = slow;
+		head->next = slow;
 	}
 	head = newHead->next;
+}
+
+ListNode* Solution::insertionSortList(ListNode* head)
+{
+	if (head==NULL)
+	{
+		return head;
+	}
+	ListNode * nodeHead = new ListNode(0);
+	ListNode * cur = NULL;
+	ListNode * pre = NULL;
+	ListNode * temp = NULL;
+	while (head)
+	{
+		temp = head->next;
+		cur = nodeHead->next;
+		pre = nodeHead;
+		while (cur)
+		{
+			if (cur->val>head->val)
+			{
+				pre->next = head;
+				head->next = cur;
+				break;
+			}
+			pre = cur;
+			cur = cur->next;
+		}
+		if (!cur)
+		{
+			pre->next =head;
+			head->next = NULL;
+		}
+		head = temp;
+	}
+	return nodeHead->next;
+}
+
+ListNode* Solution::sortList(ListNode* head)
+{
+	if (head==NULL)
+	{
+		return head;
+	}
+	return head;
 }
 

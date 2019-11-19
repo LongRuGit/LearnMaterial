@@ -407,7 +407,7 @@ public:
 	void DFSinorderTraversal(TreeNode * root, std::vector<int> &res);
 	/******************************************************************************
 	 函数名称： inorderTraversal
-	 功能说明： 
+	 功能说明： 二叉树的中序遍历
 	 参    数： TreeNode * root 
 	 返 回 值： std::vector<int>
 	 作    者： Ru Long
@@ -423,6 +423,15 @@ public:
 	 日    期： 2019/11/12
 	******************************************************************************/
 	vector<int> preorderTraversal(TreeNode* root);
+	/******************************************************************************
+	 函数名称： postorderTraversal
+	 功能说明： 二叉树的后序遍历
+	 参    数： TreeNode * root 
+	 返 回 值： std::vector<int>
+	 作    者： Ru Long
+	 日    期： 2019/11/19
+	******************************************************************************/
+	vector<int> postorderTraversal(TreeNode* root);
 	vector<TreeNode*> DFSGenerateTree(int left, int right);
 	/******************************************************************************
 	 函数名称： generateTrees
@@ -594,6 +603,24 @@ public:
 	 日    期： 2019/11/18
 	******************************************************************************/
 	void reorderList(ListNode* head);
+	/******************************************************************************
+	 函数名称： insertionSortList
+	 功能说明： 对链表进行插入排序
+	 参    数： ListNode * head 
+	 返 回 值： ListNode*
+	 作    者： Ru Long
+	 日    期： 2019/11/19
+	******************************************************************************/
+	ListNode* insertionSortList(ListNode* head);
+	/******************************************************************************
+	 函数名称： sortList
+	 功能说明： 在nlogn时间对链表进行排序，且常数级空间
+	 参    数： ListNode * head 
+	 返 回 值： ListNode*
+	 作    者： Ru Long
+	 日    期： 2019/11/19
+	******************************************************************************/
+	ListNode* sortList(ListNode* head);
 private:
 	int expandAroundCenter(const string &s, int left, int right);
 	template<typename T>
