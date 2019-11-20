@@ -35,7 +35,7 @@ int main()
 	{
 		nums[i] = u(e);
 	}
-	unique_ptr<SortClass> uniSolt_ptr;
+	unique_ptr<Sort::SortClass> uniSolt_ptr;
 	for (auto iter = begin(nums); iter != end(nums); ++iter)
 	{
 		cout << *iter << " ";

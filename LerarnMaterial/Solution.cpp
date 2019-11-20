@@ -2248,12 +2248,188 @@ ListNode* Solution::insertionSortList(ListNode* head)
 	return nodeHead->next;
 }
 
+void Solution::SwapList(ListNode * p1, ListNode * p2)
+{
+	if (p1->val==p2->val)
+	{
+		return;
+	}
+	p1->val ^= p2->val;
+	p2->val ^= p1->val;
+	p1->val ^= p2->val;
+}
+
+void Solution::QuickSort(ListNode * left, ListNode * right)
+{
+	if (left == right || left == NULL || right == NULL) return;
+	int t = right->val;
+	ListNode* prev = NULL;
+	ListNode* curr = left;
+	ListNode* p = left;
+	while (p != right) 
+	{
+		if (p->val < t)
+		{
+			SwapList(curr, p);
+			prev = curr;
+			curr = curr->next;
+		}
+		p = p->next;
+	}
+	if (curr != right) 
+	{
+		SwapList(curr, right);
+		curr = curr->next;
+	}
+	QuickSort(left, prev);
+	QuickSort(curr, right);
+}
+
 ListNode* Solution::sortList(ListNode* head)
 {
 	if (head==NULL)
 	{
 		return head;
 	}
+	ListNode *tail = head;
+	while (tail!=NULL&&tail->next!=NULL)
+	{
+		tail = tail->next;
+	}
+	QuickSort(head, tail);
 	return head;
+}
+
+int Solution::evalRPN(vector<string>& tokens)
+{
+	if (tokens.empty())
+	{
+		return 0;
+	}
+	stack<int> stacNumber;
+	int res = 0;
+	int pre = 0;
+	int cur = 0;
+	for (auto it:tokens)
+	{
+		if (it=="+")
+		{
+			cur = stacNumber.top();
+			stacNumber.pop();
+			pre = stacNumber.top();
+			stacNumber.pop();
+			cur += pre;
+			stacNumber.push(cur);
+			res = cur;
+		}
+		else if (it == "-")
+		{
+			cur = stacNumber.top();
+			stacNumber.pop();
+			pre = stacNumber.top();
+			stacNumber.pop();
+			cur = pre-cur;
+			stacNumber.push(cur);
+			res = cur;
+		}
+		else if (it == "*")
+		{
+			cur = stacNumber.top();
+			stacNumber.pop();
+			pre = stacNumber.top();
+			stacNumber.pop();
+			cur = pre * cur;
+			stacNumber.push(cur);
+			res = cur;
+		}
+		else if (it == "/")
+		{
+			cur = stacNumber.top();
+			stacNumber.pop();
+			pre = stacNumber.top();
+			stacNumber.pop();
+			cur = pre / cur;
+			stacNumber.push(cur);
+			res = cur;
+		}
+		else
+		{
+			res = atoi(it.c_str());
+			stacNumber.push(res);
+		}
+	}
+	return res;
+}
+
+std::string Solution::reverseWords(string s)
+{
+	if (s.empty())
+	{
+		return s;
+	}
+	std::vector<string> resVec;
+	s += " ";
+	int icount = 0;
+	for (int i = 0; i < s.size();)
+	{
+		if (s[i]!=' ')
+		{
+			icount = 0;
+			while (i<s.size()&&s[i]!=' ')
+			{
+				icount++;
+				i++;
+			}
+			resVec.push_back(s.substr(i-icount, icount));
+		}
+		i++;
+	}
+	reverse(resVec.begin(), resVec.end());
+	string res;
+	if (!resVec.empty())
+	{
+		for (int i = 0; i < resVec.size() - 1; ++i)
+		{
+			res += resVec[i] + " ";
+		}
+		res += resVec[resVec.size() - 1];
+	}
+	return res;
+}
+
+int Solution::maxProduct(vector<int>& nums)
+{
+	if (nums.empty())
+	{
+		return -1;
+	}
+	if (nums.size()==1)
+	{
+		return nums[0];
+	}
+	//记录之前的最大值和最小值
+	int maxNumber = 0;
+	int minNumber = 0;
+	int res = INT_MIN;
+	for (auto it:nums)
+	{
+		if (it==0)
+		{
+			maxNumber = minNumber = 0;
+		}
+		else if (it>0)
+		{
+			maxNumber = max(it*maxNumber,it);
+			minNumber = minNumber*it;
+		}
+		else
+		{
+			int temp = maxNumber;
+			maxNumber = max(it*minNumber, it);
+			minNumber = min(it*temp, it);
+		}
+		res = max(maxNumber, res);
+	}
+	return res;
 }
 
