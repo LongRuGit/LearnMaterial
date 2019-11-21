@@ -10,6 +10,19 @@ Solution::~Solution()
 {
 }
 
+Solution& Solution::operator ++()
+{
+	//*this += 1;
+	return *this;
+}
+
+const Solution Solution::operator ++(int)
+{
+	Solution oldValue = *this;
+	++(*this);
+	return oldValue;
+}
+
 std::string Solution::longestPalindrome(string s)
 {
 	if (s.size() <= 1)
@@ -2433,3 +2446,135 @@ int Solution::maxProduct(vector<int>& nums)
 	return res;
 }
 
+int Solution::findMin(vector<int>& nums)
+{
+	if (nums.empty())
+	{
+		return -1;
+	}
+	//旋转数组只能与右边界比较
+	int lhs = 0, rhs = nums.size()-1;
+	while (lhs<rhs)
+	{
+		int mid = lhs + (rhs - lhs) / 2;
+		if (nums[mid]>nums[rhs])
+		{
+			lhs = mid + 1;
+		}
+		else
+		{
+			rhs = mid;
+		}
+	}
+	return nums[lhs];
+}
+
+int Solution::findMinSame(vector<int>& nums)
+{
+	if (nums.empty())
+		return -1;
+	int lhs = 0, rhs = nums.size() - 1;
+	while (lhs<rhs)
+	{
+		int mid = lhs + (rhs - lhs) / 2;
+		if (nums[mid]>nums[rhs])
+		{
+			lhs = mid + 1;
+		}
+		else if (nums[mid]<nums[rhs])
+		{
+			rhs = mid;
+		}
+		else
+		{
+			//排除右边界
+			--rhs;
+		}
+	}
+	return nums[lhs];
+}
+
+int Solution::findPeakElement(vector<int>& nums)
+{
+	if (nums.empty())
+	{
+		return -1;
+	}
+	int mid = 0;
+	int lhs = 0, rhs = nums.size() - 1;
+	//左右都是负无穷，mid和mid+1递增的话，右边肯定会递减的
+	while (lhs<rhs)
+	{
+		mid = lhs + (rhs - lhs) / 2;
+		if (mid<nums.size()-1&&nums[mid]<nums[mid+1])
+		{
+			lhs = mid+1;
+		}
+		else
+		{
+			rhs = mid;
+		}
+	}
+	return lhs;
+}
+
+int Solution::compareVersion(string version1, string version2)
+{
+	if (version1.empty()||version2.empty())
+	{
+		return 0;
+	}
+	version1+=".";
+	version2+= ".";
+	int lhs = 0, rhs = 0;
+	int ver1 = 0, ver2 = 0;
+	int ipos = 0;
+	while (lhs < version1.size()||rhs<version2.size())
+	{
+		if (lhs==version1.size())
+		{
+			ver1 = 0;
+		}
+		else
+		{
+			ipos = version1.find(".",lhs);
+			if (ipos==string::npos)
+			{
+				ver1 = 0;
+				ipos = version1.size();
+			}
+			else
+			{
+				ver1 = atoi(version1.substr(lhs, ipos - lhs).c_str());
+				lhs = ipos + 1;
+			}
+		}
+		if (rhs == version2.size())
+		{
+			ver2 = 0;
+		}
+		else
+		{
+			ipos = version2.find(".", rhs);
+			if (ipos == string::npos)
+			{
+				ver2 = 0;
+				ipos = version2.size();
+			}
+			else
+			{
+				ver2 = atoi(version2.substr(rhs, ipos-rhs).c_str());
+				rhs = ipos + 1;
+			}
+		}
+		if (ver1<ver2)
+		{
+			return -1;
+		}
+		else if (ver1>ver2)
+		{
+			return 1;
+		}
+	}
+	return 0;
+}
