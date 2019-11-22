@@ -2578,3 +2578,60 @@ int Solution::compareVersion(string version1, string version2)
 	}
 	return 0;
 }
+
+std::string Solution::fractionToDecimal(int numerator, int denominator)
+{
+	if (denominator==0)
+	{
+		return "";
+	}
+	if (numerator==0)
+	{
+		return "0";
+	}
+	string res;
+	long long num = static_cast<long long>(numerator);
+	long long den = static_cast<long long>(denominator);
+	if ((num^den) < 0)
+	{
+		res += "-";
+	}
+	num = abs(num);
+	den = abs(den);
+	res += to_string(num / den);
+	num = num%den;
+	if (num)
+	{
+		res += ".";
+	}
+	unordered_map<long long, int> hashM;
+	int index = 0; //记录循环开始的位置
+	while (num&&hashM.count(num)==0)
+	{
+		hashM[num] = index++;
+		num = num * 10;
+		res += to_string(num / den);
+		num = num%den;
+	}
+	if (hashM.count(num))
+	{
+		res += "()";
+		int cur = res.size() - 2;
+		while (index-->hashM[num])
+		{
+			swap(res[cur], res[cur - 1]);
+			--cur;
+		}
+	}
+	return res;
+}
+
+std::string Solution::largestNumber(vector<int>& nums)
+{
+	if (nums.empty())
+	{
+		return "";
+	}
+	std::string res;
+	return res;
+}

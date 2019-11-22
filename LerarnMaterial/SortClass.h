@@ -29,13 +29,13 @@ namespace Sort{
 		******************************************************************************/
 		template<typename T>
 		void QuickSort(T a[], int n);
-		template<typename T>
-		void QuickSort(T a[], int leftEnd, int rightEnd);
 	private:
 		template<typename T>
 		void MergeSortAdd(T a[], int start, int end, T result[]);
 		template<typename T>
 		void Merge(T a[], int start, int end, T result[]);
+		template<typename T>
+		void QuickSort(T a[], int leftEnd, int rightEnd);
 	};
 	//模板的声明和实现要放在同一个文件夹里面
 	template<typename T>

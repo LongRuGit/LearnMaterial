@@ -689,6 +689,25 @@ public:
 	 日    期： 2019/11/21
 	******************************************************************************/
 	int compareVersion(string version1, string version2);
+	/******************************************************************************
+	 函数名称： fractionToDecimal
+	 功能说明： 以字符串的形式显示数，如果有循环小数加上（）
+	 参    数： int numerator 
+	 参    数： int denominator 
+	 返 回 值： std::string
+	 作    者： Ru Long
+	 日    期： 2019/11/22
+	******************************************************************************/
+	string fractionToDecimal(int numerator, int denominator);
+	/******************************************************************************
+	 函数名称： largestNumber
+	 功能说明： 给定一组非负数，重新排列顺序使之成为最大的数
+	 参    数： vector<int> & nums 
+	 返 回 值： std::string
+	 作    者： Ru Long
+	 日    期： 2019/11/22
+	******************************************************************************/
+	string largestNumber(vector<int>& nums);
 private:
 	int expandAroundCenter(const string &s, int left, int right);
 	template<typename T>
