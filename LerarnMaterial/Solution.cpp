@@ -2633,5 +2633,131 @@ std::string Solution::largestNumber(vector<int>& nums)
 		return "";
 	}
 	std::string res;
+	std::vector<string> strVec;
+	for (auto it:nums)
+	{
+		strVec.push_back(to_string(it));
+	}
+	auto f_sort = [](const string & lhs, const string & rhs)
+	{
+		return lhs + rhs < rhs + lhs;
+	};
+	sort(strVec.begin(), strVec.end(), f_sort);
+	for (auto it = strVec.rbegin(); it!=strVec.rend();++it)
+	{
+		res += *it;
+	}
+	if (res[0]=='0')
+	{
+		return "0";
+	}
 	return res;
+}
+
+std::vector<std::string> Solution::findRepeatedDnaSequences(string s)
+{
+	if (s.length()<=10)
+	{
+		return {};
+	}
+	std::unordered_map<string, int> hashMStr;
+	for (int i = 0; i <=s.size() - 10;++i)
+	{
+		hashMStr[s.substr(i, 10)]++;
+	}
+	std::vector<string> resVec;
+	for (auto it:hashMStr)
+	{
+		if (it.second>1)
+		{
+			resVec.push_back(it.first);
+		}
+	}
+	return resVec;
+}
+void DFSHelpr(std::vector<int> &res, int depth, TreeNode *root)
+{
+	if (root==nullptr)
+	{
+		return;
+	}
+	if (depth==res.size())
+	{
+		res.push_back(root->val);
+	}
+	DFSHelpr(res, depth + 1, root->right);
+	DFSHelpr(res, depth + 1, root->left);
+}
+std::vector<int> Solution::rightSideView(TreeNode* root)
+{
+	if (root==nullptr)
+	{
+		return{};
+	}
+	std::vector<int> resVec;
+// 	std::queue<TreeNode*> q;
+// 	q.push(root);
+// 	while (!q.empty())
+// 	{
+// 		int isize = q.size();
+// 		
+// 		while (isize--)
+// 		{
+// 			auto node = q.front();
+// 			q.pop();
+// 			if (node->left!=nullptr)
+// 			{
+// 				q.push(node->left);
+// 			}
+// 			if (node->right)
+// 			{
+// 				q.push(node->right);
+// 			}
+// 			if (isize==0)
+// 			{
+// 				resVec.push_back(node->val);
+// 			}
+// 		}
+// 	}
+	DFSHelpr(resVec, 0, root);
+	return resVec;
+}
+void BFSLands(vector<vector<bool>> &visited, vector<vector<char>>& grid, int pointx, int pointy)
+{
+	if (!visited[pointx][pointy])
+	{
+		return;
+	}
+	visited[pointx][pointy] = false;
+	for (int i = 0; i < 4;++i)
+	{
+		int newx = pointx + dir[i][0];
+		int newy = pointy + dir[i][1];
+		if (newx >= 0 && newx < grid.size() && newy >= 0 && newy < grid[0].size()&&visited[newx][newy])
+		{
+			BFSLands(visited, grid,newx,newy);
+		}
+	}
+}
+
+int Solution::numIslands(vector<vector<char>>& grid)
+{
+	if (grid.empty())
+	{
+		return 0;
+	}
+	int icou=0;
+	vector<vector<bool>> visited(grid.size(), std::vector<bool>(grid[0].size(), true));
+	for (int i = 0; i < grid.size();i++)
+	{
+		for (int j = 0; j < grid[i].size();++j)
+		{
+			if (visited[i][j]&&grid[i][j]=='1')
+			{
+				BFSLands(visited, grid, i, j);
+				++icou;
+			}
+		}
+	}
+	return icou;
 }

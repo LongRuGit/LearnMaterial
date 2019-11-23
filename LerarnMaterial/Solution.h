@@ -708,6 +708,33 @@ public:
 	 日    期： 2019/11/22
 	******************************************************************************/
 	string largestNumber(vector<int>& nums);
+	/******************************************************************************
+	 函数名称： findRepeatedDnaSequences
+	 功能说明： 查找长度为10的子串出现多余一次的
+	 参    数： string s 
+	 返 回 值： std::vector<std::string>
+	 作    者： Ru Long
+	 日    期： 2019/11/23
+	******************************************************************************/
+	vector<string> findRepeatedDnaSequences(string s);
+	/******************************************************************************
+	 函数名称： rightSideView
+	 功能说明： 二叉树的右视图-199
+	 参    数： TreeNode * root 
+	 返 回 值： std::vector<int>
+	 作    者： Ru Long
+	 日    期： 2019/11/23
+	******************************************************************************/
+	vector<int> rightSideView(TreeNode* root);
+	/******************************************************************************
+	 函数名称： numIslands
+	 功能说明： 计算岛屿的数量-200
+	 参    数： vector<vector<char>> & grid 
+	 返 回 值： int
+	 作    者： Ru Long
+	 日    期： 2019/11/23
+	******************************************************************************/
+	int numIslands(vector<vector<char>>& grid);
 private:
 	int expandAroundCenter(const string &s, int left, int right);
 	template<typename T>
