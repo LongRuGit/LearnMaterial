@@ -2761,3 +2761,120 @@ int Solution::numIslands(vector<vector<char>>& grid)
 	}
 	return icou;
 }
+
+int Solution::rangeBitwiseAnd(int m, int n)
+{
+	//高位比较是否相等
+	int cur = 0;
+	while (m!=n)
+	{
+		m = m >> 1;
+		n = n >> 1;
+		++cur;
+	}
+	return m<<cur;
+}
+void DFSSearch(int i,std::vector<int> & flag,std::vector<std::vector<int>> &outDegree)
+{
+	flag[i] = -1;
+	for (auto &it:outDegree[i])
+	{
+		if (flag[it]==-1)
+		{
+			return;
+		}
+		else if (flag[it]==0)
+		{
+			DFSSearch(it, flag, outDegree);
+		}
+	}
+	flag[i] = 1;
+}
+bool Solution::canFinish(int numCourses, vector<vector<int>>& prerequisites)
+{
+	if (numCourses==0||prerequisites.empty())
+	{
+		return true;
+	}
+	//BFS
+	//获取每个节点入度和出度
+// 	std::vector<int> inDegree(numCourses, 0);
+// 	std::vector<std::vector<int>> outDegree(numCourses, std::vector<int>(0));
+// 	for (auto &it:prerequisites)
+// 	{
+// 		inDegree[it[0]]++;
+// 		outDegree[it[1]].push_back(it[0]);
+// 	}
+// 	queue<int> q;
+// 	for (int i = 0; i < inDegree.size();++i)
+// 	{
+// 		if (inDegree[i]==0)
+// 		{
+// 			q.push(i);
+// 		}
+// 	}
+// 	int cnt = 0;
+// 	while (!q.empty())
+// 	{
+// 		int k = q.front();
+// 		q.pop();
+// 		++cnt;
+// 		for (auto it:outDegree[k])
+// 		{
+// 			if (--inDegree[it]==0)
+// 			{
+// 				q.push(it);
+// 			}
+// 		}
+// 	}
+// 	return cnt == numCourses;
+	//DFS构建邻接矩阵,判断是否有环
+	std::vector<int> flag(numCourses, 0);
+	std::vector<std::vector<int>> outDegree(numCourses);
+	for (auto &it : prerequisites)
+	{
+		outDegree[it[1]].push_back(it[0]);
+	}
+	for (int i = 0; i < numCourses;++i)
+	{
+		//说明有环
+		if (flag[i]==-1)
+		{
+			return false;
+		}
+		else if (flag[i]==0)
+		{
+			DFSSearch(i, flag, outDegree);
+		}
+	}
+	for (auto &it:flag)
+	{
+		if (it==-1)
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
+int Solution::minSubArrayLen(int s, vector<int>& nums)
+{
+	if (nums.empty())
+	{
+		return 0;
+	}
+	int res = INT_MAX;
+	//使用双指针,找到以某个位置未开始的和
+	int left = 0;
+	int sum = 0;
+	for (int i = 0; i < nums.size();++i)
+	{
+		sum += nums[i];
+		while (sum>=s)
+		{
+			res = min(res, i - left + 1);
+			sum -= nums[left++];
+		}
+	}
+	return res==INT_MAX?0:res;
+}

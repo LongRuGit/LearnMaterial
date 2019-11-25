@@ -42,7 +42,7 @@ int main()
 	}
 	s_ptr->fractionToDecimal(-2,3);
 	s_ptr->largestNumber(nums1);
-	s_ptr->findRepeatedDnaSequences("AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT");
+	s_ptr->rangeBitwiseAnd(5, 7);
 	cout << endl;
 	system("pause");
 	return 0;
