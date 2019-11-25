@@ -40,7 +40,9 @@ int main()
 	{
 		cout << *iter << " ";
 	}
-	s_ptr->canCompleteCircuit(nums1, nums2);
+	s_ptr->fractionToDecimal(-2,3);
+	s_ptr->largestNumber(nums1);
+	s_ptr->findRepeatedDnaSequences("AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT");
 	cout << endl;
 	system("pause");
 	return 0;
