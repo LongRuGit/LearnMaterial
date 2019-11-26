@@ -16,6 +16,7 @@
 #include <list>
 #include <unordered_set>
 #include "Common.h"
+#include <functional>
 using namespace std;
 class Solution
 {

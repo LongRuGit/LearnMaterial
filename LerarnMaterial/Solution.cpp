@@ -2940,22 +2940,14 @@ int Solution::findKthLargest(vector<int>& nums, int k)
 	{
 		return -1;
 	}
-	std::set<int> setHash;
+	priority_queue<int, vector<int>, std::greater<int> > queLow;
 	for (auto &it:nums)
 	{
-		if (setHash.size()<k)
+		queLow.push(it);
+		if (queLow.size()>k)
 		{
-			setHash.insert(k);
-		}
-		else
-		{
-			auto iterEnd = setHash.end();
-			auto iterBen = setHash.begin();
-			--iterEnd;
-			if (*iterEnd>it)
-			{
-				
-			}
+			queLow.pop();
 		}
 	}
+	return queLow.top();
 }

@@ -28,7 +28,7 @@ int main()
 	//确定随机数的范围
 	uniform_int_distribution<unsigned> u(0, 100);
 	default_random_engine e;
-	vector<int> nums1 = { 1, 2, 3, 4, 5 };
+	vector<int> nums1 = { 3, 2, 1, 5, 6, 4 };
 	vector<int> nums2 = { 3, 4, 5, 1, 2 };
 	int nums[7] = {0};
 	for (int i = 0; i < 7;i++)
@@ -40,9 +40,7 @@ int main()
 	{
 		cout << *iter << " ";
 	}
-	s_ptr->fractionToDecimal(-2,3);
-	s_ptr->largestNumber(nums1);
-	s_ptr->rangeBitwiseAnd(5, 7);
+	s_ptr->findKthLargest(nums1, 2);
 	cout << endl;
 	system("pause");
 	return 0;
