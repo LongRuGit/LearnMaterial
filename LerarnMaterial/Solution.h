@@ -765,6 +765,35 @@ public:
 	 日    期： 2019/11/25
 	******************************************************************************/
 	int minSubArrayLen(int s, vector<int>& nums);
+	/******************************************************************************
+	 函数名称： findOrder
+	 功能说明： 找到遍历全图的路径-210
+	 参    数： int numCourses 
+	 参    数： vector<vector<int>> & prerequisites 
+	 返 回 值： std::vector<int>
+	 作    者： Ru Long
+	 日    期： 2019/11/26
+	******************************************************************************/
+	vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites);
+	/******************************************************************************
+	 函数名称： rob
+	 功能说明： 房屋是环形，相邻房屋被偷窃会报警,返回偷取的金额-213
+	 参    数： vector<int> & nums 
+	 返 回 值： int
+	 作    者： Ru Long
+	 日    期： 2019/11/26
+	******************************************************************************/
+	int rob(vector<int>& nums);
+	/******************************************************************************
+	 函数名称： findKthLargest
+	 功能说明： 找到数组排序后的第K大的元素,第K个不同的元素
+	 参    数： vector<int> & nums 
+	 参    数： int k 
+	 返 回 值： int
+	 作    者： Ru Long
+	 日    期： 2019/11/26
+	******************************************************************************/
+	int findKthLargest(vector<int>& nums, int k);
 private:
 	int expandAroundCenter(const string &s, int left, int right);
 	template<typename T>
