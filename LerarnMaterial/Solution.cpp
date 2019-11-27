@@ -2878,3 +2878,76 @@ int Solution::minSubArrayLen(int s, vector<int>& nums)
 	}
 	return res==INT_MAX?0:res;
 }
+
+std::vector<int> Solution::findOrder(int numCourses, vector<vector<int>>& prerequisites)
+{
+	//BFS解法,DFS解法使用栈，将节点导入即可
+	std::vector<int> inDegree(numCourses,0);
+	std::vector<std::vector<int>> outDegree(numCourses);
+	for (auto &it:prerequisites)
+	{
+		++inDegree[it[0]];
+		outDegree[it[1]].push_back(it[0]);
+	}
+	queue<int> que;
+	for (int i = 0; i < inDegree.size();++i)
+	{
+		if (inDegree[i]==0)
+		{
+			que.push(i);
+		}
+	}
+	std::vector<int> res;
+	while (!que.empty())
+	{
+		auto node = que.front();
+		que.pop();
+		res.push_back(node);
+		for (auto it : outDegree[node])
+		{
+			if (--inDegree[it] == 0)
+			{
+				que.push(it);
+			}
+		}
+	}
+	if (res.size()!=numCourses)
+	{
+		return{};
+	}
+	return res;
+}
+
+int Solution::rob(vector<int>& nums)
+{
+	if (nums.size()==1)
+	{
+		return nums[0];
+	}
+	std::vector<int> dp1(nums.size() + 1);
+	std::vector<int> dp2(nums.size() + 1);
+	for (int i = 2; i <=nums.size();++i)
+	{
+		dp1[i] = max(nums[i - 2] + dp1[i - 2], dp1[i - 1]);
+		dp2[i] = max(nums[i - 1] + dp2[i - 2], dp2[i - 1]);
+	}
+	return max(dp1[nums.size()], dp2[nums.size()]);
+}
+
+int Solution::findKthLargest(vector<int>& nums, int k)
+{
+	if (nums.empty())
+	{
+		return -1;
+	}
+	priority_queue<int, vector<int>, std::greater<int> > queLow;
+	for (auto &it:nums)
+	{
+		queLow.push(it);
+		if (queLow.size()>k)
+		{
+			queLow.pop();
+		}
+	}
+	return queLow.top();
+}
