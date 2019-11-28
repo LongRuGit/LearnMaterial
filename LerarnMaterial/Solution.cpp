@@ -3015,11 +3015,7 @@ int Solution::maximalSquare(vector<vector<char>>& matrix)
 }
 int countHigh(TreeNode* root)
 {
-	if (!root)
-	{
-		return 0;
-	}
-	int high = -1;
+	int high = 0;
 	while (root)
 	{
 		++high;
@@ -3035,12 +3031,13 @@ int Solution::countNodes(TreeNode* root)
 	}
 	int leftHigh = countHigh(root->left);
 	int rightHigh = countHigh(root->right);
+	//移位运算符的优先级低于加号运算符
 	if (leftHigh==rightHigh)
 	{
-		return 1 << leftHigh + countNodes(root->right);
+		return (1 << leftHigh) + countNodes(root->right);
 	}
 	else
 	{
-		return 1 << rightHigh + countNodes(root->left);
+		return (1 << rightHigh) + countNodes(root->left);
 	}
 }
