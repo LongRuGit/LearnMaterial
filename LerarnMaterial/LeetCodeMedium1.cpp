@@ -41,6 +41,7 @@ int main()
 		cout << *iter << " ";
 	}
 	s_ptr->findKthLargest(nums1, 2);
+	s_ptr->combinationSum3(4, 15);
 	cout << endl;
 	system("pause");
 	return 0;

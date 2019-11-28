@@ -2951,3 +2951,96 @@ int Solution::findKthLargest(vector<int>& nums, int k)
 	}
 	return queLow.top();
 }
+std::vector<vector<int>> resCom;
+void BACKSerach(int sum, int &target, std::vector<int> &path, int iNumber,int istart)
+{
+	if (iNumber==0)
+	{
+		if (sum==target)
+		{
+			resCom.push_back(path);
+		}
+		return;
+	}
+	for (int i = istart; i <= 10-iNumber;++i)
+	{
+		path.push_back(i);
+		BACKSerach(sum + i, target, path, iNumber - 1, i + 1);
+		path.pop_back();
+	}
+}
+
+std::vector<std::vector<int>> Solution::combinationSum3(int k, int n)
+{
+	std::vector<int> path;
+	BACKSerach(0, n, path, k, 1);
+	return resCom;
+}
+
+int Solution::maximalSquare(vector<vector<char>>& matrix)
+{
+	//最大正方形的边长为左 上 左上 最小边长+1
+	if (matrix.empty())
+	{
+		return 0;
+	}
+	std::vector<std::vector<int>> dp(matrix.size(),std::vector<int>(matrix[0].size(),0));
+	int res = 0;
+	for (int i = 0; i < matrix.size();++i)
+	{
+		for (int j = 0; j < matrix[i].size();++j)
+		{
+			if (i==0||j==0)
+			{
+				if (matrix[i][j]=='1')
+				{
+					dp[i][j] = 1;
+					res = max(res,1);
+				}
+			}
+			else
+			{
+				if (matrix[i][j]=='1')
+				{
+					int line = INT_MAX;
+					line = min(dp[i - 1][j], dp[i][j - 1]);
+					line = min(dp[i - 1][j - 1], line);
+					dp[i][j] = line + 1;
+					res = max(dp[i][j], res);
+				}
+			}
+		}
+	}
+	return res*res;
+}
+int countHigh(TreeNode* root)
+{
+	if (!root)
+	{
+		return 0;
+	}
+	int high = -1;
+	while (root)
+	{
+		++high;
+		root = root->left;
+	}
+	return high;
+}
+int Solution::countNodes(TreeNode* root)
+{
+	if (root==NULL)
+	{
+		return 0;
+	}
+	int leftHigh = countHigh(root->left);
+	int rightHigh = countHigh(root->right);
+	if (leftHigh==rightHigh)
+	{
+		return 1 << leftHigh + countNodes(root->right);
+	}
+	else
+	{
+		return 1 << rightHigh + countNodes(root->left);
+	}
+}

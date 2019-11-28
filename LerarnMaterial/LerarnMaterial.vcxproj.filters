@@ -37,13 +37,13 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="F:\LerarnMaterial\计算机\C++.txt">
+    <Text Include="..\计算机\C++.txt">
       <Filter>源文件</Filter>
     </Text>
-    <Text Include="F:\LerarnMaterial\计算机\计算机网络.txt">
+    <Text Include="..\计算机\操作系统.txt">
       <Filter>源文件</Filter>
     </Text>
-    <Text Include="F:\LerarnMaterial\计算机\操作系统.txt">
+    <Text Include="..\计算机\计算机网络.txt">
       <Filter>源文件</Filter>
     </Text>
   </ItemGroup>
