@@ -3041,3 +3041,45 @@ int Solution::countNodes(TreeNode* root)
 		return (1 << rightHigh) + countNodes(root->left);
 	}
 }
+
+std::vector<std::string> Solution::summaryRanges(vector<int>& nums)
+{
+	if (nums.empty())
+	{
+		return{};
+	}
+	int pre = nums[0];
+	int ipos = 0;
+	std::vector<std::string> resVec;
+	for (int i = 1; i < nums.size();)
+	{
+		while (i<nums.size()&&nums[i-1]+1==nums[i])
+		{
+			++i;
+		}
+		if (i==nums.size())
+		{
+			break;
+		}
+		if (i - ipos == 1)
+		{
+			resVec.push_back(to_string(pre));
+		}
+		else
+		{
+			resVec.push_back(to_string(pre) + "->" + to_string(nums[i - 1]));
+		}
+		pre = nums[i];
+		ipos = i;
+		++i;
+	}
+	if (pre==nums[nums.size()-1])
+	{
+		resVec.push_back(to_string(pre));
+	}
+	else
+	{
+		resVec.push_back(to_string(pre) + "->" + to_string(nums[nums.size() - 1]));
+	}
+	return resVec;
+}

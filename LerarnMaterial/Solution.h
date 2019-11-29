@@ -823,6 +823,7 @@ public:
 	 ÈÕ    ÆÚ£º 2019/11/28
 	******************************************************************************/
 	int countNodes(TreeNode* root);
+	vector<string> summaryRanges(vector<int>& nums);
 private:
 	int expandAroundCenter(const string &s, int left, int right);
 	template<typename T>
