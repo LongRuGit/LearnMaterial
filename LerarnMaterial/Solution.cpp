@@ -3083,3 +3083,65 @@ std::vector<std::string> Solution::summaryRanges(vector<int>& nums)
 	}
 	return resVec;
 }
+
+std::vector<int> Solution::majorityElement(vector<int>& nums)
+{
+	if (nums.empty())
+	{
+		return{};
+	}
+	std::vector<int> resVec;
+	//摩尔投票
+	int num1 = nums[0], num2 = nums[0];
+	int count1 = 0, count2 = 0;
+	for (auto it:nums)
+	{
+		if (it==num1)
+		{
+			++count1;
+			continue;
+		}
+		if (it==num2)
+		{
+			++count2;
+			continue;
+		}
+		if (count1==0)
+		{
+			num1 = it;
+			++count1;
+			continue;
+		}
+		if (count2==0)
+		{
+			num2 = it;
+			++count2;
+			continue;
+		}
+		//若此时两个候选人的票数都不为0，且当前元素不投AB，那么A,B对应的票数都要--;
+		--count1;
+		--count2;
+	}
+	count1 = 0;
+	count2 = 0;
+	for (auto it:nums)
+	{
+		if (it==num1)
+		{
+			++count1;
+		}
+		else if (it==num2)
+		{
+			++count2;
+		}
+	}
+	if (count1>nums.size()/3)
+	{
+		resVec.push_back(num1);
+	}
+	if (count2>nums.size() / 3)
+	{
+		resVec.push_back(num2);
+	}
+	return resVec;
+}

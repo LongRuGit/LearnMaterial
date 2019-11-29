@@ -824,6 +824,7 @@ public:
 	******************************************************************************/
 	int countNodes(TreeNode* root);
 	vector<string> summaryRanges(vector<int>& nums);
+	vector<int> majorityElement(vector<int>& nums);
 private:
 	int expandAroundCenter(const string &s, int left, int right);
 	template<typename T>
