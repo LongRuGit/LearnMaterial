@@ -825,6 +825,11 @@ public:
 	int countNodes(TreeNode* root);
 	vector<string> summaryRanges(vector<int>& nums);
 	vector<int> majorityElement(vector<int>& nums);
+	//230
+	int kthSmallest(TreeNode* root, int k);
+	//238
+	vector<int> productExceptSelf(vector<int>& nums);
+	bool searchMatrix2(vector<vector<int>>& matrix, int target);
 private:
 	int expandAroundCenter(const string &s, int left, int right);
 	template<typename T>

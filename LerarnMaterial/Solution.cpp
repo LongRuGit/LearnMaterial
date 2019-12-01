@@ -936,53 +936,25 @@ void Solution::setZeroes(vector<vector<int>>& matrix)
 bool Solution::searchMatrix(vector<vector<int>>& matrix, int target)
 {
 	//2次二分查找
-	if (matrix.empty()||matrix[0].empty())
-	{
+	if (matrix.empty())
 		return false;
-	}
-	int rowl = 0,rowr=matrix.size();
-	int coll = 0, colr = matrix[0].size();
-	while (rowl<rowr)
+	int row = matrix.size();
+	int col = matrix[0].size();
+	int left = 0;
+	int right = row*col - 1;
+	int mid = 0, priot = 0;
+	while (left <= right)
 	{
-		int midrow = rowl + (rowr - rowl) / 2;
-		if (matrix[midrow][matrix[midrow].size()-1]<target)
-		{
-			rowl = midrow + 1;
-		}
-		else if (matrix[midrow][matrix[midrow].size() - 1]>target)
-		{
-			rowr = midrow;
-		}
-		else
-		{
+		mid = left + (right - left) / 2;
+		priot = matrix[mid / col][mid%col];
+		if (priot == target)
 			return true;
-		}
-	}
-	if (rowl==matrix.size())
-	{
-		return false;
-	}
-	while (coll<colr)
-	{
-		int midclo = coll + (colr - coll) / 2;
-		if (matrix[rowl][midclo]<target)
-		{
-			coll = midclo + 1;
-		}
-		else if (matrix[rowl][midclo]>target)
-		{
-			colr = midclo;
-		}
+		else if (priot > target)
+			right = mid - 1;
 		else
-		{
-			return true;
-		}
+			left = mid + 1;
 	}
-	if (coll==matrix[0].size())
-	{
-		return false;
-	}
-	return matrix[rowl][coll] == target;
+	return false;
 }
 
 void Solution::sortColors(vector<int>& nums)
@@ -3144,4 +3116,90 @@ std::vector<int> Solution::majorityElement(vector<int>& nums)
 		resVec.push_back(num2);
 	}
 	return resVec;
+}
+
+int Solution::kthSmallest(TreeNode* root, int k)
+{
+	if (root==nullptr)
+	{
+		return -1;
+	}
+	int res = 0;
+	//二叉搜索树第k小的元素
+	stack<TreeNode*> stacRoot;
+	while (root)
+	{
+		stacRoot.push(root);
+		root = root->left;
+	}
+	while (!stacRoot.empty())
+	{
+		auto note = stacRoot.top();
+		stacRoot.pop();
+		if (--k==0)
+		{
+			res = note->val;
+			break;
+		}
+		note = note->right;
+		while (note)
+		{
+			stacRoot.push(note);
+			note = note->left;
+		}
+	}
+	return res;
+}
+
+std::vector<int> Solution::productExceptSelf(vector<int>& nums)
+{
+	if (nums.empty())
+	{
+		return{};
+	}
+	int left = 1;
+	int right = 1;
+	std::vector<int> outVec(nums.size(),1);
+	for (int i = 0; i < nums.size();++i)
+	{
+		outVec[i] *= left;
+		left *= nums[i];
+
+		outVec[nums.size() - i - 1] *= right;
+		right *= nums[nums.size() - i - 1];
+	}
+	return outVec;
+}
+
+bool Solution::searchMatrix2(vector<vector<int>>& matrix, int target)
+{
+	if (matrix.empty())
+	{
+		return false;
+	}
+	int col = matrix[0].size()-1;
+	int row = 0;
+	int prito = 0;
+	//从右上角开始寻找
+	while (true)
+	{
+		if (col<0||row==matrix.size())
+		{
+			return false;
+		}
+		prito = matrix[row][col];
+		if (target == prito)
+		{
+			return true;
+		}
+		else if (target > prito)
+		{
+			++row;
+		}
+		else
+		{
+			--col;
+		}
+	}
+	return false;
 }
