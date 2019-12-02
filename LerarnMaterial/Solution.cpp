@@ -3203,3 +3203,99 @@ bool Solution::searchMatrix2(vector<vector<int>>& matrix, int target)
 	}
 	return false;
 }
+std::map<string, std::vector<int>> mapDiff;
+std::vector<int> Solution::diffWaysToCompute(string input)
+{
+	std::vector<int> res;
+	if (mapDiff.count(input))
+	{
+		return mapDiff[input];
+	}
+	for (int i = 0; i < input.size();++i)
+	{
+		if (!(input[i]>='0'&&input[i]<='9'))
+		{
+			std::vector<int> difLeft = diffWaysToCompute(input.substr(0, i));
+			std::vector<int> difRight = diffWaysToCompute(input.substr(i + 1));
+			for (auto &itL:difLeft)
+			{
+				for (auto &itR:difRight)
+				{
+					if (input[i]=='+')
+					{
+						res.push_back(itL + itR);
+					}
+					else if (input[i]=='-')
+					{
+						res.push_back(itL - itR);
+					}
+					else if (input[i]=='*')
+					{
+						res.push_back(itL*itR);
+					}
+				}
+			}
+		}
+	}
+	//最后一个数字
+	if (res.empty())
+	{
+		res.push_back(atoi(input.c_str()));
+	}
+	mapDiff[input] = res;
+	return res;
+}
+
+std::vector<int> Solution::singleNumber2(vector<int>& nums)
+{
+	if (nums.empty())
+	{
+		return{};
+	}
+	std::vector<int> res(2, 0);
+	int sign = 0;
+	for (auto it:nums)
+	{
+		sign ^= it;
+	}
+	//找到不同的位进按位取反
+	//~sign + 1;
+	sign &= -sign;
+	for (auto &it:nums)
+	{
+		if (it&sign)
+		{
+			res[0] ^= it;
+		}
+		else
+		{
+			res[1] ^= it;
+		}
+	}
+	return res;
+}
+
+int Solution::nthUglyNumber(int n)
+{
+	//三指针法
+	std::vector<int> dp(n, 1), ugly(3, 0);
+	for (int i = 1; i <n;++i)
+	{
+		int a = dp[ugly[0]] * 2, b = dp[ugly[1]] * 3, c = dp[ugly[2]] * 5;
+		int next = min(a, min(b, c));
+		if (next==a)
+		{
+			++ugly[0];
+		}
+		if (next==b)
+		{
+			++ugly[1];
+		}
+		if (next==c)
+		{
+			++ugly[2];
+		}
+		dp[i] = next;
+	}
+	return dp[n-1];
+}
