@@ -42,6 +42,7 @@ int main()
 	}
 	s_ptr->summaryRanges(nums1);
 	cout << endl;
+	s_ptr->numSquares(2);
 	system("pause");
 	return 0;
 }

@@ -3299,3 +3299,172 @@ int Solution::nthUglyNumber(int n)
 	}
 	return dp[n-1];
 }
+
+std::vector<string> Solution::convertStringToSuffix(string iStr)
+{
+	if (iStr.empty())
+	{
+		return{};
+	}
+	iStr.push_back('#');
+	std::vector<string> resStr;
+	stack<char> stacSign;
+	stacSign.push('#');
+	cout << iStr[0] << " ";
+	std::string strTemp;
+	for (int i = 0; i < iStr.size();)
+	{
+		if (iStr[i]<='9'&&iStr[i]>='0')
+		{
+			strTemp = iStr[i];
+			++i;
+			while (i < iStr.size()&&iStr[i]<='9'&&iStr[i]>='0')
+			{
+				strTemp.push_back(iStr[i]);
+				++i;
+			}
+			resStr.push_back(strTemp);
+		}
+		else if (iStr[i]=='(')
+		{
+			stacSign.push(iStr[i]);
+			++i;
+		}
+		else if (iStr[i]==')')
+		{
+			while (stacSign.top()!='(')
+			{
+				strTemp = stacSign.top();
+				resStr.push_back(strTemp);
+				stacSign.pop();
+			}
+			stacSign.pop();
+			++i;
+		}
+		else if (iStr[i]=='+'||iStr[i]=='-')
+		{
+			while (!stacSign.empty()&&stacSign.top()!='('&&stacSign.top()!='#')
+			{
+				strTemp = stacSign.top();
+				resStr.push_back(strTemp);
+				stacSign.pop();
+			}
+			stacSign.push(iStr[i]);
+			++i;
+		}
+		else if (iStr[i]=='*'||iStr[i]=='/')
+		{
+			while (!stacSign.empty() && (stacSign.top() == '*' || stacSign.top() == '/'))
+			{
+				strTemp = stacSign.top();
+				resStr.push_back(strTemp);
+				stacSign.pop();
+			}
+			stacSign.push(iStr[i]);
+			++i;
+		}
+		else if (iStr[i] == '#')
+		{
+			while (!stacSign.empty() && stacSign.top() != '#')
+			{
+				strTemp = stacSign.top();
+				resStr.push_back(strTemp);
+				stacSign.pop();
+			}
+			stacSign.pop();
+			break;
+		}
+		else
+		{
+			++i;
+		}
+	}
+	return resStr;
+}
+
+int Solution::hIndex(vector<int>& citations)
+{
+	if (citations.empty())
+	{
+		return 0;
+	}
+	sort(citations.begin(), citations.end());
+	for (int i = 0; i < citations.size();++i)
+	{
+		if (citations[i]>=citations.size()-i)
+		{
+			return citations.size() - i;
+		}
+	}
+	return 0;
+}
+
+int Solution::hIndex2(vector<int>& citations)
+{
+	if (citations.empty())
+	{
+		return 0;
+	}
+	int size = citations.size();
+	int left = 0, right = citations.size();
+	while (left<right)
+	{
+		int mid = left + (right - left) / 2;
+		int iTemp = citations[mid] + mid;
+		if (iTemp>=size)
+		{
+			right = mid;
+		}
+		else
+		{
+			left = mid+1;
+		}
+	}
+	return size-left;
+}
+bool BackNumber(int &iTarget, int inumber, std::vector<int> &resNumber,int iadd,int start)
+{
+	if (iadd>iTarget)
+	{
+		return false;
+	}
+	if (inumber==0)
+	{
+		if (iadd==iTarget)
+		{
+			return true;
+		}
+		return false;
+	}
+	for (int i = start; i <resNumber.size();++i)
+	{
+		if (BackNumber(iTarget, inumber - 1, resNumber, iadd + resNumber[i], start))
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+int Solution::numSquares(int n)
+{
+	if (n==1)
+	{
+		return n;
+	}
+	std::vector<int> resNumber;
+	for (int i = 1; i <= sqrt(n);++i)
+	{
+		resNumber.push_back(i*i);
+	}
+	reverse(resNumber.begin(), resNumber.end());
+	for (int i = 1; i <= n; ++i)
+	{
+		if (BackNumber(n,i,resNumber,0,0))
+		{
+			return i;
+		}
+	}
+	return -1;
+}
+
