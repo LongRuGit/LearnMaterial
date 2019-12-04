@@ -3468,3 +3468,34 @@ int Solution::numSquares(int n)
 	return -1;
 }
 
+int Solution::findDuplicate(vector<int>& nums)
+{
+	if (nums.empty())
+	{
+		return -1;
+	}
+	int left = 0,right=nums.size();
+	while (left<right)
+	{
+		//如果选择右中位数 right=mid-1 left=mid 若选择左中位数mid不加1.left=mid+1；
+		int mid = left + (right - left+1) / 2;
+		int icount = 0;
+		for (auto it:nums)
+		{
+			if (it<mid)
+			{
+				++icount;
+			}
+		}
+		if (icount>mid-1)
+		{
+			right = mid-1;
+		}
+		else
+		{
+			left = mid;
+		}
+	}
+	return left;
+}
+

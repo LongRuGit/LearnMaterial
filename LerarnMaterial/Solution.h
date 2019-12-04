@@ -933,6 +933,15 @@ public:
 	 日    期： 2019/12/03
 	******************************************************************************/
 	int numSquares(int n);
+	/******************************************************************************
+	 函数名称： findDuplicate
+	 功能说明： 给定一个包含 n + 1 个整数的数组 nums，其数字都在 1 到 n 之间（包括 1 和 n）-287
+	 参    数： vector<int> & nums 
+	 返 回 值： int
+	 作    者： Ru Long
+	 日    期： 2019/12/04
+	******************************************************************************/
+	int findDuplicate(vector<int>& nums);
 private:
 	int expandAroundCenter(const string &s, int left, int right);
 	template<typename T>

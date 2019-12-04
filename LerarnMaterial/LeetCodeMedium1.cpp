@@ -28,7 +28,7 @@ int main()
 	//确定随机数的范围
 	uniform_int_distribution<unsigned> u(0, 100);
 	default_random_engine e;
-	vector<int> nums1 = { 0, 1, 2, 4, 5, 7 };
+	vector<int> nums1 = { 1, 3, 4, 2, 2, 5, 6, 7 };
 	vector<int> nums2 = { 3, 4, 5, 1, 2 };
 	int nums[7] = {0};
 	for (int i = 0; i < 7;i++)
@@ -40,9 +40,8 @@ int main()
 	{
 		cout << *iter << " ";
 	}
-	s_ptr->summaryRanges(nums1);
 	cout << endl;
-	s_ptr->numSquares(2);
+	s_ptr->findDuplicate(nums1);
 	system("pause");
 	return 0;
 }
