@@ -1049,7 +1049,7 @@ std::vector<std::vector<int>> Solution::subsets(vector<int>& nums)
 	}
 	return res;
 }
-int dir[4][4] = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
+int dir[4][2] = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
 bool Solution::DFSexist(int x, int y, int index, vector<vector<char>>&board, string &word, vector<vector<bool>>&visit)
 {
 	if (index==word.size()-1)
@@ -3497,5 +3497,91 @@ int Solution::findDuplicate(vector<int>& nums)
 		}
 	}
 	return left;
+}
+
+void Solution::gameOfLife(vector<vector<int>>& board)
+{
+	if (board.empty())
+	{
+		return;
+	}
+	int dir[8][2] = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 }, { 1, 1 }, { 1, -1 }, { -1, -1 }, {-1,1} };
+	for (int i = 0; i < board.size();++i)
+	{
+		for (int j = 0; j < board[i].size();++j)
+		{
+			int icount = 0;
+			for (int k = 0;k < 8;++k)
+			{
+				int dirx = i + dir[k][0];
+				int diry = j + dir[k][1];
+				if (dirx>=0&&dirx<board.size()&&diry>=0&&diry<board[i].size())
+				{
+					if (board[dirx][diry] == 1 || board[dirx][diry]==-1)
+					{
+						++icount;
+					}
+				}
+			}
+			if (board[i][j])
+			{
+				if (icount < 2)
+				{
+					board[i][j] = -1;
+				}
+				else if (icount > 3)
+				{
+					board[i][j] = -1;
+				}
+			}
+			else
+			{
+				if (icount == 3)
+				{
+					board[i][j] = -2;
+				}
+			}
+		}
+	}
+	for (auto &it:board)
+	{
+		for (auto &ity:it)
+		{
+			if (ity==-1)
+			{
+				ity = 0;
+			}
+			if (ity==-2)
+			{
+				ity = 1;
+			}
+		}
+	}
+}
+
+int Solution::lengthOfLIS2(vector<int>& nums)
+{
+	if (nums.empty())
+	{
+		return 0;
+	}
+	//动态规划，以i为结尾的最长上升子序列
+	std::vector<int> dp(nums.size(), 1);
+	for (int i = 0; i < nums.size();++i)
+	{
+		for (int j = 0; j < i;++j)
+		{
+			if (nums[i]>nums[j])
+			{
+				dp[i] = max(dp[i], dp[j] + 1);
+			}
+		}
+	}
+	int res = dp[0];
+	for (auto it:dp)
+	{
+		res = max(res, it);
+	}
+	return res;
 }
 
