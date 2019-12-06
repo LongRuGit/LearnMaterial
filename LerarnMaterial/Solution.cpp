@@ -3585,3 +3585,11 @@ int Solution::lengthOfLIS2(vector<int>& nums)
 	return res;
 }
 
+bool Solution::isAdditiveNumber(string num)
+{
+	if (num.empty())
+	{
+		return false;
+	}
+}
+

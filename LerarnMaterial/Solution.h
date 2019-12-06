@@ -960,6 +960,15 @@ public:
 	 日    期： 2019/12/05
 	******************************************************************************/
 	int lengthOfLIS2(vector<int>& nums);
+	/******************************************************************************
+	 函数名称： isAdditiveNumber
+	 功能说明： 判断一个序列是否是累加序列-306
+	 参    数： string num 
+	 返 回 值： bool
+	 作    者： Ru Long
+	 日    期： 2019/12/06
+	******************************************************************************/
+	bool isAdditiveNumber(string num);
 private:
 	int expandAroundCenter(const string &s, int left, int right);
 	template<typename T>
