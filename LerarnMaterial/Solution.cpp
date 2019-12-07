@@ -409,7 +409,6 @@ std::string Solution::multiply(string num1, string num2)
 			}
 			break;
 		}
-		
 	}
 	return res;
 }
@@ -3584,12 +3583,164 @@ int Solution::lengthOfLIS2(vector<int>& nums)
 	}
 	return res;
 }
-
-bool Solution::isAdditiveNumber(string num)
+string addStrNumber(const string &strL, const string &strR)
 {
-	if (num.empty())
+	if (strL.empty()||strR.empty())
+	{
+		return "";
+	}
+	int l = strL.size() - 1, r = strR.size() - 1;
+	string res;
+	int up = 0;
+	while (l>=0||r>=0)
+	{
+		int a = 0,b=0;
+		if (l>=0)
+		{
+			a = strL[l] - '0';
+			--l;
+		}
+		if (r>=0)
+		{
+			b = strR[r] - '0';
+			--r;
+		}
+		int itemp = a+b + up;
+		res+=(char)(itemp % 10 + '0');
+		up = itemp / 10;
+	}
+	if (up!=0)
+	{
+		res += (char)(up + '0');
+	}
+	reverse(res.begin(), res.end());
+	return res;
+}
+bool backTracking(const string &num, string prePre, string pre, int iStart, int len)
+{
+	if (iStart==num.size())
+	{
+		return true;
+	}
+	if (iStart>num.size())
 	{
 		return false;
 	}
+	//不允许以0为开头
+	for (int i = len; i < num.size();++i)
+	{
+		string cur = num.substr(iStart, i);
+		if (cur.size()>1&&cur[0]=='0')
+		{
+			return false;
+		}
+		if (cur==addStrNumber(prePre,pre)&&backTracking(num,pre,cur,iStart+i,i))
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+bool Solution::isAdditiveNumber(string num)
+{
+	if (num.size()<=2)
+	{
+		return false;
+	}
+	for (int i = 1; 2 * i <= num.size();++i)
+	{
+		for (int j = 1; i + 2 * j <= num.size();++j)
+		{
+			if (i+j>=num.size())
+			{
+				break;
+			}
+			string strR = num.substr(i, j);
+			if (j>1&&strR[0]=='0')
+			{
+				break;
+			}
+			if (backTracking(num, num.substr(0, i), strR, i + j, j))
+			{
+				return true;
+			}
+		}
+	}
+	return false;
+}
+int ConvertToInt(string &istr)
+{
+	if (istr.size()>31)
+	{
+		return -1;
+	}
+	return 0;
+}
+bool backTracFibon(const string &num, int prePre, int pre, int iStart, int len,std::vector<int>& resVec)
+{
+	if (iStart == num.size())
+	{
+		return true;
+	}
+	if (iStart > num.size())
+	{
+		return false;
+	}
+	//不允许以0为开头
+	for (int i = len; i < num.size(); ++i)
+	{
+		string cur = num.substr(iStart, i);
+		if (cur.size() > 1 && cur[0] == '0')
+		{
+			return false;
+		}
+		int iTemp = atoi(cur.c_str());
+		if (iTemp == prePre + pre && backTracFibon(num, pre, iTemp, iStart + i, i,resVec))
+		{
+			resVec.push_back(iTemp);
+			return true;
+		}
+	}
+	return false;
+}
+
+std::vector<int> Solution::splitIntoFibonacci(string S)
+{
+	if (S.size() <= 2)
+	{
+		return{};
+	}
+	for (int i = 1; 2 * i <= S.size(); ++i)
+	{
+		for (int j = 1; i + 2 * j <= S.size(); ++j)
+		{
+			if (i + j >= S.size())
+			{
+				break;
+			}
+			string strL = S.substr(0, i);
+			if (i>1&&strL[0]=='0')
+			{
+				break;
+			}
+			string strR = S.substr(i, j);
+			if (j > 1 && strR[0] == '0')
+			{
+				break;
+			}
+			int pre = atoi(strL.c_str());
+			int cur = atoi(strR.c_str());
+			std::vector<int> resVec;
+			if (backTracFibon(S, pre, cur, i + j, j,resVec))
+			{
+				resVec.push_back(cur);
+				resVec.push_back(pre);
+				reverse(resVec.begin(), resVec.end());
+				return resVec;
+			}
+		}
+	}
+	return {};
 }
 

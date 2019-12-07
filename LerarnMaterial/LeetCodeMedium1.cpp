@@ -42,6 +42,7 @@ int main()
 	}
 	cout << endl;
 	s_ptr->findDuplicate(nums1);
+	s_ptr->isAdditiveNumber("199111992");
 	system("pause");
 	return 0;
 }

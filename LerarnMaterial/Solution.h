@@ -969,6 +969,15 @@ public:
 	 日    期： 2019/12/06
 	******************************************************************************/
 	bool isAdditiveNumber(string num);
+	/******************************************************************************
+	 函数名称： splitIntoFibonacci
+	 功能说明： 将字符串分成斐波拉切数列-842
+	 参    数： string S 
+	 返 回 值： std::vector<int>
+	 作    者： Ru Long
+	 日    期： 2019/12/07
+	******************************************************************************/
+	vector<int> splitIntoFibonacci(string S);
 private:
 	int expandAroundCenter(const string &s, int left, int right);
 	template<typename T>
