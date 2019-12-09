@@ -3669,15 +3669,24 @@ bool Solution::isAdditiveNumber(string num)
 	}
 	return false;
 }
-int ConvertToInt(string &istr)
+int ConvertToInt(const string &istr)
 {
-	if (istr.size()>31)
+	if (istr.size()>10)
 	{
 		return -1;
 	}
-	return 0;
+	long long res = 0;
+	for (auto it = istr.begin(); it != istr.end();++it)
+	{
+		res =  res * 10 + (*it - '0');
+	}
+	if (res>INT_MAX)
+	{
+		return -1;
+	}
+	return res;
 }
-bool backTracFibon(const string &num, int prePre, int pre, int iStart, int len,std::vector<int>& resVec)
+bool backTracFibon(const string &num, long long prePre, long long pre, int iStart, int len,std::vector<int>& resVec)
 {
 	if (iStart == num.size())
 	{
@@ -3695,7 +3704,16 @@ bool backTracFibon(const string &num, int prePre, int pre, int iStart, int len,s
 		{
 			return false;
 		}
-		int iTemp = atoi(cur.c_str());
+		int iTemp = ConvertToInt(cur);
+		if (iTemp==-1)
+		{
+			return false;
+		}
+		long long addL = prePre + pre;
+		if (addL>INT_MAX)
+		{
+			return false;
+		}
 		if (iTemp == prePre + pre && backTracFibon(num, pre, iTemp, iStart + i, i,resVec))
 		{
 			resVec.push_back(iTemp);
@@ -3729,8 +3747,16 @@ std::vector<int> Solution::splitIntoFibonacci(string S)
 			{
 				break;
 			}
-			int pre = atoi(strL.c_str());
-			int cur = atoi(strR.c_str());
+			int pre = ConvertToInt(strL);
+			if (pre==-1)
+			{
+				break;
+			}
+			int cur = ConvertToInt(strR);
+			if (cur==-1)
+			{
+				break;
+			}
 			std::vector<int> resVec;
 			if (backTracFibon(S, pre, cur, i + j, j,resVec))
 			{
@@ -3742,5 +3768,28 @@ std::vector<int> Solution::splitIntoFibonacci(string S)
 		}
 	}
 	return {};
+}
+
+int Solution::maxProfit(vector<int>& prices)
+{
+	if (prices.empty())
+	{
+		return 0;
+	}
+	if (prices.size()<3)
+	{
+		return max(prices[0], prices[1]);
+	}
+	//3种状态变化 手中是否持有股票
+	int dp_i_0 = 0, dp_i_1 = INT_MIN;
+	int dp_pre_0 = 0;
+	for (int i = 0; i < prices.size();++i)
+	{
+		int temp = dp_i_0;
+		dp_i_0 = max(dp_i_1 + prices[i], dp_i_0);
+		dp_i_1 = max(dp_i_1,dp_pre_0-prices[i]);
+		dp_pre_0 = temp;
+	}
+	return dp_i_0;
 }
 

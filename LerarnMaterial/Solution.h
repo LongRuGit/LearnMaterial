@@ -978,6 +978,15 @@ public:
 	 日    期： 2019/12/07
 	******************************************************************************/
 	vector<int> splitIntoFibonacci(string S);
+	/******************************************************************************
+	 函数名称： maxProfit
+	 功能说明： 买卖股票的最佳时机-309
+	 参    数： vector<int> & prices 
+	 返 回 值： int
+	 作    者： Ru Long
+	 日    期： 2019/12/09
+	******************************************************************************/
+	int maxProfit(vector<int>& prices);
 private:
 	int expandAroundCenter(const string &s, int left, int right);
 	template<typename T>
