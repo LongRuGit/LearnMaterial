@@ -3793,3 +3793,39 @@ int Solution::maxProfit(vector<int>& prices)
 	return dp_i_0;
 }
 
+int Solution::maxProfit714(vector<int>& prices, int fee)
+{
+	if (prices.empty())
+	{
+		return 0;
+	}
+	//3种状态变化 手中是否持有股票
+	int dp_i_0 = 0, dp_i_1 = INT_MIN+fee;
+	for (int i = 0; i < prices.size(); ++i)
+	{
+		int temp = dp_i_0;
+		dp_i_0 = max(dp_i_1 + prices[i]-fee, dp_i_0);
+		dp_i_1 = max(dp_i_1, temp- prices[i]);
+	}
+	return dp_i_0;
+}
+
+int Solution::maxProfit123(vector<int>& prices)
+{
+	if (prices.empty())
+	{
+		return 0;
+	}
+	//第二个变量为允许交易的最大次数,买的时候次数-1
+	int dp_i_1_0 = 0, dp_i_1_1 = INT_MIN;
+	int dp_i_2_0 = 0, dp_i_2_1 = INT_MIN;
+	for (auto &it:prices)
+	{
+		dp_i_2_0 = max(dp_i_2_0, dp_i_2_1 + it);
+		dp_i_2_1 = max(dp_i_2_1, dp_i_1_0 - it);
+		dp_i_1_0 = max(dp_i_1_0, dp_i_1_1+it);
+		dp_i_1_1 = max(dp_i_1_1, - it);
+	}
+	return dp_i_2_0;
+}
+
