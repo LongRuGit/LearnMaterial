@@ -3829,3 +3829,39 @@ int Solution::maxProfit123(vector<int>& prices)
 	return dp_i_2_0;
 }
 
+int Solution::maxProfit188(int k, vector<int>& prices)
+{
+	if (prices.empty())
+	{
+		return 0;
+	}
+	if (k > prices.size() / 2)
+	{
+		//说明可以无限次交易了
+		int dp_i_0 = 0, dp_i_1 = INT_MIN;
+		for (auto &it : prices)
+		{
+			int itemp = dp_i_0;
+			dp_i_0 = max(dp_i_0, dp_i_1 + it);
+			dp_i_1 = max(dp_i_1, itemp - it);
+		}
+		return dp_i_0;
+	}
+	std::vector<std::vector<std::vector<int>>>dp(prices.size(), std::vector<std::vector<int>>(k + 1, std::vector<int>(2)));
+	for (int j = 0; j < prices.size(); ++j)
+	{
+		for (int i = k; i >= 1; --i)
+		{
+			if (j - 1 == -1)
+			{
+				dp[j][i][0] = 0;
+				dp[j][i][1] = -prices[j];
+				continue;
+			}
+			dp[j][i][0] = max(dp[j - 1][i][0], dp[j - 1][i][1] + prices[j]);
+			dp[j][i][1] = max(dp[j - 1][i][1], dp[j - 1][i - 1][0] - prices[j]);
+		}
+	}
+	return dp[prices.size() - 1][k][0];
+}
+

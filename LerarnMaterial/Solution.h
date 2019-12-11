@@ -1006,6 +1006,16 @@ public:
 	 日    期： 2019/12/10
 	******************************************************************************/
 	int maxProfit123(vector<int>& prices);
+	/******************************************************************************
+	 函数名称： maxProfit188
+	 功能说明： 买卖股票的最佳时机，最多完成k笔交易-188
+	 参    数： int k 
+	 参    数： vector<int> & prices 
+	 返 回 值： int
+	 作    者： Ru Long
+	 日    期： 2019/12/11
+	******************************************************************************/
+	int maxProfit188(int k, vector<int>& prices);
 private:
 	int expandAroundCenter(const string &s, int left, int right);
 	template<typename T>
