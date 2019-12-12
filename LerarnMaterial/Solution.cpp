@@ -3865,3 +3865,55 @@ int Solution::maxProfit188(int k, vector<int>& prices)
 	return dp[prices.size() - 1][k][0];
 }
 
+std::vector<int> Solution::findMinHeightTrees(int n, vector<vector<int>>& edges)
+{
+	if (edges.empty()&&n==1)
+	{
+		return{ 0 };
+	}
+	//一步一步的减少叶子节点
+	if (edges.empty()||n==0)
+	{
+		return{};
+	}
+	std::vector<std::unordered_set<int>> outSet(n);
+	for (auto &it : edges)
+	{
+		outSet[it[0]].insert(it[1]);
+		outSet[it[1]].insert(it[0]);
+	}
+	queue<int> q;
+	for (int i = 0; i < n;++i)
+	{
+		if (outSet[i].size()==1)
+		{
+			q.push(i);
+		}
+	}
+	while (n>2)
+	{
+		int isize = q.size();
+		n -= isize;
+		while (isize-->0)
+		{
+			auto iTemp = q.front();
+			q.pop();
+			for (auto &it:outSet[iTemp])
+			{
+				outSet[it].erase(iTemp);
+				if (outSet[it].size()==1)
+				{
+					q.push(it);
+				}
+			}
+		}
+	}
+	std::vector<int> res;
+	while (!q.empty())
+	{
+		res.push_back(q.front());
+		q.pop();
+	}
+	return res;
+}
+

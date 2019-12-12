@@ -1016,6 +1016,16 @@ public:
 	 日    期： 2019/12/11
 	******************************************************************************/
 	int maxProfit188(int k, vector<int>& prices);
+	/******************************************************************************
+	 函数名称： findMinHeightTrees
+	 功能说明： 在图中最小高度的树的根节点
+	 参    数： int n 
+	 参    数： vector<vector<int>> & edges 
+	 返 回 值： std::vector<int>
+	 作    者： Ru Long
+	 日    期： 2019/12/12
+	******************************************************************************/
+	vector<int> findMinHeightTrees(int n, vector<vector<int>>& edges);
 private:
 	int expandAroundCenter(const string &s, int left, int right);
 	template<typename T>
