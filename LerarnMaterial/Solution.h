@@ -1018,7 +1018,7 @@ public:
 	int maxProfit188(int k, vector<int>& prices);
 	/******************************************************************************
 	 函数名称： findMinHeightTrees
-	 功能说明： 在图中最小高度的树的根节点
+	 功能说明： 在图中最小高度的树的根节点-310
 	 参    数： int n 
 	 参    数： vector<vector<int>> & edges 
 	 返 回 值： std::vector<int>
@@ -1026,6 +1026,25 @@ public:
 	 日    期： 2019/12/12
 	******************************************************************************/
 	vector<int> findMinHeightTrees(int n, vector<vector<int>>& edges);
+	/******************************************************************************
+	 函数名称： nthSuperUglyNumber
+	 功能说明： 超级丑数-313
+	 参    数： int n 
+	 参    数： vector<int> & primes 
+	 返 回 值： int
+	 作    者： Ru Long
+	 日    期： 2019/12/13
+	******************************************************************************/
+	int nthSuperUglyNumber(int n, vector<int>& primes);
+	/******************************************************************************
+	 函数名称： maxProduct
+	 功能说明： 最大不含公共字母单词长度乘积-318
+	 参    数： vector<string> & words 
+	 返 回 值： int
+	 作    者： Ru Long
+	 日    期： 2019/12/13
+	******************************************************************************/
+	int maxProduct(vector<string>& words);
 private:
 	int expandAroundCenter(const string &s, int left, int right);
 	template<typename T>

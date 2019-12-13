@@ -3917,3 +3917,59 @@ std::vector<int> Solution::findMinHeightTrees(int n, vector<vector<int>>& edges)
 	return res;
 }
 
+int Solution::nthSuperUglyNumber(int n, vector<int>& primes)
+{
+	if (primes.empty())
+	{
+		return -1;
+	}
+	std::vector<int> numVec(primes.size(), 0);
+	std::vector<int> dp(n, 1);
+	for (int i = 1; i <n;++i)
+	{
+		int minNum = INT_MAX;
+		for (int k = 0; k < primes.size();++k)
+		{
+			minNum = min(dp[numVec[k]] * primes[k], minNum);
+		}
+		for (int j = 0; j < primes.size();++j)
+		{
+			if (dp[numVec[j]] * primes[j] == minNum)
+			{
+				++numVec[j];
+			}
+		}
+		dp[i] = minNum;
+	}
+	return dp[n - 1];
+}
+
+int Solution::maxProduct(vector<string>& words)
+{
+	if (words.empty())
+	{
+		return 0;
+	}
+	int res = INT_MIN;
+	std::vector<int> numVec;
+	for (size_t i = 0; i < words.size(); i++)
+	{
+		int resNum = 0;
+		for (auto &it:words[i])
+		{
+			resNum |= 1 << (it - 'a');
+		}
+		numVec.push_back(resNum);
+	}
+	for (int i = 0; i < numVec.size();++i)
+	{
+		for (int j = i + 1; j < numVec.size();++j)
+		{
+			if ((numVec[i] & numVec[j]) == 0)
+			{
+				res = max(res, (int)(words[i].size()*words[j].size()));
+			}
+		}
+	}
+	return res == INT_MIN ? 0 : res;
+}
