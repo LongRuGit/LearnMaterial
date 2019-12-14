@@ -1045,6 +1045,15 @@ public:
 	 日    期： 2019/12/13
 	******************************************************************************/
 	int maxProduct(vector<string>& words);
+	/******************************************************************************
+	 函数名称： countNumbersWithUniqueDigits
+	 功能说明： 计算各个位数不同的数的个数
+	 参    数： int n 
+	 返 回 值： int
+	 作    者： Ru Long
+	 日    期： 2019/12/14
+	******************************************************************************/
+	int countNumbersWithUniqueDigits(int n);
 private:
 	int expandAroundCenter(const string &s, int left, int right);
 	template<typename T>

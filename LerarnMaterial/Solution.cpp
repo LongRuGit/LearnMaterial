@@ -3973,3 +3973,27 @@ int Solution::maxProduct(vector<string>& words)
 	}
 	return res == INT_MIN ? 0 : res;
 }
+
+int Solution::countNumbersWithUniqueDigits(int n)
+{
+	if (n>10)
+	{
+		return countNumbersWithUniqueDigits(10);
+	}
+	if (n==0)
+	{
+		return 1;
+	}
+	if (n==1)
+	{
+		return 10;
+	}
+	int sum = 10;
+	int dp = 9;
+	for (int i = 2; i <= n;++i)
+	{
+		dp = dp*(11 - i);
+		sum += dp;
+	}
+	return sum;
+}
