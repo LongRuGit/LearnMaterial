@@ -3997,3 +3997,39 @@ int Solution::countNumbersWithUniqueDigits(int n)
 	}
 	return sum;
 }
+int gcd(int a, int b)
+{
+	if (a<b)
+	{
+		swap(a, b);
+	}
+	return b == 0 ? a : gcd(b, a%b);
+}
+bool Solution::canMeasureWater(int x, int y, int z)
+{
+	if (z>(x+y))
+	{
+		return false;
+	}
+	int iGcd = gcd(x, y);
+	if (iGcd==0)
+	{
+		return true;
+	}
+	return z%iGcd == 0;
+}
+
+int Solution::coinChange(vector<int>& coins, int amount)
+{
+	if (coins.empty())
+	{
+		return -1;
+	}
+	if (amount==0)
+	{
+		return 0;
+	}
+	sort(coins.begin(), coins.end(), greater<int>());
+	int maxNumber = amount / coins[coins.size() - 1];
+	return -1;
+}

@@ -1054,6 +1054,27 @@ public:
 	 日    期： 2019/12/14
 	******************************************************************************/
 	int countNumbersWithUniqueDigits(int n);
+	/******************************************************************************
+	 函数名称： canMeasureWater
+	 功能说明： 水壶问题-365
+	 参    数： int x 
+	 参    数： int y 
+	 参    数： int z 
+	 返 回 值： bool
+	 作    者： Ru Long
+	 日    期： 2019/12/16
+	******************************************************************************/
+	bool canMeasureWater(int x, int y, int z);
+	/******************************************************************************
+	 函数名称： coinChange
+	 功能说明： 零钱兑换-322
+	 参    数： vector<int> & coins 
+	 参    数： int amount 
+	 返 回 值： int
+	 作    者： Ru Long
+	 日    期： 2019/12/16
+	******************************************************************************/
+	int coinChange(vector<int>& coins, int amount);
 private:
 	int expandAroundCenter(const string &s, int left, int right);
 	template<typename T>
