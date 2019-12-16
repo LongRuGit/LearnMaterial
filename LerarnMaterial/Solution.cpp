@@ -4025,11 +4025,17 @@ int Solution::coinChange(vector<int>& coins, int amount)
 	{
 		return -1;
 	}
-	if (amount==0)
+	std::vector<int> dp(amount+1,amount+1);
+	dp[0] = 0;
+	for (int i = 1; i <= amount;++i)
 	{
-		return 0;
+		for (auto &it:coins)
+		{
+			if (i-it>=0)
+			{
+				dp[i] = min(dp[i], dp[i - it]+1);
+			}
+		}
 	}
-	sort(coins.begin(), coins.end(), greater<int>());
-	int maxNumber = amount / coins[coins.size() - 1];
-	return -1;
+	return dp[amount]>amount?-1:dp[amount];
 }

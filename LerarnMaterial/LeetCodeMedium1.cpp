@@ -28,7 +28,7 @@ int main()
 	//确定随机数的范围
 	uniform_int_distribution<unsigned> u(0, 100);
 	default_random_engine e;
-	vector<int> nums1 = { 2, 7, 13, 19 };
+	vector<int> nums1 = { 125, 146, 125, 252, 226, 25, 24, 308, 50 };
 	vector<int> nums2 = { 3, 4, 5, 1, 2 };
 	int nums[7] = {0};
 	for (int i = 0; i < 7;i++)
@@ -41,7 +41,7 @@ int main()
 		cout << *iter << " ";
 	}
 	cout << endl;
-	s_ptr->nthSuperUglyNumber(12, nums1);
+	s_ptr->coinChange(nums1, 8402);
 	system("pause");
 	return 0;
 }
