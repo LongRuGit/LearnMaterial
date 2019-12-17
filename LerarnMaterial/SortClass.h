@@ -1,7 +1,7 @@
 #ifndef SORTCLASS_H
 #define SORTCLASS_H
 #include "Common.h"
-namespace Sort{
+namespace SortSequence{
 	class SortClass
 	{
 	public:
@@ -99,8 +99,9 @@ namespace Sort{
 			swap(a[leftCur], a[rightCur]);
 		}
 		//∑≈÷√÷ßµ„
-		a[leftEnd] = a[rightCur];
-		a[rightCur] = priVot;
+		swap(a[leftEnd], a[rightCur]);
+// 		a[leftEnd] = a[rightCur];
+// 		a[rightCur] = priVot;
 		QuickSort(a, leftEnd, rightCur - 1);
 		QuickSort(a, rightCur + 1, rightEnd);
 	}

@@ -4039,3 +4039,162 @@ int Solution::coinChange(vector<int>& coins, int amount)
 	}
 	return dp[amount]>amount?-1:dp[amount];
 }
+
+int Solution::mincostTickets(vector<int>& days, vector<int>& costs)
+{
+	if (days.empty())
+		return 0;
+	std::vector<int> dp(days[days.size() - 1] + 1, -1);
+	for (auto &it:days)
+	{
+		dp[it] = 0;
+	}
+	dp[0] = 0;
+	for (int i = 1; i < dp.size();++i)
+	{
+		//只有当天需要购票才判断
+		if (dp[i]!=-1)
+		{
+			int a = dp[i - 1] + costs[0], b = INT_MAX, c = INT_MAX;
+			if (i>=7)
+			{
+				b = dp[i - 7] + costs[1];
+			}
+			else
+			{
+				b = costs[1];
+			}
+			if (i>=30)
+			{
+				c = dp[i - 30] + costs[2];
+			}
+			else
+			{
+				c = costs[2];
+			}
+			dp[i] = min(a, min(b, c));
+		}
+		else
+		{
+			dp[i] = dp[i - 1];
+		}
+	}
+	return dp[dp.size()-1];
+}
+
+void Solution::wiggleSort(vector<int>& nums)
+{
+	if (nums.empty())
+	{
+		return;
+	}
+// 	sort(nums.begin(), nums.end());
+// 	auto numVec = nums;
+// 	int ipos = nums.size() % 2 == 0 ? nums.size() / 2 : (nums.size() + 1 )/ 2;
+// 	//要让相邻的元素尽可能的远离，避免重复元素在一起
+// 	reverse(numVec.begin(), numVec.begin() + ipos);
+// 	reverse(numVec.begin() + ipos, numVec.end());
+// 	for (int i = 0; i < nums.size(); i += 2)
+// 	{
+// 		nums[i] = numVec[i/2];
+// 		if (i+1<nums.size())
+// 		{
+// 			nums[i + 1] = numVec[ipos++];
+// 		}
+// 	}
+	auto midPtr = nums.begin() + nums.size() / 2;
+	nth_element(nums.begin(), midPtr, nums.end());
+	int mid = *midPtr;
+	int i = 0, j = 0, k = nums.size()-1;
+	//3路快排
+	while (j<k)
+	{
+		if (nums[j]>mid)
+		{
+			swap(nums[j], nums[k--]);
+		}
+		else if (nums[j]<mid)
+		{
+			swap(nums[i], nums[j]);
+			++i;
+			++j;
+		}
+		else
+		{
+			++j;
+		}
+	}
+	if (nums.size()%2)
+	{
+		++midPtr;
+	}
+	vector<int> vec1(nums.begin(), midPtr);
+	vector<int> vec2(midPtr, nums.end());
+	for (int i = 0; i <vec1.size(); ++i)
+	{
+		nums[2 * i] = vec1[vec1.size()-i-1];
+	}
+	for (int i = 0; i < vec2.size(); ++i)
+	{
+		nums[2 * i+1] = vec2[vec2.size() - i - 1];
+	}
+}
+
+ListNode* Solution::oddEvenList(ListNode* head)
+{
+	if (!head)
+	{
+		return head;
+	}
+	ListNode *headOdd = new ListNode(0);
+	ListNode *headEven = new ListNode(0);
+	ListNode *preOdd = headOdd;
+	ListNode *preEven = headEven;
+	int iNumber = 1;
+	while (head)
+	{
+		if (iNumber%2)
+		{
+			preOdd->next = head;
+			preOdd = head;
+		}
+		else
+		{
+			preEven->next = head;
+			preEven = head;
+		}
+		++iNumber;
+		head = head->next;
+	}
+	preEven->next = NULL;
+	preOdd->next = headEven->next;
+	return headOdd->next;
+}
+
+bool Solution::isValidSerialization(string preorder)
+{
+	if (preorder.empty())
+		return false;
+	int iCount = 1;
+	//树的定义，入度要等于出度,计数结果要大于0
+	//访问每个逗号前的数，为#号-1，为数字+1
+	for (int i = 0; i < preorder.size(); ++i)
+	{
+		if (preorder[i+1]==','||preorder[i+1]=='\0')
+		{
+			if (preorder[i] == '#')
+			{
+				--iCount;
+				if (iCount ==0&&i!=preorder.size()-1)
+				{
+					return false;
+				}
+			}
+			else
+			{
+				++iCount;
+			}
+		}
+	}
+	return iCount==0;
+}

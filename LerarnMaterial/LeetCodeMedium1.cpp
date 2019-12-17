@@ -28,20 +28,26 @@ int main()
 	//确定随机数的范围
 	uniform_int_distribution<unsigned> u(0, 100);
 	default_random_engine e;
-	vector<int> nums1 = { 125, 146, 125, 252, 226, 25, 24, 308, 50 };
+	vector<int> nums1 = { 1, 1, 2, 1, 2, 2, 1,5,6,7,8,9,-1,-2,-5};
 	vector<int> nums2 = { 3, 4, 5, 1, 2 };
 	int nums[7] = {0};
 	for (int i = 0; i < 7;i++)
 	{
 		nums[i] = u(e);
 	}
-	unique_ptr<Sort::SortClass> uniSolt_ptr;
-	for (auto iter = begin(nums); iter != end(nums); ++iter)
+	unique_ptr<SortSequence::SortClass> uniSolt_ptr;
+	int pNum[15] = { 1, 1, 2, 1, 2, 2, 1, 5, 6, 7, 8, 9, -1, -2, -5 };
+	for (int i = 0; i < nums1.size();++i)
+	{
+		pNum[i] = nums1[i];
+	}
+	uniSolt_ptr->QuickSort(pNum, nums1.size());
+	for (auto iter = begin(pNum); iter != end(pNum); ++iter)
 	{
 		cout << *iter << " ";
 	}
 	cout << endl;
-	s_ptr->coinChange(nums1, 8402);
+	s_ptr->wiggleSort(nums1);
 	system("pause");
 	return 0;
 }

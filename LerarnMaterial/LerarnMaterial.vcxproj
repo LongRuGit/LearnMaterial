@@ -75,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\计算机\C++.txt" />
+    <Text Include="..\计算机\动态规划.txt" />
     <Text Include="..\计算机\操作系统.txt" />
     <Text Include="..\计算机\计算机网络.txt" />
   </ItemGroup>

@@ -1,11 +1,11 @@
 #include "SortClass.h"
 
 
-Sort::SortClass::SortClass()
+SortSequence::SortClass::SortClass()
 {
 }
 
 
-Sort::SortClass::~SortClass()
+SortSequence::SortClass::~SortClass()
 {
 }
