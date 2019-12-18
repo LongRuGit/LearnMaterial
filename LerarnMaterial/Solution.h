@@ -1112,6 +1112,15 @@ public:
 	 日    期： 2019/12/17
 	******************************************************************************/
 	bool isValidSerialization(string preorder);
+	/******************************************************************************
+	 函数名称： findItinerary
+	 功能说明： 重新安排行程-332
+	 参    数： vector<vector<string>> & tickets 
+	 返 回 值： std::vector<std::string>
+	 作    者： Ru Long
+	 日    期： 2019/12/18
+	******************************************************************************/
+	vector<string> findItinerary(vector<vector<string>>& tickets);
 private:
 	int expandAroundCenter(const string &s, int left, int right);
 	template<typename T>

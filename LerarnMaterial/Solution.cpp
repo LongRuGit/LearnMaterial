@@ -4198,3 +4198,33 @@ bool Solution::isValidSerialization(string preorder)
 	}
 	return iCount==0;
 }
+
+std::vector<std::string> Solution::findItinerary(vector<vector<string>>& tickets)
+{
+	if (tickets.empty())
+	{
+		return{};
+	}
+	std::unordered_map<string, std::set<string>> outDegree;
+	for (auto &it : tickets)
+	{
+		outDegree[it[0]].insert(it[1]);
+	}
+	queue<string> que;
+	que.push("JFK");
+	std::vector<string> res;
+	while (!que.empty())
+	{
+		auto head = que.front();
+		res.push_back(head);
+		que.pop();
+		for (auto it = outDegree[head].begin(); it != outDegree[head].end();)
+		{
+			auto iter = it;
+			++it;
+			que.push(*iter);
+			outDegree[head].erase(iter);
+		}
+	}
+	return res;
+}
