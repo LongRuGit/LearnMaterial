@@ -4199,32 +4199,88 @@ bool Solution::isValidSerialization(string preorder)
 	return iCount==0;
 }
 
-std::vector<std::string> Solution::findItinerary(vector<vector<string>>& tickets)
+bool Solution::increasingTriplet(vector<int>& nums)
 {
-	if (tickets.empty())
+	if (nums.empty())
 	{
-		return{};
+		return false;
 	}
-	std::unordered_map<string, std::set<string>> outDegree;
-	for (auto &it : tickets)
+	//维护一个数组保存当前序列的最小值和次小值
+	std::vector<int> dp(2,INT_MAX);
+	for (int i = 0; i < nums.size();++i)
 	{
-		outDegree[it[0]].insert(it[1]);
-	}
-	queue<string> que;
-	que.push("JFK");
-	std::vector<string> res;
-	while (!que.empty())
-	{
-		auto head = que.front();
-		res.push_back(head);
-		que.pop();
-		for (auto it = outDegree[head].begin(); it != outDegree[head].end();)
+		if (nums[i]<=dp[0])
 		{
-			auto iter = it;
-			++it;
-			que.push(*iter);
-			outDegree[head].erase(iter);
+			dp[0] = nums[i];
+		}
+		else if (nums[i]<=dp[1])
+		{
+			dp[1] = nums[i];
+		}
+		else
+		{
+			return true;
 		}
 	}
-	return res;
+	return false;
+}
+unordered_map<TreeNode *, int> sumHash;
+int dfsRob(TreeNode* root)
+{
+	if (!root)
+	{
+		return 0;
+	}
+	if (sumHash.count(root))
+	{
+		return sumHash[root];
+	}
+	int res1 = root->val;
+	//偷这个节点
+	if (root->left)
+	{
+		res1 += dfsRob(root->left->left) + dfsRob(root->left->right);
+	}
+	if (root->right)
+	{
+		res1 += dfsRob(root->right->left) + dfsRob(root->right->right);
+	}
+	int res2 = dfsRob(root->left) + dfsRob(root->right);
+	sumHash[root] = max(res1, res2);
+	return sumHash[root];
+}
+
+int Solution::rob3(TreeNode* root)
+{
+	if (root==NULL)
+	{
+		return 0;
+	}
+	return dfsRob(root);
+}
+
+std::vector<int> Solution::countBits(int num)
+{
+	std::vector<int> dp(num+1,0);
+	for (int i = 1; i <= num;++i)
+	{
+		int itemp = i&(i - 1);
+		dp[i] = 1 + dp[itemp];
+	}
+	return dp;
+}
+
+int Solution::integerBreak(int n)
+{
+	//划分零钱的问题
+	std::vector<int> dp(n + 1, 1);
+	dp[1] = 1;
+	for (int i = 2; i <= n;++i)
+	{
+		for (int j = 1; j < i;++j)
+		{
+			dp[i] = max(dp[i], max(dp[j],j) * (i - j));
+		}
+	}
+	return dp[n];
 }
