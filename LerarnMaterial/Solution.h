@@ -1148,6 +1148,25 @@ public:
 	 日    期： 2019/12/19
 	******************************************************************************/
 	int integerBreak(int n);
+	/******************************************************************************
+	 函数名称： largestDivisibleSubset
+	 功能说明： 最大整除子集-368动态规划
+	 参    数： vector<int> & nums 
+	 返 回 值： std::vector<int>
+	 作    者： Ru Long
+	 日    期： 2019/12/20
+	******************************************************************************/
+	vector<int> largestDivisibleSubset(vector<int>& nums);
+	/******************************************************************************
+	 函数名称： superPow
+	 功能说明： 超级次方-372
+	 参    数： int a 
+	 参    数： vector<int> & b 
+	 返 回 值： int
+	 作    者： Ru Long
+	 日    期： 2019/12/20
+	******************************************************************************/
+	int superPow(int a, vector<int>& b);
 private:
 	int expandAroundCenter(const string &s, int left, int right);
 	template<typename T>

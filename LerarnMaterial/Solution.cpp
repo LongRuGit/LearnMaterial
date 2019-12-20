@@ -4284,3 +4284,48 @@ int Solution::integerBreak(int n)
 	}
 	return dp[n];
 }
+
+std::vector<int> Solution::largestDivisibleSubset(vector<int>& nums)
+{
+	if (nums.empty())
+	{
+		return{};
+	}
+	sort(nums.begin(), nums.end());
+	int isize = nums.size();
+	std::vector<int> dp(isize, 1);
+	std::vector<int> path(isize, -1);
+	int maxLen = 0;
+	int iMaxPos = -1;
+	for (int i = 0; i < nums.size();++i)
+	{
+		for (int j = 0; j < i;++j)
+		{
+			if (nums[i]%nums[j]==0)
+			{
+				if (dp[i] < dp[j] + 1)
+				{
+					dp[i] = dp[j] + 1;
+					path[i] = j;
+				}
+			}
+		}
+		if (dp[i]>maxLen)
+		{
+			maxLen = dp[i];
+			iMaxPos = i;
+		}
+	}
+	std::vector<int> res;
+	while (iMaxPos!=-1)
+	{
+		res.push_back(nums[iMaxPos]);
+		iMaxPos = path[iMaxPos];
+	}
+	return res;
+}
+
+int Solution::superPow(int a, vector<int>& b)
+{
+	return 0;
+}
