@@ -4324,8 +4324,31 @@ std::vector<int> Solution::largestDivisibleSubset(vector<int>& nums)
 	}
 	return res;
 }
-
+//泛型快速幂非递归版本带取模
+template<typename T,typename U>
+T qpow(T x, U n,int mod)
+{
+	//转换成二进制计算
+	T ans = T(1);
+	while (n)
+	{
+		if (n&1)
+		{
+			ans = (ans*x) % mod;
+		}
+		x = (x*x)%mod;
+		n >>=1;
+	}
+	return ans;
+}
 int Solution::superPow(int a, vector<int>& b)
 {
-	return 0;
+	int x = a % 1337;
+	int res = 1;
+	for (auto it = b.rbegin(); it != b.rend();++it)
+	{
+		res = (res*qpow(x, *it, 1337))%1337;
+		x = qpow(x, 10, 1337) % 1337;
+	}
+	return res;
 }
