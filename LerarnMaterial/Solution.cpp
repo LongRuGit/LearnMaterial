@@ -4352,3 +4352,26 @@ int Solution::superPow(int a, vector<int>& b)
 	}
 	return res;
 }
+
+int Solution::getMoneyAmount(int n)
+{
+	//动态规划思想，用二分查找不一定能得到最后的最优解，所以需要动态规划的思想
+	//dp[i][j]表示从数i到数j之间进行猜测，最优划分查找下的最小的花费（保证最大值最小）
+	//动态规划的转移方程 dp[i][j]= min(k+max(dp[i][k-1],dp[k+1][j]) k在闭区间[i+1,j-1]中
+	std::vector<std::vector<int>> dp(n + 1, std::vector<int>(n + 1, 0));
+	for (int len = 2; len <= n;++len)
+	{
+		for (int start = 1; start <= n - len + 1;++start)
+		{
+			int minRes = INT_MAX;
+			//用到了一个小技巧，就是当k小于[i,j]的中间值时，总会是右边区间的值更大（进而选取右边区间）
+			//，为了最小化最大值，从中间位置开始进行遍历
+			for (int pro = start + (len - 1) / 2; pro < start + len - 1;++pro)
+			{
+				minRes = min(minRes, pro + max(dp[start][pro - 1], dp[pro + 1][start + len - 1]));
+			}
+			dp[start][start + len - 1] = minRes;
+		}
+	}
+	return dp[1][n];
+}

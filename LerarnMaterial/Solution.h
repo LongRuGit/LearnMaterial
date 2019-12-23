@@ -1167,6 +1167,15 @@ public:
 	 日    期： 2019/12/20
 	******************************************************************************/
 	int superPow(int a, vector<int>& b);
+	/******************************************************************************
+	 函数名称： getMoneyAmount
+	 功能说明： 猜数字大小-375 动态规划
+	 参    数： int n 
+	 返 回 值： int
+	 作    者： Ru Long
+	 日    期： 2019/12/23
+	******************************************************************************/
+	int getMoneyAmount(int n);
 private:
 	int expandAroundCenter(const string &s, int left, int right);
 	template<typename T>
