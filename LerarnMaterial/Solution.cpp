@@ -4358,20 +4358,183 @@ int Solution::getMoneyAmount(int n)
 	//动态规划思想，用二分查找不一定能得到最后的最优解，所以需要动态规划的思想
 	//dp[i][j]表示从数i到数j之间进行猜测，最优划分查找下的最小的花费（保证最大值最小）
 	//动态规划的转移方程 dp[i][j]= min(k+max(dp[i][k-1],dp[k+1][j]) k在闭区间[i+1,j-1]中
-	std::vector<std::vector<int>> dp(n + 1, std::vector<int>(n + 1, 0));
-	for (int len = 2; len <= n;++len)
+	std::vector<std::vector<int>> dp(n + 2, std::vector<int>(n + 1));
+	for (int len = 2; len <= n; ++len)
 	{
-		for (int start = 1; start <= n - len + 1;++start)
+		for (int start = 1; start + len - 1 <= n; ++start)
 		{
+			int right = start + len - 1;
 			int minRes = INT_MAX;
-			//用到了一个小技巧，就是当k小于[i,j]的中间值时，总会是右边区间的值更大（进而选取右边区间）
-			//，为了最小化最大值，从中间位置开始进行遍历
-			for (int pro = start + (len - 1) / 2; pro < start + len - 1;++pro)
+			for (int mid = start + (len - 1) / 2; mid < right; ++mid)
 			{
-				minRes = min(minRes, pro + max(dp[start][pro - 1], dp[pro + 1][start + len - 1]));
+				minRes = min(minRes, mid + max(dp[start][mid - 1], dp[mid + 1][right]));
 			}
-			dp[start][start + len - 1] = minRes;
+			dp[start][right] = minRes;
 		}
 	}
 	return dp[1][n];
+}
+
+int Solution::wiggleMaxLength(vector<int>& nums)
+{
+	if (nums.size()<=1)
+	{
+		return nums.size();
+	}
+// 	int res = INT_MIN;
+// 	std::vector<std::vector<int>>dp(nums.size(), std::vector<int>(2,1));
+// 	for (int i = 1; i < nums.size();++i)
+// 	{
+// 		for (int j = 0; j < i;++j)
+// 		{
+// 			if (nums[i]>nums[j])
+// 			{
+// 				dp[i][1] = max(dp[i][1], 1 + dp[j][0]);
+// 			}
+// 			else if (nums[i]<nums[j])
+// 			{
+// 				dp[i][0] = max(dp[i][0], 1 + dp[j][1]);
+// 			}
+// 		}
+// 		res = max(res, max(dp[i][0], dp[i][1]));
+// 	}
+// 	return res;
+	int upPre = 1, downPre = 1;
+	for (int i = 1; i < nums.size();++i)
+	{
+		if (nums[i]>nums[i-1])
+		{
+			upPre=downPre+1;
+		}
+		else if (nums[i]<nums[i-1])
+		{
+			downPre=upPre+1;
+		}
+	}
+	return max(downPre, upPre);
+}
+
+int Solution::combinationSum4(vector<int>& nums, int target)
+{
+	if (nums.empty())
+	{
+		return 0;
+	}
+	std::vector<unsigned long long> dp(target + 1);
+	dp[0] = 1;
+	for (int i = 0; i <= target;++i)
+	{
+		for (auto &it:nums)
+		{
+			if (i>=it)
+			{
+				dp[i] += dp[i - it];
+			}
+		}
+	}
+	return dp[target];
+}
+int SearchTwo(vector<int>& row, int target) 
+{
+	int lo = 0, hi = row.size();
+	while (lo < hi)
+	{
+		int mid = lo + (hi - lo >> 1);
+		if (row[mid] > target) 
+		{
+			hi = mid;
+		}
+		else 
+		{
+			lo = mid + 1;
+		}
+	}
+	return lo;
+}
+int Solution::kthSmallest378(vector<vector<int>>& matrix, int k)
+{
+	//多路归并
+// 	if (matrix.empty())
+// 	{
+// 		return -1;
+// 	}
+// 	std::vector<int> dp(matrix.size());
+// 	int res=0;
+// 	while (k--)
+// 	{
+// 		int minNum= INT_MAX;
+// 		int minPos = 0;
+// 		for (int i = 0; i < matrix.size();++i)
+// 		{
+// 			if (dp[i]==matrix.size())
+// 			{
+// 				continue;
+// 			}
+// 			if (minNum>matrix[i][dp[i]])
+// 			{
+// 				minNum = matrix[i][dp[i]];
+// 				minPos = i;
+// 			}
+// 		}
+// 		++dp[minPos];
+// 		res = minNum;
+// 	}
+// 	return res;
+// 	1.找出二维矩阵中最小的数left，最大的数right，那么第k小的数必定在left~right之间
+// 	2.mid = (left + right) / 2；在二维矩阵中寻找小于等于mid的元素个数count
+//  3.若这个count小于k，表明第k小的数在右半部分且不包含mid，即left = mid + 1, right = right，又保证了第k小的数在left~right之间
+// 	4.若这个count大于k，表明第k小的数在左半部分且可能包含mid，即left = left, right = mid，又保证了第k小的数在left~right之间
+// 	5.因为每次循环中都保证了第k小的数在left~right之间，当left == right时，第k小的数即被找出，等于right
+	//二分查找
+	if (matrix.empty())
+	{
+		return -1;
+	}
+	int left = matrix[0][0], right = matrix[matrix.size() - 1][matrix.size() - 1];
+	while (left<right)
+	{
+		// 每次循环都保证第K小的数在start~end之间，当start==end，第k小的数就是start
+		//右移符号优先级低
+		int mid = left + (right - left >> 1);
+		int icount = 0;
+		for (auto &it:matrix)
+		{
+			icount += SearchTwo(it, mid);
+		}
+		if (k<=icount)
+		{
+			right = mid;
+		}
+		else
+		{
+			left = mid + 1;
+		}
+	}
+	return left;
+}
+void DFSLex(std::vector<int> &res, int k, int n)
+{
+	if (k>n)
+	{
+		return;
+	}
+	if (k!=0)
+	{
+		res.push_back(k);
+		return;
+	}
+	for (int i = 0; i <= 9;++i)
+	{
+		if (10*k+i>0)
+		{
+			DFSLex(res, 10 * k + i, n);
+		}
+	}
+}
+
+std::vector<int> Solution::lexicalOrder(int n)
+{
+	std::vector<int> res;
+	DFSLex(res, 0, n);
+	return res;
 }

@@ -29,7 +29,7 @@ int main()
 	uniform_int_distribution<unsigned> u(0, 100);
 	default_random_engine e;
 	vector<int> nums1 = { 1, 1, 2, 1, 2, 2, 1,5,6,7,8,9,-1,-2,-5};
-	vector<int> nums2 = { 3, 4, 5, 1, 2 };
+	vector<int> nums2 = { 1, 2, 3 };
 	int nums[7] = {0};
 	for (int i = 0; i < 7;i++)
 	{
@@ -48,6 +48,7 @@ int main()
 	}
 	cout << endl;
 	s_ptr->wiggleSort(nums1);
+	s_ptr->combinationSum4(nums2, 4);
 	system("pause");
 	return 0;
 }
