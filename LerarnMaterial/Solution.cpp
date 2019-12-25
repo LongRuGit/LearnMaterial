@@ -4538,3 +4538,28 @@ std::vector<int> Solution::lexicalOrder(int n)
 	DFSLex(res, 0, n);
 	return res;
 }
+
+int Solution::lastRemaining(int n)
+{
+	int start = 1, end = n;
+	int step = 1;
+	bool leftToright = true;
+	while (start < step)
+	{
+		int count = (end - start) / step + 1;
+		if (leftToright)
+		{
+			start += step;
+			end -= step*(count % 2);
+		}
+		else
+		{
+			start += step*(count % 2);
+			end-=step;
+		}
+		step *= 2;
+		leftToright = !leftToright;
+	}
+	return start;
+}
+

@@ -1214,6 +1214,15 @@ public:
 	 日    期： 2019/12/24
 	******************************************************************************/
 	vector<int> lexicalOrder(int n);
+	/******************************************************************************
+	 函数名称： lastRemaining
+	 功能说明： 消除游戏-390
+	 参    数： int n 
+	 返 回 值： int
+	 作    者： Ru Long
+	 日    期： 2019/12/25
+	******************************************************************************/
+	int lastRemaining(int n);
 private:
 	int expandAroundCenter(const string &s, int left, int right);
 	template<typename T>
