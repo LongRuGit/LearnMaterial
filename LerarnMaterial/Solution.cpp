@@ -4678,16 +4678,61 @@ std::string Solution::decodeString(string s)
 	}
 	stack<int> stacInt;
 	stack<string> stacStr;
-	for (int i = 0; i < s.size();++i)
+	for (int i = 0; i < s.size();)
 	{
 		if (isdigit(s[i]))
 		{
-			int ipos = i;
-			while (isdigit(s[i]))
+			int iNumber = 0;
+			while (i < s.size() && isdigit(s[i]))
 			{
-
+				iNumber = 10 * iNumber + s[i] - '0';
+				++i;
 			}
+			stacInt.push(iNumber);
+		}
+		else if (s[i] == ']')
+		{
+			int cnt = stacInt.top();
+			stacInt.pop();
+			std::string strTemp;
+			while (stacStr.top()!="[")
+			{
+				strTemp = stacStr.top() + strTemp;
+				stacStr.pop();
+			}
+			stacStr.pop();
+			string strRes;
+			while (cnt--)
+			{
+				strRes += strTemp;
+			}
+			stacStr.push(strRes);
+			++i;
+		}
+		else if (isalpha(s[i]))
+		{
+			std::string resT;
+			while (i < s.size() && isalpha(s[i]))
+			{
+				resT += s[i];
+				++i;
+			}
+			stacStr.push(resT);
+		}
+		else if (s[i] == '[')
+		{
+			std::string p;
+			p = s[i];
+			stacStr.push(p);
+			++i;
 		}
 	}
+	std::string res;
+	while (!stacStr.empty())
+	{
+		res = stacStr.top() + res;
+		stacStr.pop();
+	}
+	return res;
 }
 
