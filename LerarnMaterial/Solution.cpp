@@ -4563,3 +4563,131 @@ int Solution::lastRemaining(int n)
 	return start;
 }
 
+bool Solution::validUtf8(vector<int>& data)
+{
+	if (data.empty())
+	{
+		return false;
+	}
+	const int length = data.size();
+	//0b11111000=248
+	//0b11110000=240
+	//0b11100000=224
+	//0b11000000=192
+	//0b10000000=128
+	for (int i = 0; i < length;)
+	{
+		int iTemp = data[i];
+		int cnt = 0;
+		if ((iTemp & 128) == 0)
+		{
+			cnt = 0;
+		}
+		else if ((iTemp & 224) == 192)
+		{
+			cnt = 1;
+		}
+		else if ((iTemp & 240) == 224)
+		{
+			cnt = 2;
+		}
+		else if ((iTemp & 248) == 240)
+		{
+			cnt = 3;
+		}
+		else
+		{
+			return false;
+		}
+		int j = i + 1;
+		while (cnt&&j<length)
+		{
+			if ((data[j] & 192) == 128)
+			{
+				++j;
+			}
+			else
+			{
+				return false;
+			}
+			--cnt;
+		}
+		if (cnt!=0)
+		{
+			return false;
+		}
+		i = j;
+	}
+	return true;
+}
+
+std::string Solution::decodeString(string s)
+{
+// 	if (s.empty())
+// 	{
+// 		return s;
+// 	}
+// 	if (s.find("[")==std::string::npos)
+// 	{
+// 		return s;
+// 	}
+// 	std::string res;
+// 	//ÕÒµ½×óÀ¨ºÅ
+// 	int left = s.find("[");
+// 	int iNumber = 0;
+// 	for (; iNumber < left; ++iNumber)
+// 	{
+// 		if (isalpha(s[iNumber]))
+// 		{
+// 			res += s[iNumber];
+// 		}
+// 		else
+// 		{
+// 			break;
+// 		}
+// 	}
+// 	int cnt = 1;
+// 	int right = left+1;
+// 	//ÕÒµ½Æ¥ÅäµÄÓÒÀ¨ºÅ
+// 	for (; right < s.size(); ++right)
+// 	{
+// 		if (s[right] == '[')
+// 		{
+// 			++cnt;
+// 		}
+// 		if (s[right] == ']')
+// 		{
+// 			--cnt;
+// 		}
+// 		if (cnt==0)
+// 		{
+// 			break;
+// 		}
+// 	}
+// 	int iTemp = atoi(s.substr(iNumber, left-iNumber).c_str());
+// 	std::string strTemp = decodeString(s.substr(left+1, right - left-1));
+// 	while (iTemp--)
+// 	{
+// 		res += strTemp;
+// 	}
+// 	res += decodeString(s.substr(right+1, s.size() - right-1));
+// 	return res;
+	if (s.empty())
+	{
+		return s;
+	}
+	stack<int> stacInt;
+	stack<string> stacStr;
+	for (int i = 0; i < s.size();++i)
+	{
+		if (isdigit(s[i]))
+		{
+			int ipos = i;
+			while (isdigit(s[i]))
+			{
+
+			}
+		}
+	}
+}
+
