@@ -47,7 +47,7 @@ int main()
 		cout << *iter << " ";
 	}
 	cout << endl;
-	s_ptr->decodeString("3[a2[c]]");
+	s_ptr->longestSubstring("aaabb", 3);
 	system("pause");
 	return 0;
 }

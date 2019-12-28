@@ -4736,3 +4736,86 @@ std::string Solution::decodeString(string s)
 	return res;
 }
 
+int Solution::longestSubstring(string s, int k)
+{
+	if (s.size()<k)
+	{
+		return 0;
+	}
+	std::vector<int> dp(26, 0);
+	//不满足出现次数大于等于k的
+	for (auto &it:s)
+	{
+		++dp[it - 'a'];
+	}
+	int mid = 0;
+	while (mid<s.size()&&dp[s[mid]-'a']>=k)
+	{
+		++mid;
+	}
+	if (mid==s.size())
+	{
+		return mid;
+	}
+	int left = longestSubstring(s.substr(0, mid), k);
+	while (mid<s.size()&&dp[s[mid]-'a']<k)
+	{
+		++mid;
+	}
+	int right = longestSubstring(s.substr(mid), k);
+	return max(left, right);
+}
+
+int Solution::maxRotateFunction(vector<int>& A)
+{
+	if (A.empty())
+	{
+		return 0;
+	}
+	long long pre = 0;
+	const int length = A.size();
+	long long sum = 0;
+	for (int i = 0; i <length; ++i)
+	{
+		pre += i*A[i];
+		sum += A[i];
+	}
+	long long res = pre;
+	for (int j = 1; j < length; ++j)
+	{
+		long long itemp = pre + sum - (long long)length*A[length - j];
+		res = max(itemp, res);
+		pre = itemp;
+	}
+	return res;
+}
+unordered_map<long long, int> hashInCement;
+int Solution::integerReplacement(int n)
+{
+	if (n==1)
+	{
+		return 0;
+	}
+	if (hashInCement.count(n))
+	{
+		return hashInCement[n];
+	}
+	int res = 0;
+	if (n%2)
+	{
+		if (n==INT_MAX)
+		{
+			res=1 + min(integerReplacement(n - 1),1+integerReplacement(n/2+1));
+		}
+		else
+		{
+			res = 1 + min(integerReplacement(n - 1), integerReplacement(n + 1));
+		}
+	}
+	else
+	{
+		res = 1 + integerReplacement(n / 2);
+	}
+	hashInCement[n] = res;
+	return res;
+}
