@@ -1262,13 +1262,24 @@ public:
 	int maxRotateFunction(vector<int>& A);
 	/******************************************************************************
 	 函数名称： integerReplacement
-	 功能说明： 最小替换次数
+	 功能说明： 最小替换次数-397
 	 参    数： int n 
 	 返 回 值： int
 	 作    者： Ru Long
 	 日    期： 2019/12/28
 	******************************************************************************/
 	int integerReplacement(int n);
+	/******************************************************************************
+	 函数名称： calcEquation
+	 功能说明： 除法求值-399
+	 参    数： vector<vector<string>> & equations 
+	 参    数： vector<double> & values 
+	 参    数： vector<vector<string>> & queries 
+	 返 回 值： std::vector<double>
+	 作    者： Ru Long
+	 日    期： 2019/12/29
+	******************************************************************************/
+	vector<double> calcEquation(vector<vector<string>>& equations, vector<double>& values, vector<vector<string>>& queries);
 private:
 	int expandAroundCenter(const string &s, int left, int right);
 	template<typename T>
@@ -1332,5 +1343,4 @@ T Solution::Select(T a[], int leftEnd, int rightEnd, int k)
 	}
 	return Select(a,leftEnd,rightCur-1,k);
 }
-
 #endif 

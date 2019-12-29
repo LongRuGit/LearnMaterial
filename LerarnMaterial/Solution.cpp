@@ -4819,3 +4819,65 @@ int Solution::integerReplacement(int n)
 	hashInCement[n] = res;
 	return res;
 }
+
+std::vector<double> Solution::calcEquation(vector<vector<string>>& equations, vector<double>& values, vector<vector<string>>& queries)
+{
+	unordered_map<string, int> store;//存储对应的string对应的节点index
+	if (equations.empty())
+	{
+		return values;
+	}
+	std::set<string> setSize;
+	for (auto &it : equations)
+	{
+		for (auto &iter : it)
+		{
+			setSize.insert(iter);
+		}
+	}
+	int index = 0;
+	const int iLine = 99999;
+	const int length = setSize.size();
+	vector<vector<double>> graph(length, std::vector<double>(length, iLine));
+	//此时1~index-1是所有节点的序号，进行Floyd算法求解答案
+	for (int i = 0; i < equations.size(); ++i)
+	{
+		if (store.count(equations[i][0]) == 0)
+		{
+			store[equations[i][0]] = index++;
+		}
+		if (store.count(equations[i][1]) == 0)
+		{
+			store[equations[i][1]] = index++;
+		}
+		graph[store[equations[i][0]]][store[equations[i][1]]] = values[i];
+		graph[store[equations[i][1]]][store[equations[i][0]]] = 1.0 / values[i];
+	}
+	for (int i = 0; i < index; ++i)
+	{
+		for (int j = 0; j < index; ++j)
+		{
+			for (int k = 0; k < index; ++k)
+			{
+				if (graph[i][k] != iLine&&graph[k][j] != iLine&&graph[i][j] == iLine)
+				{
+					graph[i][j] = graph[i][k] * graph[k][j];
+				}
+			}
+		}
+	}
+	std::vector<double> res(queries.size(), -1);
+	for (int i = 0; i < queries.size(); ++i)
+	{
+		if (store.count(queries[i][0]) && store.count(queries[i][1]))
+		{
+			int a = store[queries[i][0]];
+			int b = store[queries[i][1]];
+			if (graph[a][b] != iLine)
+			{
+				res[i] = graph[a][b];
+			}
+		}
+	}
+	return res;
+}
