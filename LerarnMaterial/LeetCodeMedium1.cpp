@@ -48,6 +48,7 @@ int main()
 	}
 	cout << endl;
 	s_ptr->longestSubstring("aaabb", 3);
+	s_ptr->removeKdigits("10", 1);
 	system("pause");
 	return 0;
 }

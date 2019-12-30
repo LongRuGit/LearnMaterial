@@ -1282,13 +1282,23 @@ public:
 	vector<double> calcEquation(vector<vector<string>>& equations, vector<double>& values, vector<vector<string>>& queries);
 	/******************************************************************************
 	 函数名称： longestConsecutive
-	 功能说明： 最长连续序列-128
+	 功能说明： 最长连续序列-128并查集
 	 参    数： vector<int> & nums 
 	 返 回 值： int
 	 作    者： Ru Long
 	 日    期： 2019/12/30
 	******************************************************************************/
 	int longestConsecutive(vector<int>& nums);
+	/******************************************************************************
+	 函数名称： removeKdigits
+	 功能说明： 移除掉k个数字使剩下的数字最小-402递增栈
+	 参    数： string num 
+	 参    数： int k 
+	 返 回 值： std::string
+	 作    者： Ru Long
+	 日    期： 2019/12/30
+	******************************************************************************/
+	string removeKdigits(string num, int k);
 private:
 	int expandAroundCenter(const string &s, int left, int right);
 	template<typename T>

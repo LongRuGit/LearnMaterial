@@ -4984,3 +4984,26 @@ int Solution::longestConsecutive(vector<int>& nums)
 	}
 	return res;
 }
+
+std::string Solution::removeKdigits(string num, int k)
+{
+	if (num.size() <= k)
+		return "0";
+	std::string res;
+	const int iLength = num.size() - k;
+	for (auto &it:num)
+	{
+		while (k&&!res.empty() && res.back() > it)
+		{
+			res.pop_back();
+			--k;
+		}
+		res.push_back(it);
+	}
+	res.resize(iLength);
+	while (!res.empty() && res[0] == '0')
+	{
+		res.erase(res.begin());
+	}
+	return res.empty() ? "0" : res;
+}
