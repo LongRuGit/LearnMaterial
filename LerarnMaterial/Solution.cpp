@@ -4819,65 +4819,168 @@ int Solution::integerReplacement(int n)
 	hashInCement[n] = res;
 	return res;
 }
+class unionSet
+{
+public:
+	void merge(const string&a, const string&b, double v)
+	{
+		init(a);
+		init(b);
+		string aa = GetFather(a), bb = GetFather(b);
+		fa[bb] = aa;
+		val[bb] = val[a] * 1.0 / val[b] * v;
+	}
+	double ask(const string &a, const string &b)
+	{
+		if (!exist(a)||!exist(b))
+		{
+			return -1;
+		}
+		string aa = GetFather(a), bb = GetFather(b);
+		if (aa!=bb)
+		{
+			return -1;
+		}
+		return val[b] * 1.0 / val[a];
+	}
+
+private:
+	unordered_map<string, string> fa;
+	unordered_map<string, double>  val;
+
+	bool exist(const string &x){ return fa.count(x)!=0;}
+	void init(const string &x)
+	{
+		if (exist(x))
+		{
+			return;
+		}
+		val[x] = 1;
+		fa[x] = x;
+	}
+	//并查集路径压缩
+	string GetFather(const string&x)
+	{
+		if (fa[x] == x)
+		{
+			return x;
+		}
+		else
+		{
+			string f = GetFather(fa[x]);
+			val[x] = val[x] * val[fa[x]];
+			return fa[x] = f;
+		}
+	}
+};
 
 std::vector<double> Solution::calcEquation(vector<vector<string>>& equations, vector<double>& values, vector<vector<string>>& queries)
 {
-	unordered_map<string, int> store;//存储对应的string对应的节点index
-	if (equations.empty())
+// 	unordered_map<string, int> store;//存储对应的string对应的节点index
+// 	if (equations.empty())
+// 	{
+// 		return values;
+// 	}
+// 	std::set<string> setSize;
+// 	for (auto &it : equations)
+// 	{
+// 		for (auto &iter : it)
+// 		{
+// 			setSize.insert(iter);
+// 		}
+// 	}
+// 	int index = 0;
+// 	const int iLine = 99999;
+// 	const int length = setSize.size();
+// 	vector<vector<double>> graph(length, std::vector<double>(length, iLine));
+// 	//此时1~index-1是所有节点的序号，进行Floyd算法求解答案
+// 	for (int i = 0; i < equations.size(); ++i)
+// 	{
+// 		if (store.count(equations[i][0]) == 0)
+// 		{
+// 			store[equations[i][0]] = index++;
+// 		}
+// 		if (store.count(equations[i][1]) == 0)
+// 		{
+// 			store[equations[i][1]] = index++;
+// 		}
+// 		graph[store[equations[i][0]]][store[equations[i][1]]] = values[i];
+// 		graph[store[equations[i][1]]][store[equations[i][0]]] = 1.0 / values[i];
+// 	}
+// 	for (int i = 0; i < index; ++i)
+// 	{
+// 		for (int j = 0; j < index; ++j)
+// 		{
+// 			for (int k = 0; k < index; ++k)
+// 			{
+// 				if (graph[i][k] != iLine&&graph[k][j] != iLine&&graph[i][j] == iLine)
+// 				{
+// 					graph[i][j] = graph[i][k] * graph[k][j];
+// 				}
+// 			}
+// 		}
+// 	}
+// 	std::vector<double> res(queries.size(), -1);
+// 	for (int i = 0; i < queries.size(); ++i)
+// 	{
+// 		if (store.count(queries[i][0]) && store.count(queries[i][1]))
+// 		{
+// 			int a = store[queries[i][0]];
+// 			int b = store[queries[i][1]];
+// 			if (graph[a][b] != iLine)
+// 			{
+// 				res[i] = graph[a][b];
+// 			}
+// 		}
+// 	}
+// 	return res;
+	unionSet u;
+	for (int i = 0; i < equations.size();++i)
 	{
-		return values;
+		u.merge(equations[i][0], equations[i][1], values[i]);
 	}
-	std::set<string> setSize;
-	for (auto &it : equations)
+	std::vector<double> res;
+	for (int i = 0; i < queries.size();++i)
 	{
-		for (auto &iter : it)
+		res.push_back(u.ask(queries[i][0], queries[i][1]));
+	}
+	return res;
+}
+unordered_map<int, int> hashU;
+int GetFatherConsecutive(const int& element)
+{
+	if (hashU.count(element)==0)
+	{
+		return element;
+	}
+	if (hashU[element]!=element)
+	{
+		hashU[element] = GetFatherConsecutive(hashU[element]);
+	}
+	return hashU[element];
+}
+int Solution::longestConsecutive(vector<int>& nums)
+{
+	if (nums.empty())
+	{
+		return 0;
+	}
+	for (auto &it:nums)
+	{
+		hashU[it] = GetFatherConsecutive(it);
+		if (hashU.count(it-1))
 		{
-			setSize.insert(iter);
+			hashU[GetFatherConsecutive(it-1)] = GetFatherConsecutive(it);
+		}
+		if (hashU.count(it+1))
+		{
+			hashU[GetFatherConsecutive(it)] = GetFatherConsecutive(it + 1);
 		}
 	}
-	int index = 0;
-	const int iLine = 99999;
-	const int length = setSize.size();
-	vector<vector<double>> graph(length, std::vector<double>(length, iLine));
-	//此时1~index-1是所有节点的序号，进行Floyd算法求解答案
-	for (int i = 0; i < equations.size(); ++i)
+	int res = 0;
+	for (auto &it:nums)
 	{
-		if (store.count(equations[i][0]) == 0)
-		{
-			store[equations[i][0]] = index++;
-		}
-		if (store.count(equations[i][1]) == 0)
-		{
-			store[equations[i][1]] = index++;
-		}
-		graph[store[equations[i][0]]][store[equations[i][1]]] = values[i];
-		graph[store[equations[i][1]]][store[equations[i][0]]] = 1.0 / values[i];
-	}
-	for (int i = 0; i < index; ++i)
-	{
-		for (int j = 0; j < index; ++j)
-		{
-			for (int k = 0; k < index; ++k)
-			{
-				if (graph[i][k] != iLine&&graph[k][j] != iLine&&graph[i][j] == iLine)
-				{
-					graph[i][j] = graph[i][k] * graph[k][j];
-				}
-			}
-		}
-	}
-	std::vector<double> res(queries.size(), -1);
-	for (int i = 0; i < queries.size(); ++i)
-	{
-		if (store.count(queries[i][0]) && store.count(queries[i][1]))
-		{
-			int a = store[queries[i][0]];
-			int b = store[queries[i][1]];
-			if (graph[a][b] != iLine)
-			{
-				res[i] = graph[a][b];
-			}
-		}
+		res = max(res, GetFatherConsecutive(it) - it + 1);
 	}
 	return res;
 }

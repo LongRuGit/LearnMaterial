@@ -1271,7 +1271,7 @@ public:
 	int integerReplacement(int n);
 	/******************************************************************************
 	 函数名称： calcEquation
-	 功能说明： 除法求值-399
+	 功能说明： 除法求值-399并查集算法
 	 参    数： vector<vector<string>> & equations 
 	 参    数： vector<double> & values 
 	 参    数： vector<vector<string>> & queries 
@@ -1280,6 +1280,15 @@ public:
 	 日    期： 2019/12/29
 	******************************************************************************/
 	vector<double> calcEquation(vector<vector<string>>& equations, vector<double>& values, vector<vector<string>>& queries);
+	/******************************************************************************
+	 函数名称： longestConsecutive
+	 功能说明： 最长连续序列-128
+	 参    数： vector<int> & nums 
+	 返 回 值： int
+	 作    者： Ru Long
+	 日    期： 2019/12/30
+	******************************************************************************/
+	int longestConsecutive(vector<int>& nums);
 private:
 	int expandAroundCenter(const string &s, int left, int right);
 	template<typename T>
