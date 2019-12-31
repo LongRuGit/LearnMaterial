@@ -1299,6 +1299,15 @@ public:
 	 日    期： 2019/12/30
 	******************************************************************************/
 	string removeKdigits(string num, int k);
+	/******************************************************************************
+	 函数名称： reconstructQueue
+	 功能说明： 根据身高重建队列-406先排序后插入
+	 参    数： vector<vector<int>> & people 
+	 返 回 值： std::vector<std::vector<int>>
+	 作    者： Ru Long
+	 日    期： 2019/12/31
+	******************************************************************************/
+	vector<vector<int>> reconstructQueue(vector<vector<int>>& people);
 private:
 	int expandAroundCenter(const string &s, int left, int right);
 	template<typename T>

@@ -5007,3 +5007,25 @@ std::string Solution::removeKdigits(string num, int k)
 	}
 	return res.empty() ? "0" : res;
 }
+
+std::vector<std::vector<int>> Solution::reconstructQueue(vector<vector<int>>& people)
+{
+	if (people.empty())
+	{
+		return people;
+	}
+	std::vector<std::vector<int>> res;
+	//先排身高比较高的，相同身高按个数排，比它矮的就直接插入
+	sort(people.begin(), people.end(), [](const vector<int> &lhs, const vector<int>&rhs){
+		if (lhs[0]==rhs[0])
+		{
+			return lhs[1] < rhs[1];
+		}
+		return lhs[0] > rhs[0];
+	});
+	for (auto &it:people)
+	{
+		res.insert(res.begin() + it[1], it);
+	}
+	return res;
+}
