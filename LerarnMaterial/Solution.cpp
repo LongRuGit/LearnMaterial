@@ -5029,3 +5029,73 @@ std::vector<std::vector<int>> Solution::reconstructQueue(vector<vector<int>>& pe
 	}
 	return res;
 }
+
+int Solution::numberOfArithmeticSlices(vector<int>& A)
+{
+	if (A.empty())
+	{
+		return 0;
+	}
+	int sum = 0;
+	int pre = 0;
+	for (size_t i = 2; i < A.size();++i)
+	{
+		//因为重新判断的这3个数也构成了等差数列
+		if (A[i]-A[i-1]==A[i-1]-A[i-2])
+		{
+			pre += 1;
+			sum += pre;
+		}
+		else
+		{
+			pre = 0;
+		}
+	}
+	return sum;
+}
+
+bool Solution::canPartition(vector<int>& nums)
+{
+	if (nums.size()<2)
+	{
+		return false;
+	}
+	int sum = 0;
+	for (auto &it:nums)
+	{
+		sum += it;
+	}
+	if (sum%2)
+	{
+		return false;
+	}
+	int target = sum / 2;
+	const int len = nums.size();
+	//二维数组i代表前i个数，j代表价值
+	std::vector<std::vector<bool>> dp(len, std::vector<bool>(target + 1, false));
+	if (nums[0] <= target)
+	{
+		dp[0][nums[0]] = true;
+	}
+	for (int i = 1; i < len;++i)
+	{
+		for (int j = 0; j <= target;++j)
+		{
+			dp[i][j] = dp[i - 1][j];
+			if (nums[i]==j)
+			{
+				dp[i][j] = true;
+				continue;
+			}
+			if (nums[i]<j)
+			{
+				dp[i][j] = dp[i][j] || dp[i-1][j - nums[i]];
+			}
+		}
+		if (dp[i][target])
+		{
+			return true;
+		}
+	}
+	return dp[len - 1][target];
+}

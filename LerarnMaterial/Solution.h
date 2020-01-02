@@ -1308,6 +1308,24 @@ public:
 	 日    期： 2019/12/31
 	******************************************************************************/
 	vector<vector<int>> reconstructQueue(vector<vector<int>>& people);
+	/******************************************************************************
+	 函数名称： numberOfArithmeticSlices
+	 功能说明： 等差数列划分-413动态规划
+	 参    数： vector<int> & A 
+	 返 回 值： int
+	 作    者： Ru Long
+	 日    期： 2020/01/02
+	******************************************************************************/
+	int numberOfArithmeticSlices(vector<int>& A);
+	/******************************************************************************
+	 函数名称： canPartition
+	 功能说明： 判段能否分为2个等和子集-416 0-1背包问题的变种
+	 参    数： vector<int> & nums 
+	 返 回 值： bool
+	 作    者： Ru Long
+	 日    期： 2020/01/02
+	******************************************************************************/
+	bool canPartition(vector<int>& nums);
 private:
 	int expandAroundCenter(const string &s, int left, int right);
 	template<typename T>
