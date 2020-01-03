@@ -5072,30 +5072,103 @@ bool Solution::canPartition(vector<int>& nums)
 	int target = sum / 2;
 	const int len = nums.size();
 	//二维数组i代表前i个数，j代表价值
-	std::vector<std::vector<bool>> dp(len, std::vector<bool>(target + 1, false));
-	if (nums[0] <= target)
+// 	std::vector<std::vector<bool>> dp(len, std::vector<bool>(target + 1, false));
+// 	if (nums[0] <= target)
+// 	{
+// 		dp[0][nums[0]] = true;
+// 	}
+// 	for (int i = 1; i < len;++i)
+// 	{
+// 		for (int j = 0; j <= target;++j)
+// 		{
+// 			dp[i][j] = dp[i - 1][j];
+// 			if (nums[i]==j)
+// 			{
+// 				dp[i][j] = true;
+// 				continue;
+// 			}
+// 			if (nums[i]<j)
+// 			{
+// 				dp[i][j] = dp[i][j] || dp[i-1][j - nums[i]];
+// 			}
+// 		}
+// 		if (dp[i][target])
+// 		{
+// 			return true;
+// 		}
+// 	}
+// 	return dp[len - 1][target];
+	std::vector<bool> dp(target + 1);
+	dp[0] = true;
+	for (int i = 0; i < len;++i)
 	{
-		dp[0][nums[0]] = true;
-	}
-	for (int i = 1; i < len;++i)
-	{
-		for (int j = 0; j <= target;++j)
+		for (int j = target; j >= nums[i];--j)
 		{
-			dp[i][j] = dp[i - 1][j];
-			if (nums[i]==j)
+			dp[j] = dp[j] || dp[j - nums[i]];
+			if (dp[target])
 			{
-				dp[i][j] = true;
-				continue;
-			}
-			if (nums[i]<j)
-			{
-				dp[i][j] = dp[i][j] || dp[i-1][j - nums[i]];
+				return true;
 			}
 		}
-		if (dp[i][target])
+	}
+	return dp[target];
+}
+void DfsMatirx(vector<vector<int>>& matrix, vector<vector<int>>& resVec, int xStart, int yStart)
+{
+	int itemp = 0;
+	if (xStart == -1 || yStart == -1 || xStart == matrix.size() || yStart == matrix[0].size())
+	{
+		itemp = -1;
+	}
+	else
+	{
+		itemp = matrix[xStart][yStart];
+	}
+	for (int i = 0; i < 4; ++i)
+	{
+		int newxStart = xStart + dir[i][0];
+		int newyStart = yStart + dir[i][1];
+		if (newxStart >= 0 && newxStart < matrix.size() && newyStart >= 0 && newyStart < matrix[0].size() && matrix[newxStart][newyStart] != INT_MAX)
 		{
-			return true;
+			matrix[newxStart][newyStart] = INT_MAX;
+			if (matrix[newxStart][newyStart] >= itemp)
+			{
+				++resVec[newxStart][newyStart];
+				DfsMatirx(matrix, resVec, newxStart, newyStart);
+			}
 		}
 	}
-	return dp[len - 1][target];
+}
+
+std::vector<std::vector<int>> Solution::pacificAtlantic(vector<vector<int>>& matrix)
+{
+	if (matrix.empty())
+	{
+		return matrix;
+	}
+	vector<vector<int>> resVec(matrix.size(),std::vector<int>(matrix[0].size(),0));
+	auto vecTemp = matrix;
+	//寻找太平洋
+	for (int i = 0; i < matrix.size();++i)
+	{
+		DfsMatirx(matrix, resVec, i, -1);
+		DfsMatirx(vecTemp, resVec, i, matrix[0].size());
+	}
+	for (int i = 0; i < matrix[0].size();++i)
+	{
+		DfsMatirx(matrix, resVec, -1, i);
+		DfsMatirx(vecTemp, resVec, matrix.size(), i);
+	}
+	std::vector<vector<int>> res;
+	for (int i = 0; i < resVec.size();++i)
+	{
+		for (int j = 0; j < resVec[0].size();++j)
+		{
+			if (resVec[i][j]==2)
+			{
+				res.push_back({ i, j });
+			}
+		}
+	}
+	return res;
 }

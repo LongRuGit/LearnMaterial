@@ -1326,12 +1326,21 @@ public:
 	 日    期： 2020/01/02
 	******************************************************************************/
 	bool canPartition(vector<int>& nums);
+	/******************************************************************************
+	 函数名称： pacificAtlantic
+	 功能说明： 判断水流即能流向大西洋也能留下太平洋-417
+	 参    数： vector<vector<int>> & matrix 
+	 返 回 值： std::vector<std::vector<int>>
+	 作    者： Ru Long
+	 日    期： 2020/01/03
+	******************************************************************************/
+	vector<vector<int>> pacificAtlantic(vector<vector<int>>& matrix);
 private:
 	int expandAroundCenter(const string &s, int left, int right);
 	template<typename T>
 	T Select(T a[], int leftEnd, int rightEnd, int k);
 };
-
+//int dir[4][2] = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
 template<typename T>
 T Solution::Select(T a[], int n, int k)
 {
