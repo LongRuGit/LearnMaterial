@@ -5002,8 +5002,7 @@ std::string Solution::removeKdigits(string num, int k)
 	}
 	res.resize(iLength);
 	while (!res.empty() && res[0] == '0')
-	{
-		res.erase(res.begin());
+	{res.erase(res.begin());
 	}
 	return res.empty() ? "0" : res;
 }
@@ -5113,7 +5112,7 @@ bool Solution::canPartition(vector<int>& nums)
 	}
 	return dp[target];
 }
-void DfsMatirx(vector<vector<int>>& matrix, vector<vector<int>>& resVec, int xStart, int yStart)
+void DfsMatirx(vector<vector<int>>& matrix, vector<vector<int>>& resVec, int xStart, int yStart,std::vector<std::vector<bool>>& visited)
 {
 	int itemp = 0;
 	if (xStart == -1 || yStart == -1 || xStart == matrix.size() || yStart == matrix[0].size())
@@ -5128,14 +5127,11 @@ void DfsMatirx(vector<vector<int>>& matrix, vector<vector<int>>& resVec, int xSt
 	{
 		int newxStart = xStart + dir[i][0];
 		int newyStart = yStart + dir[i][1];
-		if (newxStart >= 0 && newxStart < matrix.size() && newyStart >= 0 && newyStart < matrix[0].size() && matrix[newxStart][newyStart] != INT_MAX)
+		if (newxStart >= 0 && newxStart < matrix.size() && newyStart >= 0 && newyStart < matrix[0].size() && visited[newxStart][newyStart] && matrix[newxStart][newyStart] >= itemp)
 		{
-			matrix[newxStart][newyStart] = INT_MAX;
-			if (matrix[newxStart][newyStart] >= itemp)
-			{
-				++resVec[newxStart][newyStart];
-				DfsMatirx(matrix, resVec, newxStart, newyStart);
-			}
+			visited[newxStart][newyStart] = false;
+			++resVec[newxStart][newyStart];
+			DfsMatirx(matrix, resVec, newxStart, newyStart, visited);
 		}
 	}
 }
@@ -5146,25 +5142,32 @@ std::vector<std::vector<int>> Solution::pacificAtlantic(vector<vector<int>>& mat
 	{
 		return matrix;
 	}
-	vector<vector<int>> resVec(matrix.size(),std::vector<int>(matrix[0].size(),0));
-	auto vecTemp = matrix;
+	vector<vector<int>> resVec(matrix.size(), std::vector<int>(matrix[0].size(), 0));
+	std::vector<vector<bool>> visited(matrix.size(), std::vector<bool>(matrix[0].size(), true));
+	auto visited1 = visited;
 	//Ñ°ÕÒÌ«Æ½Ñó
-	for (int i = 0; i < matrix.size();++i)
+	for (int i = 0; i < matrix.size(); ++i)
 	{
-		DfsMatirx(matrix, resVec, i, -1);
-		DfsMatirx(vecTemp, resVec, i, matrix[0].size());
+		DfsMatirx(matrix, resVec, i, -1, visited);
 	}
-	for (int i = 0; i < matrix[0].size();++i)
+	for (int i = 0; i < matrix[0].size(); ++i)
 	{
-		DfsMatirx(matrix, resVec, -1, i);
-		DfsMatirx(vecTemp, resVec, matrix.size(), i);
+		DfsMatirx(matrix, resVec, -1, i, visited);
+	}
+	for (int i = 0; i < matrix.size(); ++i)
+	{
+		DfsMatirx(matrix, resVec, i, matrix[0].size(), visited1);
+	}
+	for (int i = 0; i < matrix[0].size(); ++i)
+	{
+		DfsMatirx(matrix, resVec, matrix.size(), i, visited1);
 	}
 	std::vector<vector<int>> res;
-	for (int i = 0; i < resVec.size();++i)
+	for (int i = 0; i < resVec.size(); ++i)
 	{
-		for (int j = 0; j < resVec[0].size();++j)
+		for (int j = 0; j < resVec[0].size(); ++j)
 		{
-			if (resVec[i][j]==2)
+			if (resVec[i][j] == 2)
 			{
 				res.push_back({ i, j });
 			}
