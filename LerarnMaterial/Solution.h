@@ -1335,6 +1335,24 @@ public:
 	 日    期： 2020/01/03
 	******************************************************************************/
 	vector<vector<int>> pacificAtlantic(vector<vector<int>>& matrix);
+	/******************************************************************************
+	 函数名称： countBattleships
+	 功能说明： 统计甲板上的战舰数量-419
+	 参    数： vector<vector<char>> & board 
+	 返 回 值： int
+	 作    者： Ru Long
+	 日    期： 2020/01/06
+	******************************************************************************/
+	int countBattleships(vector<vector<char>>& board);
+	/******************************************************************************
+	 函数名称： findMaximumXOR
+	 功能说明： 数组中的两个最大异或值-421
+	 参    数： vector<int> & nums 
+	 返 回 值： int
+	 作    者： Ru Long
+	 日    期： 2020/01/06
+	******************************************************************************/
+	int findMaximumXOR(vector<int>& nums);
 private:
 	int expandAroundCenter(const string &s, int left, int right);
 	template<typename T>

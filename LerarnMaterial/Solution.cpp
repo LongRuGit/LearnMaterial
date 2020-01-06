@@ -5175,3 +5175,52 @@ std::vector<std::vector<int>> Solution::pacificAtlantic(vector<vector<int>>& mat
 	}
 	return res;
 }
+
+int Solution::countBattleships(vector<vector<char>>& board)
+{
+	if (board.empty())
+		return 0;
+	int res = 0;
+	for (int i = 0; i < board.size();++i)
+	{
+		for (int j = 0; j < board[i].size();++j)
+		{
+			if (board[i][j]=='X'&&(i==0||board[i-1][j]=='.')&&(j==0||board[i][j-1]=='.'))
+			{
+				++res;
+			}
+		}
+	}
+	return res;
+}
+
+int Solution::findMaximumXOR(vector<int>& nums)
+{
+	if (nums.empty())
+	{
+		return 0;
+	}
+	int res = 0;
+	int mask = 0;
+	//a^b=c a^c=b b^c=a
+	for (int i= 31; i >= 0;--i)
+	{
+		mask |= (1 << i);
+		unordered_set<int> hashSet;
+		for (const auto &it:nums)
+		{
+			//²åÈëÇ°×º
+			hashSet.insert(mask&it);
+		}
+		int itemp = res | (1 << i);
+		for (const auto &it : hashSet)
+		{
+			if (hashSet.count(it^itemp))
+			{
+				res = itemp;
+				break;
+			}
+		}
+	}
+	return res;
+}
