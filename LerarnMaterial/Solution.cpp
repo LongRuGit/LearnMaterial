@@ -5224,3 +5224,150 @@ int Solution::findMaximumXOR(vector<int>& nums)
 	}
 	return res;
 }
+
+std::string Solution::originalDigits(string s)
+{
+	if (s.empty())
+	{
+		return s;
+	}
+
+// 	unordered_map<int, string> hashM;
+// 	hashM[0] = "zero";
+// 	hashM[1] = "one";
+// 	hashM[2] = "two";
+// 	hashM[3] = "three";
+// 	hashM[4] = "four";
+// 	hashM[5] = "five";
+// 	hashM[6] = "six";
+// 	hashM[7] = "seven";
+// 	hashM[8] = "eight";
+// 	hashM[9] = "nine";
+	unordered_map<char, int> hashS;
+	string res;
+	for (auto &it:s)
+	{
+		++hashS[it];
+	}
+	map<int, int> numM;
+	numM[0]= hashS['z'];
+	numM[2] = hashS['w'];
+	numM[4] = hashS['u'];
+	numM[6] = hashS['x'];
+	numM[8] = hashS['g'];
+	numM[1] = hashS['o'] - numM[0] - numM[2] - numM[4];
+	numM[3] = hashS['t'] - numM[2] - numM[8];
+	numM[5] = hashS['f'] - numM[4];
+	numM[7] = hashS['s'] - numM[6];
+	numM[9] = hashS['i'] - numM[8] - numM[6] - numM[5];
+	for (auto &it:numM)
+	{
+		res.insert(res.end(), it.second, it.first + '0');
+	}
+	return res;
+}
+
+int Solution::characterReplacement(string s, int k)
+{
+	if (s.empty())
+		return 0;
+	int left = 0, right = 0, maxCount = 0,res=0;
+	std::unordered_map<char, int> hashM;
+	while (right<s.size())
+	{
+		++hashM[s[right]];
+		//统计出现最多字符的次数
+		maxCount = max(maxCount, hashM[s[right]]);
+		while ((right - left+1-maxCount)>k)
+		{
+			--hashM[s[left]];
+			maxCount = max(maxCount, hashM[left]);
+			++left;
+		}
+		res = max(res, right - left + 1);
+		++right;
+	}
+	return res;
+}
+
+int Solution::longestOnes3(vector<int>& A, int K)
+{
+	if (A.empty())
+	{
+		return 0;
+	}
+	int left = 0, right = 0, iCount = 0, res = 0;
+	while (right<A.size())
+	{
+		if (A[right]==0)
+		{
+			++iCount;
+		}
+		while (iCount>K&&left<=right)
+		{
+			if (A[left]==0)
+			{
+				--iCount;
+			}
+			++left;
+		}
+		res = max(res, right - left + 1);
+		++right;
+	}
+	return res;
+}
+
+int Solution::minMutation(string start, string end, vector<string>& bank)
+{
+	unordered_set<string> path;
+	for (auto &it : bank)
+	{
+		path.insert(it);
+	}
+	if (path.count(end) == 0)
+	{
+		return -1;
+	}
+	if (start == end)
+	{
+		return 0;
+	}
+	int res = 0;
+	queue<string> q;
+	q.push(start);
+	unordered_set<string> mess;
+	mess.insert(start);
+	std::vector<char> alphVec = { 'A', 'C', 'G', 'T' };
+	while (!q.empty())
+	{
+		++res;
+		for (int isize = q.size(); isize > 0; --isize)
+		{
+			auto str = q.front();
+			for (int i = 0; i < str.size(); ++i)
+			{
+				for (auto &it : alphVec)
+				{
+					string tempStr = str;
+					tempStr[i] = it;
+					if (tempStr == end)
+					{
+						return res;
+					}
+					if (mess.count(tempStr) == 0 && path.count(tempStr))
+					{
+						q.push(tempStr);
+						mess.insert(tempStr);
+					}
+				}
+			}
+			q.pop();
+		}
+	}
+	return -1;
+}
+
+int Solution::eraseOverlapIntervals(vector<vector<int>>& intervals)
+{
+
+}
