@@ -5369,5 +5369,64 @@ int Solution::minMutation(string start, string end, vector<string>& bank)
 
 int Solution::eraseOverlapIntervals(vector<vector<int>>& intervals)
 {
+	if (intervals.empty())
+	{
+		return 0;
+	}
+	auto f = [](const vector<int> &lhs, const vector<int>& rhs)
+	{
+		if (lhs[0]!=rhs[0])
+		{
+			return lhs[0] < rhs[0];
+		}
+		return lhs[1] < rhs[1];
+	};
+	sort(intervals.begin(), intervals.end(), f);
+	int res = 0;
+	int preRight = intervals[0][1];
+	for (int i = 1; i < intervals.size();++i)
+	{
+		if (intervals[i][0] < preRight)
+		{
+			++res;
+			preRight = min(preRight, intervals[i][1]);
+		}
+		else
+		{
+			preRight = intervals[i][1];
+		}
+	}
+	return res;
+}
 
+bool Solution::stoneGame(vector<int>& piles)
+{
+	if (piles.empty())
+	{
+		return true;
+	}
+	const int Length = piles.size();
+	std::vector<std::vector<std::vector<int>>> dp(Length, std::vector<std::vector<int>>(Length, std::vector<int>(2, 0)));
+	for (int i = 0; i < Length;++i)
+	{
+		dp[i][i][0] = piles[i];
+	}
+	for (int isetp = 2; isetp <=Length; ++isetp)
+	{
+		for (int start = 0; start < Length - isetp+1;++start)
+		{
+			int right = start + isetp - 1;
+			if (piles[start]+dp[start+1][right][1]>dp[start][right-1][1]+piles[right])
+			{
+				dp[start][right][0] = dp[start + 1][right][1] + piles[start];
+				dp[start][right][1] = dp[start + 1][right][0];
+			}
+			else
+			{
+				dp[start][right][0] = dp[start][right - 1][1] + piles[right];
+				dp[start][right][1] = dp[start][right - 1][0];
+			}
+		}
+	}
+	return dp[0][Length - 1][0]>dp[0][Length - 1][1];
 }

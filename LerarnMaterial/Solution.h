@@ -1395,13 +1395,22 @@ public:
 	int minMutation(string start, string end, vector<string>& bank);
 	/******************************************************************************
 	 函数名称： eraseOverlapIntervals
-	 功能说明： 无重叠区间最小的移除数量-435
+	 功能说明： 无重叠区间最小的移除数量-435贪心算法
 	 参    数： vector<vector<int>> & intervals 
 	 返 回 值： int
 	 作    者： Ru Long
 	 日    期： 2020/01/08
 	******************************************************************************/
 	int eraseOverlapIntervals(vector<vector<int>>& intervals);
+	/******************************************************************************
+	 函数名称： stoneGame
+	 功能说明： 石子游戏-877
+	 参    数： vector<int> & piles 
+	 返 回 值： bool
+	 作    者： Ru Long
+	 日    期： 2020/01/09
+	******************************************************************************/
+	bool stoneGame(vector<int>& piles);
 private:
 	int expandAroundCenter(const string &s, int left, int right);
 	template<typename T>
