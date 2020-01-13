@@ -1411,6 +1411,25 @@ public:
 	 日    期： 2020/01/09
 	******************************************************************************/
 	bool stoneGame(vector<int>& piles);
+	/******************************************************************************
+	 函数名称： findRightInterval
+	 功能说明： 寻找右区间-436
+	 参    数： vector<vector<int>> & intervals 
+	 返 回 值： std::vector<int>
+	 作    者： Ru Long
+	 日    期： 2020/01/13
+	******************************************************************************/
+	vector<int> findRightInterval(vector<vector<int>>& intervals);
+	/******************************************************************************
+	 函数名称： addTwoNumbers
+	 功能说明： 两数相加-445双栈
+	 参    数： ListNode * l1 
+	 参    数： ListNode * l2 
+	 返 回 值： ListNode*
+	 作    者： Ru Long
+	 日    期： 2020/01/13
+	******************************************************************************/
+	ListNode* addTwoNumbers(ListNode* l1, ListNode* l2);
 private:
 	int expandAroundCenter(const string &s, int left, int right);
 	template<typename T>

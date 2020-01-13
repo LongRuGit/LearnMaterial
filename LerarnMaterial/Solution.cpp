@@ -5430,3 +5430,100 @@ bool Solution::stoneGame(vector<int>& piles)
 	}
 	return dp[0][Length - 1][0]>dp[0][Length - 1][1];
 }
+
+std::vector<int> Solution::findRightInterval(vector<vector<int>>& intervals)
+{
+	if (intervals.empty())
+	{
+		return{};
+	}
+	std::map<int, int> mapHash;
+	for (int i = 0; i < intervals.size();++i)
+	{
+		mapHash[intervals[i][0]] = i;
+	}
+	std::vector<int> res;
+	for (auto &it:intervals)
+	{
+		if (mapHash.count(it[1]))
+		{
+			res.push_back(mapHash[it[1]]);
+		}
+		else
+		{
+			if (it[1]>(mapHash.rbegin())->first)
+			{
+				res.push_back(-1);
+			}
+			else
+			{
+				for (int i = it[1] + 1; i <=(mapHash.rbegin())->first;++i)
+				{
+					if (mapHash.count(i))
+					{
+						res.push_back(mapHash[i]);
+						break;
+					}
+				}
+			}
+		}
+	}
+	return res;
+}
+
+ListNode* Solution::addTwoNumbers(ListNode* l1, ListNode* l2)
+{
+	if (l1==NULL&&l2==NULL)
+	{
+		return NULL;
+	}
+	if (!l1)
+	{
+		return l2;
+	}
+	if (!l2)
+	{
+		return l1;
+	}
+	stack<ListNode*> stacL1;
+	stack<ListNode*> stacL2;
+	while (l1)
+	{
+		stacL1.push(l1);
+		l1 = l1->next;
+	}
+	while (l2)
+	{
+		stacL2.push(l2);
+		l2 = l2->next;
+	}
+	int k = 0;
+	ListNode * pre = NULL;;
+	while (!stacL1.empty()||!stacL2.empty())
+	{
+		int a = 0, b = 0;
+		if (!stacL1.empty())
+		{
+			a = stacL1.top()->val;
+			stacL1.pop();
+		}
+		if (!stacL2.empty())
+		{
+			b = stacL2.top()->val;
+			stacL2.pop();
+		}
+		int itemp = a + b + k;
+		k = itemp / 10;
+		itemp %= 10;
+		ListNode * nodeTemp = new ListNode(itemp);
+		nodeTemp->next = pre;
+		pre = nodeTemp;
+	}
+	if (k!=0)
+	{ 
+		ListNode * nodeTemp = new ListNode(1);
+		nodeTemp->next = pre;
+		pre = nodeTemp;
+	}
+	return pre;
+}

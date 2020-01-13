@@ -66,11 +66,13 @@
   <ItemGroup>
     <ClInclude Include="Common.h" />
     <ClInclude Include="Solution.h" />
+    <ClInclude Include="SolutionMediumNew.h" />
     <ClInclude Include="SortClass.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="LeetCodeMedium1.cpp" />
     <ClCompile Include="Solution.cpp" />
+    <ClCompile Include="SolutionMediumNew.cpp" />
     <ClCompile Include="SortClass.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -24,6 +24,9 @@
     <ClInclude Include="SortClass.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="SolutionMediumNew.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="LeetCodeMedium1.cpp">
@@ -33,6 +36,9 @@
       <Filter>资源文件</Filter>
     </ClCompile>
     <ClCompile Include="SortClass.cpp">
+      <Filter>资源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SolutionMediumNew.cpp">
       <Filter>资源文件</Filter>
     </ClCompile>
   </ItemGroup>
