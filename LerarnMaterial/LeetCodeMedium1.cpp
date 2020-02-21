@@ -36,20 +36,54 @@ int main()
 		nums[i] = u(e);
 	}
 	unique_ptr<SortSequence::SortClass> uniSolt_ptr;
-	int pNum[15] = { 1, 1, 2, 1, 2, 2, 1, 5, 6, 7, 8, 9, -1, -2, -5 };
-	for (int i = 0; i < nums1.size();++i)
+	cout << "\nÇëÊäÈëÐèÒªµÄÅÅÐò0-Ã°ÅÝÅÅÐò1-Ñ¡ÔñÅÅÐò2-²åÈëÅÅÐò3-Ï£¶ûÅÅÐò4-¹é²¢ÅÅÐò5-¿ìËÙÅÅÐò6-¶ÑÅÅÐò7-»ùÊýÅÅÐò\n";
+	int temp = 0;
+	cin >> temp;
+	cout << "ÇëÊäÈëÒªÅÅÐòµÄÊý\n";
+	vector<int> pNum;
+	int pNumber = 0;
+	while (cin >> pNumber)
 	{
-		pNum[i] = nums1[i];
+		pNum.push_back(pNumber);
 	}
-	uniSolt_ptr->QuickSort(pNum, nums1.size());
-	for (auto iter = begin(pNum); iter != end(pNum); ++iter)
+	switch (temp)
 	{
-		cout << *iter << " ";
+	case 0:
+		uniSolt_ptr->BuppleSort(pNum);
+		break;
+	case 1:
+		uniSolt_ptr->SelectSort(pNum);
+		break;
+	case 2:
+		uniSolt_ptr->InsertSort(pNum);
+		break;
+	case 3:
+		uniSolt_ptr->ShellSort(pNum);
+		break;
+	case 4:
+		uniSolt_ptr->MergeSort(pNum);
+		break;
+	case 5:
+		uniSolt_ptr->QuickSort(pNum);
+		break;
+	case 6:
+		uniSolt_ptr->HeapSort(pNum);
+		break;
+	case 7:
+		uniSolt_ptr->RadixSort(pNum);
+		break;
+	default:
+		break;
+	}
+	cout << "ÅÅÐò½á¹û\n";
+	for (auto &it:pNum)
+	{
+		cout << it << " ";
 	}
 	cout << endl;
-	s_ptr->longestSubstring("aaabb", 3);
-	s_ptr->removeKdigits("10", 1);
-	s_ptr->originalDigits("owoztneoer");
+	//s_ptr->longestSubstring("aaabb", 3);
+	//s_ptr->removeKdigits("10", 1);
+	//s_ptr->originalDigits("owoztneoer");
 	system("pause");
 	return 0;
 }

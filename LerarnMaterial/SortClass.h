@@ -1,6 +1,7 @@
 #ifndef SORTCLASS_H
 #define SORTCLASS_H
 #include "Common.h"
+//模板的声明和实现要放在同一个文件夹里面
 namespace SortSequence{
 	class SortClass
 	{
@@ -8,156 +9,354 @@ namespace SortSequence{
 		SortClass();
 		~SortClass();
 		/******************************************************************************
-		函数名称： MergeSort
-		功能说明： 归并排序
-		参    数： T a[]
-		参    数： int n
-		返 回 值： void
-		作    者： Ru Long
-		日    期： 2019/11/01
+		 函数名称： BuppleSort
+		 功能说明： 冒泡排序稳定排序 最好n最坏o(n^2)
+		 参    数： vector<T> 
+		 返 回 值： void
+		 作    者： Ru Long
+		 日    期： 2020/02/21
 		******************************************************************************/
 		template<typename T>
-		void MergeSort(T a[], int n);
+		void BuppleSort(vector<T>&nums);
 		/******************************************************************************
-		函数名称： QuickSort
-		功能说明： 快速排序
-		参    数： T a[]
-		参    数： int n
-		返 回 值： void
-		作    者： Ru Long
-		日    期： 2019/11/01
+		 函数名称： SelectSort
+		 功能说明： 选择排序稳定排序 o(n2)
+		 参    数： vector<T> & nums 
+		 返 回 值： void
+		 作    者： Ru Long
+		 日    期： 2020/02/21
 		******************************************************************************/
 		template<typename T>
-		void QuickSort(T a[], int n);
+		void SelectSort(vector<T>&nums);
+		/******************************************************************************
+		 函数名称： SelectSort
+		 功能说明： 插入排序 稳定排序 n^2
+		 参    数： vector<T> & nums 
+		 返 回 值： void
+		 作    者： Ru Long
+		 日    期： 2020/02/21
+		******************************************************************************/
+		template<typename T>
+		void InsertSort(vector<T>&nums);
+		/******************************************************************************
+		 函数名称： ShellSort
+		 功能说明： 希尔排序 不稳定n^1.3
+		 参    数： vector<T> & nums 
+		 返 回 值： void
+		 作    者： Ru Long
+		 日    期： 2020/02/21
+		******************************************************************************/
+		template<typename T>
+		void ShellSort(vector<T>&nums);
+		/******************************************************************************
+		 函数名称： MergeSort
+		 功能说明： 归并排序-稳定排序 nlogn 
+		 参    数： vector<T> & nums 
+		 返 回 值： void
+		 作    者： Ru Long
+		 日    期： 2020/02/21
+		******************************************************************************/
+		template<typename T>
+		void MergeSort(vector<T>&nums);
+		/******************************************************************************
+		 函数名称： QuickSort
+		 功能说明： 快速排序-不稳定排序 平均nlogn
+		 参    数： vector<T> & nums 
+		 返 回 值： void
+		 作    者： Ru Long
+		 日    期： 2020/02/21
+		******************************************************************************/
+		template<typename T>
+		void QuickSort(vector<T>&nums);
+		//堆排序不稳定排序
+		/******************************************************************************
+		 函数名称： HeapSort
+		 功能说明： 堆排序不稳定排序 nlogn
+		 参    数： vector<T> & nums 
+		 返 回 值： void
+		 作    者： Ru Long
+		 日    期： 2020/02/21
+		******************************************************************************/
+		template<typename T>
+		void HeapSort(vector<T>&nums);
+		/******************************************************************************
+		 函数名称： RadixSort
+		 功能说明： 基数排序稳定排序 n*logr*m
+		 参    数： vector<T> & nums 
+		 返 回 值： void
+		 作    者： Ru Long
+		 日    期： 2020/02/21
+		******************************************************************************/
+		template<typename T>
+		void RadixSort(vector<T>& nums);
+
+		SortClass & operator =(const SortClass& ist);
 	private:
 		template<typename T>
-		void MergeSortAdd(T a[], int start, int end, T result[]);
+		void Merge(vector<int>& nums, vector<T>& helpNums, const int start, const int end);
 		template<typename T>
-		void Merge(T a[], int start, int end, T result[]);
+		void PartionSort(vector<T>&nums, const int start,const int end);
 		template<typename T>
-		void QuickSort(T a[], int leftEnd, int rightEnd);
+		void HelpHeapSort(vector<T>&nums, size_t start, const size_t len);
+		char * m_pData;
 	};
-	//模板的声明和实现要放在同一个文件夹里面
-	template<typename T>
-	void SortClass::MergeSort(T a[], int n)
-	{
-		if (n <= 1)
-		{
-			return;
-		}
-		T * result = new T[n];
-		MergeSortAdd(a, 0, n - 1, result);
-		delete[] result;
-		result = nullptr;
-	}
 
 	template<typename T>
-	void SortClass::QuickSort(T a[], int n)
+	void SortClass::BuppleSort(vector<T>&nums)
 	{
-		if (n <= 1)
-		{
+		if (nums.size() < 2)
 			return;
-		}
-		int maxPos = 0;
-		for (int i = 1; i < n; i++)
+		int length = nums.size() - 1;
+		while (true)
 		{
-			if (a[i]>a[maxPos])
+			bool bSwap = false;
+			for (int i = 0; i < length; ++i)
 			{
-				maxPos = i;
+				if (nums[i]>nums[i + 1])
+				{
+					swap(nums[i], nums[i + 1]);
+					bSwap = true;
+				}
+			}
+			--length;
+			if (!bSwap)
+			{
+				break;
 			}
 		}
-		swap(a[n - 1], a[maxPos]);
-		QuickSort(a, 0, n - 2);
 	}
 
 	template<typename T>
-	void SortClass::QuickSort(T a[], int leftEnd, int rightEnd)
+	void SortClass::SelectSort(vector<T>&nums)
 	{
-		if (leftEnd >= rightEnd)
+		if (nums.size() < 2)
 		{
 			return;
 		}
-		int leftCur = leftEnd;        //从左向右移动的索引
-		int rightCur = rightEnd + 1;  //从右向左移动的索引
-		T priVot = a[leftEnd];
-		//将位于左侧不小于支点的元素和位于右侧不大于支点的元素交换
-		while (true)
+		int end = nums.size();
+		while (end)
+		{
+			int index = 0;
+			for (int i = 0; i < end; ++i)
+			{
+				if (nums[i] >= nums[index])
+					index = i;
+			}
+			swap(nums[--end], nums[index]);
+		}
+	}
+
+	template<typename T>
+	void SortClass::InsertSort(vector<T>&nums)
+	{
+		if (nums.size() < 2)
+			return;
+		const int length = nums.size();
+		for (int i = 1; i < length; ++i)
+		{
+			int indexTemp = i;
+			while (indexTemp>0 && nums[indexTemp] < nums[indexTemp - 1])
+			{
+				swap(nums[indexTemp], nums[indexTemp - 1]);
+				--indexTemp;
+			}
+		}
+	}
+
+	template<typename T>
+	void SortClass::ShellSort(vector<T>&nums)
+	{
+		if (nums.size() < 2)
+			return;
+		const int length = nums.size();
+		int gap = length;
+		while (gap>1)
+		{
+			gap = gap / 3 + 1;
+			for (int i = gap; i < length; i++)
+			{
+				int indexTemp = i;
+				while (indexTemp >= gap&&nums[indexTemp] < nums[indexTemp - gap])
+				{
+					swap(nums[indexTemp], nums[indexTemp - gap]);
+					indexTemp -= gap;
+				}
+			}
+		}
+	}
+
+	template<typename T>
+	void SortClass::MergeSort(vector<T>&nums)
+	{
+		if (nums.size() < 2)
+			return;
+		vector<T> helpNums(nums.size());
+		Merge(nums, helpNums, 0, nums.size() - 1);
+	}
+
+	template<typename T>
+	void SortClass::QuickSort(vector<T>&nums)
+	{
+		if (nums.size() < 2)
+			return;
+		PartionSort(nums, 0, nums.size());
+	}
+
+	template<typename T>
+	void SortClass::HelpHeapSort(vector<T>&nums, size_t start, const size_t len)
+	{
+		size_t nextChildIndex = 2 * start + 1;
+		T tempNode = nums[start];
+		while (nextChildIndex < len)
+		{
+			if (nextChildIndex + 1 < len&&nums[nextChildIndex] < nums[nextChildIndex + 1])
+			{
+				++nextChildIndex;
+			}
+			if (tempNode>nums[nextChildIndex])
+			{
+				break;
+			}
+			else
+			{
+				nums[start] = nums[nextChildIndex];
+				start = nextChildIndex;
+				nextChildIndex = 2 * start + 1;
+			}
+		}
+		nums[start] = tempNode;
+	}
+
+	template<typename T>
+	void SortClass::HeapSort(vector<T>&nums)
+	{
+		if (nums.size() < 2)
+			return;
+		const int length = nums.size();
+		for (int i = length / 2 - 1; i >= 0; --i)
+		{
+			HelpHeapSort(nums, i, length);
+		}
+		for (int i = length - 1; i >= 0; --i)
+		{
+			swap(nums[i], nums[0]);
+			HelpHeapSort(nums, 0, i);
+		}
+	}
+
+	template<typename T>
+	void SortClass::RadixSort(vector<T>& nums)
+	{
+		if (nums.size() < 2)
+		{
+			return;
+		}
+		const int length = nums.size();
+		int max_Bit = 0;
+		for (auto it : nums)
+		{
+			int countBit = 0;
+			while (it)
+			{
+				++countBit;
+				it /= 10;
+			}
+			max_Bit = max(max_Bit, countBit);
+		}
+		vector<queue<T>> vecQue(10);
+		int mod = 10;
+		int div = 1;
+		for (int i = 0; i < max_Bit; ++i)
+		{
+			for (auto it : nums)
+			{
+				int iTemp = (it %mod) / div;
+				vecQue[iTemp].push(it);
+			}
+			int index = 0;
+			for (int j = 0; j < 10; ++j)
+			{
+				while (!vecQue[j].empty())
+				{
+					nums[index++] = vecQue[j].front();
+					vecQue[j].pop();
+				}
+			}
+			mod *= 10;
+			div *= 10;
+		}
+	}
+
+	template<typename T>
+	void SortClass::Merge(vector<int>& nums, vector<T>& helpNums, const int start, const int end)
+	{
+		if (start == end)
+		{
+			helpNums[start] = nums[end];
+			return;
+		}
+		const int length = (end - start) >> 1;
+		Merge(nums, helpNums, start, start + length);
+		Merge(nums, helpNums, start + length + 1, end);
+		//合并两个数组
+		int index = end;
+		int leftCur = start + length, rightCur = end;
+		while (leftCur >= start&&rightCur >= start + length + 1)
+		{
+			if (nums[leftCur] < nums[rightCur])
+			{
+				helpNums[index--] = nums[rightCur--];
+			}
+			else
+			{
+				helpNums[index--] = nums[leftCur--];
+			}
+		}
+		while (leftCur >= start)
+		{
+			helpNums[index--] = nums[leftCur--];
+		}
+		while (rightCur >= start + length + 1)
+		{
+			helpNums[index--] = nums[rightCur--];
+		}
+		for (int i = start; i <= end; ++i)
+		{
+			nums[i] = helpNums[i];
+		}
+	}
+
+	template<typename T>
+	void SortClass::PartionSort(vector<T>&nums, const int start, const int end)
+	{
+		//只有一个数
+		if (start >= end || end - start == 1)
+		{
+			return;
+		}
+		int leftCur = start, rightCur = end;
+		int proMid = nums[start];
+		while (leftCur < rightCur)
 		{
 			do
 			{
 				++leftCur;
-			} while (a[leftCur]<priVot);
+			} while (leftCur < rightCur&&nums[leftCur] < proMid);
 			do
 			{
 				--rightCur;
-			} while (a[rightCur]>priVot);
+			} while (nums[rightCur] > proMid);
 			if (leftCur >= rightCur)
 			{
-				//没有找到交换的元素
 				break;
 			}
-			swap(a[leftCur], a[rightCur]);
+			swap(nums[leftCur], nums[rightCur]);
 		}
-		//放置支点
-		swap(a[leftEnd], a[rightCur]);
-// 		a[leftEnd] = a[rightCur];
-// 		a[rightCur] = priVot;
-		QuickSort(a, leftEnd, rightCur - 1);
-		QuickSort(a, rightCur + 1, rightEnd);
+		swap(nums[start], nums[rightCur]);
+		PartionSort(nums, start, rightCur);
+		PartionSort(nums, rightCur + 1, end);
 	}
 
-	template<typename T>
-	void SortClass::MergeSortAdd(T a[], int start, int end, T result[])
-	{
-		if (end - start == 1)
-		{
-			//表明只有2个元素直接排序
-			if (a[start] > a[end])
-			{
-				swap(a[start], a[end]);
-			}
-			return;
-		}
-		else if (end == start)
-		{
-			//只有一个元素直接不用排序
-			return;
-		}
-		else
-		{
-			MergeSortAdd(a, start, start + (end - start + 1) / 2, result);
-			MergeSortAdd(a, start + (end - start + 1) / 2 + 1, end, result);
-			Merge(a, start, end, result);
-			for (int i = start; i <= end; ++i)
-			{
-				a[i] = result[i];
-			}
-		}
-	}
-
-	template<typename T>
-	void SortClass::Merge(T a[], int start, int end, T result[])
-	{
-		int left_num = (end - start + 1) / 2 + 1;
-		int left_index = start;
-		int right_index = start + left_num;
-		int result_index = start;
-		while (left_index < start + left_num&&right_index < end + 1)
-		{
-			if (a[left_index] < a[right_index])
-			{
-				result[result_index++] = a[left_index++];
-			}
-			else
-			{
-				result[result_index++] = a[right_index++];
-			}
-		}
-		while (left_index < start + left_num)
-			result[result_index++] = a[left_index++];
-		while (right_index < end + 1)
-			result[result_index++] = a[right_index++];
-	}
 }
 #endif 
 

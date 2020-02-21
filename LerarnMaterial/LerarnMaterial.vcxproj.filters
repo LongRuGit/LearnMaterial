@@ -41,6 +41,9 @@
     <ClCompile Include="SolutionMediumNew.cpp">
       <Filter>资源文件</Filter>
     </ClCompile>
+    <ClCompile Include="C++BasicFunction.cpp">
+      <Filter>资源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\计算机\C++.txt">

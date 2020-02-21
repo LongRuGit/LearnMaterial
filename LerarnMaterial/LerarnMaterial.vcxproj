@@ -70,6 +70,7 @@
     <ClInclude Include="SortClass.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="C++BasicFunction.cpp" />
     <ClCompile Include="LeetCodeMedium1.cpp" />
     <ClCompile Include="Solution.cpp" />
     <ClCompile Include="SolutionMediumNew.cpp" />
