@@ -5527,3 +5527,110 @@ ListNode* Solution::addTwoNumbers(ListNode* l1, ListNode* l2)
 	}
 	return pre;
 }
+
+void MakeMap(TreeNode* root, TreeNode * father, unordered_map<TreeNode*, TreeNode*>&hashFa)
+{
+	if (root==nullptr)
+	{
+		return;
+	}
+	else
+	{
+		hashFa[root] = father;
+		MakeMap(root->left, root, hashFa);
+		MakeMap(root->right, root, hashFa);
+	}
+}
+
+std::vector<int> Solution::distanceK(TreeNode* root, TreeNode* target, int K)
+{
+	if (!root || !target || K < 0)
+	{
+		return{};
+	}
+	if (K==0)
+	{
+		return{ target->val };
+	}
+	unordered_map<TreeNode*, TreeNode*> hashFa;
+	MakeMap(root, nullptr, hashFa);
+	vector<int> resVec;
+	unordered_set<TreeNode*> helpSetNode;
+	helpSetNode.insert(target);
+	helpSetNode.insert(NULL);
+	queue<TreeNode*> queHelp;
+	queHelp.push(target);
+	while (!queHelp.empty()&&K>-1)
+	{
+		int length = queHelp.size();
+		for (int i = 0; i < length;++i)
+		{
+			TreeNode *tempNode = queHelp.front();
+			queHelp.pop();
+			if (K == 0)
+			{
+				resVec.push_back(tempNode->val);
+			}
+			if (helpSetNode.count(tempNode->left)==0)
+			{
+				queHelp.push(tempNode->left);
+				helpSetNode.insert(tempNode->left);
+			}
+			if (helpSetNode.count(tempNode->right) == 0)
+			{
+				queHelp.push(tempNode->right);
+				helpSetNode.insert(tempNode->right);
+			}
+			if (helpSetNode.count(hashFa[tempNode]) == 0)
+			{
+				queHelp.push(hashFa[tempNode]);
+				helpSetNode.insert(hashFa[tempNode]);
+			}
+		}
+		--K;
+	}
+	return resVec;
+}
+
+int Solution::longestCommonSubsequence(string text1, string text2)
+{
+	if (text1.empty()||text2.empty())
+	{
+		return 0;
+	}
+	const int length1 = text1.size();
+	const int length2 = text2.size();
+	vector<vector<int>> dp(length1 + 1, vector<int>(length2 + 1));
+	for (int i = 1; i <= length1;++i)
+	{
+		for (int j = 1; j <= length2;++j)
+		{
+			if (text1[i - 1] == text2[j - 1])
+			{
+				dp[i][j] = dp[i - 1][j - 1] + 1;
+			}
+			else
+			{
+				dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+			}
+		}
+	}
+	return dp[length1][length2];
+}
+
+int Solution::subarraySum(vector<int>& nums, int k)
+{
+	if (nums.empty())
+		return 0;
+	unordered_map<int, int> hashM;
+	hashM[0] = 1;
+	int count = 0;
+	int sum = 0;
+	for (auto &it : nums)
+	{
+		sum += it;
+		count += hashM[sum - k];
+		++hashM[sum];
+	}
+	return count;
+}

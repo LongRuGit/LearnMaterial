@@ -17,6 +17,10 @@
 #include <unordered_map>
 #include <climits>
 #include <assert.h>
+#include <utility>
+#include <hash_map>
+#include <functional>
+#include <time.h>
 
 struct TreeNode {
 	int val;
@@ -32,5 +36,38 @@ struct ListNode {
 };
 
 using namespace std;
+
+//并查集模板算法的实现，主要判断是否有连通性
+class UnionFind
+{
+public:
+	void Initialize(const int &iNumber)
+	{
+		m_vecParent.resize(iNumber);
+		for (int i = 0; i < iNumber; ++i)
+		{
+			m_vecParent[i] = i;
+		}
+	}
+
+	int find(int iNode)
+	{
+		while (iNode != m_vecParent[iNode])
+		{
+			//路径压缩算法
+			m_vecParent[iNode] = m_vecParent[m_vecParent[iNode]];
+			iNode = m_vecParent[iNode];
+		}
+		return m_vecParent[iNode];
+	}
+
+	void Union(int iLeftNode,int iRightNode)
+	{
+		m_vecParent[find(iLeftNode)] = find(iRightNode);
+	}
+
+private:
+	vector<int> m_vecParent;
+};
 
 #endif 

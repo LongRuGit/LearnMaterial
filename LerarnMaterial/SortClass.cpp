@@ -1,7 +1,8 @@
 #include "SortClass.h"
 
 
-SortSequence::SortClass::SortClass()
+SortSequence::SortClass::SortClass():
+m_pData(nullptr)
 {
 }
 

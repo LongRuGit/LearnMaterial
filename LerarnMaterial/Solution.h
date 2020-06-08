@@ -18,14 +18,14 @@
 #include "Common.h"
 #include <functional>
 using namespace std;
-class Solution
+class Solution final
 {
 public:
 	Solution();
 	~Solution();
 	/******************************************************************************
 	 函数名称： longestPalindrome
-	 功能说明： 找到最长的回文子字符串,从中间向2边开花求，马车算法
+	 功能说明： 找到最长的回文子字符串,从中间向2边开花求，马车算法-5
 	 参    数： string s 
 	 返 回 值： std::string
 	 作    者： Ru Long
@@ -35,7 +35,7 @@ public:
 	void DfsParent(vector<string> &istrVec,string istr,int l,int r);
 	/******************************************************************************
 	 函数名称： generateParenthesis
-	 功能说明： 生成可能的n对括号的正确组合
+	 功能说明： 生成可能的n对括号的正确组合-22
 	 参    数： int n 
 	 返 回 值： std::vector<std::string>
 	 作    者： Ru Long
@@ -44,7 +44,7 @@ public:
 	vector<string> generateParenthesis(int n);
 	/******************************************************************************
 	 函数名称： swapPairs
-	 功能说明： 两两交换2个相邻的节点
+	 功能说明： 两两交换2个相邻的节点-24
 	 参    数： ListNode * head 
 	 返 回 值： ListNode*
 	 作    者： Ru Long
@@ -53,7 +53,7 @@ public:
 	ListNode* swapPairs(ListNode* head);
 	/******************************************************************************
 	 函数名称： divide
-	 功能说明： 给定2个整数，要求不使用乘法除法和mod运算，返回结果
+	 功能说明： 给定2个整数，要求不使用乘法除法和mod运算，返回结果-29
 	 参    数： int dividend 
 	 参    数： int divisor 
 	 返 回 值： int
@@ -63,7 +63,7 @@ public:
 	int divide(int dividend, int divisor);
 	/******************************************************************************
 	 函数名称： nextPermutation
-	 功能说明： 返回下一个最近且比这个数大的数，如果没有按升序排列
+	 功能说明： 返回下一个最近且比这个数大的数，如果没有按升序排列-33
 	 参    数： vector<int> & nums 
 	 返 回 值： void
 	 作    者： Ru Long
@@ -82,7 +82,7 @@ public:
 	int search(vector<int>& nums, int target);
 	/******************************************************************************
 	 函数名称： searchRange
-	 功能说明： 在一个升序数组中找到最左和最右为target的数
+	 功能说明： 在一个升序数组中找到最左和最右为target的数-34
 	 参    数： vector<int> & nums 
 	 参    数： int target 
 	 返 回 值： std::vector<int>
@@ -92,7 +92,7 @@ public:
 	vector<int> searchRange(vector<int>& nums, int target);
 	/******************************************************************************
 	 函数名称： isValidSudoku
-	 功能说明： 判断是否是一个有效的数独，其中每一行和每一列1-9只能出现一次,在3*3的方格中也只能出现一次
+	 功能说明： 判断是否是一个有效的数独，其中每一行和每一列1-9只能出现一次,在3*3的方格中也只能出现一次-36
 	 参    数： vector<vector<char>> & board 
 	 返 回 值： bool
 	 作    者： Ru Long
@@ -102,7 +102,7 @@ public:
 	void DFSSum(int start, int target);
 	/******************************************************************************
 	 函数名称： combinationSum
-	 功能说明： 给定一个无重复数组和目标值，使得数组中的值要等于target，数组中的值可以无限选择,采用回溯算法
+	 功能说明： 给定一个无重复数组和目标值，使得数组中的值要等于target，数组中的值可以无限选择,采用回溯算法-39
 	 参    数： vector<int> & candidates 
 	 参    数： int target 
 	 返 回 值： std::vector<std::vector<int>>
@@ -113,7 +113,7 @@ public:
 	void DFSSum2(int start, int target);
 	/******************************************************************************
 	 函数名称： combinationSum2
-	 功能说明： 给定一个数组和目标值，使得数组中的值要等于target，数组中的值只能使用一次,元素有重复
+	 功能说明： 给定一个数组和目标值，使得数组中的值要等于target，数组中的值只能使用一次,元素有重复-40
 	 参    数： vector<int> & candidates 
 	 参    数： int target 
 	 返 回 值： std::vector<std::vector<int>>
@@ -211,7 +211,7 @@ public:
 	bool canJump(vector<int>& nums);
 	/******************************************************************************
 	 函数名称： merge
-	 功能说明： 合并有重叠的区间
+	 功能说明： 合并有重叠的区间-56
 	 参    数： vector<vector<int>> & intervals 
 	 返 回 值： std::vector<std::vector<int>>
 	 作    者： Ru Long
@@ -220,7 +220,7 @@ public:
 	vector<vector<int>> merge(vector<vector<int>>& intervals);
 	/******************************************************************************
 	 函数名称： generateMatrix
-	 功能说明： 给定一个正整数，生成一个包含1到n2的所有元素，按照顺时针螺旋矩阵排列
+	 功能说明： 给定一个正整数，生成一个包含1到n2的所有元素，按照顺时针螺旋矩阵排列-59
 	 参    数： int n 
 	 返 回 值： std::vector<std::vector<int>>
 	 作    者： Ru Long
@@ -229,7 +229,7 @@ public:
 	vector<vector<int>> generateMatrix(int n);
 	/******************************************************************************
 	 函数名称： getPermutation
-	 功能说明： 给出元素的所有排列，找到从大到小排的第k个
+	 功能说明： 给出元素的所有排列，找到从小到大排的第k个
 	 参    数： int n 
 	 参    数： int k 
 	 返 回 值： std::string
@@ -296,7 +296,7 @@ public:
 	bool searchMatrix(vector<vector<int>>& matrix, int target);
 	/******************************************************************************
 	 函数名称： sortColors
-	 功能说明： 按照颜色进行排序，相同颜色放在一起,00,11,22
+	 功能说明： 按照颜色进行排序，相同颜色放在一起,00,11,22-75
 	 参    数： vector<int> & nums 
 	 返 回 值： void
 	 作    者： Ru Long
@@ -306,7 +306,7 @@ public:
 	void DFSCombine(std::vector<vector<int>> & res, std::vector<int> &number, int start, int k,vector<int> &path);
 	/******************************************************************************
 	 函数名称： combine
-	 功能说明： 返回1-n中所有可能的k个数的组合
+	 功能说明： 返回1-n中所有可能的k个数的组合-77
 	 参    数： int n 
 	 参    数： int k 
 	 返 回 值： std::vector<std::vector<int>>
@@ -317,7 +317,7 @@ public:
 	void DFSSubsets(std::vector<vector<int>> & res, int start, vector<int> &path);
 	/******************************************************************************
 	 函数名称： subsets
-	 功能说明： 返回一个元素所有的子集
+	 功能说明： 返回一个元素所有的子集-78
 	 参    数： vector<int> & nums 
 	 返 回 值： std::vector<std::vector<int>>
 	 作    者： Ru Long
@@ -327,7 +327,7 @@ public:
 	bool DFSexist(int x,int y,int index,vector<vector<char>>&board,string &word,vector<vector<bool>>&visit);
 	/******************************************************************************
 	 函数名称： exist
-	 功能说明： 判断单词能否由相邻的字母构成
+	 功能说明： 判断单词能否由相邻的字母构成-79
 	 参    数： vector<vector<char>> & board 
 	 参    数： string word 
 	 返 回 值： bool
@@ -355,7 +355,7 @@ public:
 	ListNode* deleteDuplicates(ListNode* head);
 	/******************************************************************************
 	 函数名称： partition
-	 功能说明： 链表的快排
+	 功能说明： 链表的快排86
 	 参    数： ListNode * head 
 	 参    数： int x 
 	 返 回 值： ListNode*
@@ -436,7 +436,7 @@ public:
 	vector<TreeNode*> DFSGenerateTree(int left, int right);
 	/******************************************************************************
 	 函数名称： generateTrees
-	 功能说明： 生成从1到n节点组成的所有的二叉搜索树
+	 功能说明： 生成从1到n节点组成的所有的二叉搜索树-95
 	 参    数： int n 
 	 返 回 值： std::vector<TreeNode*>
 	 作    者： Ru Long
@@ -617,7 +617,7 @@ public:
 	void QuickSort(ListNode * left, ListNode * right);
 	/******************************************************************************
 	 函数名称： sortList
-	 功能说明： 在nlogn时间对链表进行排序，且常数级空间
+	 功能说明： 在nlogn时间对链表进行排序，且常数级空间-148
 	 参    数： ListNode * head 
 	 返 回 值： ListNode*
 	 作    者： Ru Long
@@ -1430,6 +1430,37 @@ public:
 	 日    期： 2020/01/13
 	******************************************************************************/
 	ListNode* addTwoNumbers(ListNode* l1, ListNode* l2);
+	/******************************************************************************
+	 函数名称： distanceK
+	 功能说明： 获得距离目标节点距离为K的节点
+	 参    数： TreeNode * root 
+	 参    数： TreeNode * target 
+	 参    数： int K 
+	 返 回 值： std::vector<int>
+	 作    者： Ru Long
+	 日    期： 2020/03/01
+	******************************************************************************/
+	vector<int> distanceK(TreeNode* root, TreeNode* target, int K);
+	/******************************************************************************
+	 函数名称： longestCommonSubsequence
+	 功能说明： 两个字符串的最长公共子序列
+	 参    数： string text1 
+	 参    数： string text2 
+	 返 回 值： int
+	 作    者： Ru Long
+	 日    期： 2020/03/01
+	******************************************************************************/
+	int longestCommonSubsequence(string text1, string text2);
+	/******************************************************************************
+	 函数名称： subarraySum
+	 功能说明： 和为k的连续数组的个数-560
+	 参    数： vector<int> & nums 
+	 参    数： int k 
+	 返 回 值： int
+	 作    者： Ru Long
+	 日    期： 2020/03/01
+	******************************************************************************/
+	int subarraySum(vector<int>& nums, int k);
 private:
 	int expandAroundCenter(const string &s, int left, int right);
 	template<typename T>

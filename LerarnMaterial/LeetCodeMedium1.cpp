@@ -4,6 +4,30 @@
 #include <random>
 #include <regex>
 #include "SortClass.h"
+#include "SolutionMediumNew.h"
+
+TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+	if (preorder.empty() || inorder.empty())
+		return NULL;
+	TreeNode * pNode = new TreeNode(preorder[0]);
+	int index = 0;
+	for (int i = 0; i < inorder.size(); ++i)
+	{
+		if (inorder[i] == pNode->val)
+		{
+			index = i;
+			break;
+		}
+	}
+	int leftLength = index;
+	vector<int> leftPre(preorder.begin() + 1, preorder.begin() + leftLength + 1);
+	vector<int> rightPre(preorder.begin() + leftLength + 1, preorder.end());
+	vector<int> leftIno(inorder.begin(), inorder.begin() + leftLength + 1);
+	vector<int> rightIno(inorder.begin() + leftLength + 1, inorder.end());
+	pNode->left = buildTree(leftPre, leftIno);
+	pNode->right = buildTree(rightPre, rightIno);
+	return pNode;
+}
 
 int main()
 {
@@ -35,55 +59,55 @@ int main()
 	{
 		nums[i] = u(e);
 	}
-	unique_ptr<SortSequence::SortClass> uniSolt_ptr;
-	cout << "\nÇëÊäÈëÐèÒªµÄÅÅÐò0-Ã°ÅÝÅÅÐò1-Ñ¡ÔñÅÅÐò2-²åÈëÅÅÐò3-Ï£¶ûÅÅÐò4-¹é²¢ÅÅÐò5-¿ìËÙÅÅÐò6-¶ÑÅÅÐò7-»ùÊýÅÅÐò\n";
-	int temp = 0;
-	cin >> temp;
-	cout << "ÇëÊäÈëÒªÅÅÐòµÄÊý\n";
-	vector<int> pNum;
-	int pNumber = 0;
-	while (cin >> pNumber)
-	{
-		pNum.push_back(pNumber);
-	}
-	switch (temp)
-	{
-	case 0:
-		uniSolt_ptr->BuppleSort(pNum);
-		break;
-	case 1:
-		uniSolt_ptr->SelectSort(pNum);
-		break;
-	case 2:
-		uniSolt_ptr->InsertSort(pNum);
-		break;
-	case 3:
-		uniSolt_ptr->ShellSort(pNum);
-		break;
-	case 4:
-		uniSolt_ptr->MergeSort(pNum);
-		break;
-	case 5:
-		uniSolt_ptr->QuickSort(pNum);
-		break;
-	case 6:
-		uniSolt_ptr->HeapSort(pNum);
-		break;
-	case 7:
-		uniSolt_ptr->RadixSort(pNum);
-		break;
-	default:
-		break;
-	}
-	cout << "ÅÅÐò½á¹û\n";
-	for (auto &it:pNum)
-	{
-		cout << it << " ";
-	}
+// 	unique_ptr<SortSequence::SortClass> uniSolt_ptr;
+// 	cout << "\nÇëÊäÈëÐèÒªµÄÅÅÐò0-Ã°ÅÝÅÅÐò1-Ñ¡ÔñÅÅÐò2-²åÈëÅÅÐò3-Ï£¶ûÅÅÐò4-¹é²¢ÅÅÐò5-¿ìËÙÅÅÐò6-¶ÑÅÅÐò7-»ùÊýÅÅÐò\n";
+// 	int temp = 0;
+// 	cin >> temp;
+// 	cout << "ÇëÊäÈëÒªÅÅÐòµÄÊý\n";
+// 	vector<int> pNum;
+// 	int pNumber = 0;
+// 	while (cin >> pNumber)
+// 	{
+// 		pNum.push_back(pNumber);
+// 	}
+// 	switch (temp)
+// 	{
+// 	case 0:
+// 		uniSolt_ptr->BuppleSort(pNum);
+// 		break;
+// 	case 1:
+// 		uniSolt_ptr->SelectSort(pNum);
+// 		break;
+// 	case 2:
+// 		uniSolt_ptr->InsertSort(pNum);
+// 		break;
+// 	case 3:
+// 		uniSolt_ptr->ShellSort(pNum);
+// 		break;
+// 	case 4:
+// 		uniSolt_ptr->MergeSort(pNum);
+// 		break;
+// 	case 5:
+// 		uniSolt_ptr->QuickSort(pNum);
+// 		break;
+// 	case 6:
+// 		uniSolt_ptr->HeapSort(pNum);
+// 		break;
+// 	case 7:
+// 		uniSolt_ptr->RadixSort(pNum);
+// 		break;
+// 	default:
+// 		break;
+// 	}
+// 	cout << "ÅÅÐò½á¹û\n";
+// 	for (auto &it:pNum)
+// 	{
+// 		cout << it << " ";
+// 	} 
 	cout << endl;
-	//s_ptr->longestSubstring("aaabb", 3);
-	//s_ptr->removeKdigits("10", 1);
-	//s_ptr->originalDigits("owoztneoer");
+	vector<string> res = { "a==b", "b!=a" };
+	shared_ptr<SolutionMediumNew> spMe(new SolutionMediumNew);
+	spMe->equationsPossible(res);
 	system("pause");
 	return 0;
 }

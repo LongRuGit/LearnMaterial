@@ -78,8 +78,12 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\计算机\C++.txt" />
+    <Text Include="..\计算机\Linux.txt" />
     <Text Include="..\计算机\动态规划.txt" />
     <Text Include="..\计算机\操作系统.txt" />
+    <Text Include="..\计算机\数据库.txt" />
+    <Text Include="..\计算机\数据结构.txt" />
+    <Text Include="..\计算机\智力题.txt" />
     <Text Include="..\计算机\计算机网络.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

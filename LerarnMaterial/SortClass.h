@@ -20,7 +20,7 @@ namespace SortSequence{
 		void BuppleSort(vector<T>&nums);
 		/******************************************************************************
 		 函数名称： SelectSort
-		 功能说明： 选择排序稳定排序 o(n2)
+		 功能说明： 直接选择排序不稳稳定排序 o(n2)
 		 参    数： vector<T> & nums 
 		 返 回 值： void
 		 作    者： Ru Long
@@ -139,7 +139,7 @@ namespace SortSequence{
 			int index = 0;
 			for (int i = 0; i < end; ++i)
 			{
-				if (nums[i] >= nums[index])
+				if (nums[i] > nums[index])
 					index = i;
 			}
 			swap(nums[--end], nums[index]);
@@ -199,7 +199,7 @@ namespace SortSequence{
 	{
 		if (nums.size() < 2)
 			return;
-		PartionSort(nums, 0, nums.size());
+		PartionSort(nums, 0, nums.size()-1);
 	}
 
 	template<typename T>
@@ -330,11 +330,11 @@ namespace SortSequence{
 	void SortClass::PartionSort(vector<T>&nums, const int start, const int end)
 	{
 		//只有一个数
-		if (start >= end || end - start == 1)
+		if (start >= end)
 		{
 			return;
 		}
-		int leftCur = start, rightCur = end;
+		int leftCur = start, rightCur = end+1;
 		int proMid = nums[start];
 		while (leftCur < rightCur)
 		{
@@ -353,7 +353,7 @@ namespace SortSequence{
 			swap(nums[leftCur], nums[rightCur]);
 		}
 		swap(nums[start], nums[rightCur]);
-		PartionSort(nums, start, rightCur);
+		PartionSort(nums, start, rightCur-1);
 		PartionSort(nums, rightCur + 1, end);
 	}
 
