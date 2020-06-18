@@ -29,6 +29,19 @@ TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
 	return pNode;
 }
 
+void printSudo(vector<vector<char>>& bb) 
+{
+	for (int i = 0; i < 9; i++)
+	{
+		for (int j = 0; j < 9; j++) 
+		{
+			cout << bb[i][j] << ' ';
+		}
+		cout << endl;
+	}
+}
+
+
 int main()
 {
 	//使用智能指针
@@ -108,6 +121,20 @@ int main()
 	vector<string> res = { "a==b", "b!=a" };
 	shared_ptr<SolutionMediumNew> spMe(new SolutionMediumNew);
 	spMe->equationsPossible(res);
+
+	vector<char> a1({ '.', '1', '.', '.', '7', '.', '.', '.', '.' });
+	vector<char> a2({ '.', '.', '.', '.', '.', '1', '2', '9', '.' });
+	vector<char> a3({ '2', '.', '.', '.', '.', '.', '.', '.', '6' });
+	vector<char> a4({ '.', '.', '7', '.', '.', '.', '.', '.', '.' });
+	vector<char> a5({ '.', '.', '.', '.', '8', '.', '1', '6', '4' });
+	vector<char> a6({ '.', '.', '.', '.', '4', '.', '.', '.', '.' });
+	vector<char> a7({ '.', '.', '.', '.', '5', '8', '.', '7', '.' });
+	vector<char> a8({ '6', '.', '.', '.', '.', '2', '.', '.', '.' });
+	vector<char> a9({ '5', '4', '.', '.', '.', '3', '9', '.', '.' });
+	vector<vector<char>> aa({ a1, a2, a3, a4, a5, a6, a7, a8, a9 });
+	spMe->solveSudoku(aa);
+	printSudo(aa);
+
 	system("pause");
 	return 0;
 }

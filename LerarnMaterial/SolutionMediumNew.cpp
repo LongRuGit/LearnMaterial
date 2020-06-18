@@ -1755,3 +1755,125 @@ bool SolutionMediumNew::equationsPossible(vector<string>& equations)
 	}
 	return true;
 }
+
+int GetSum(const vector<int> &arr, const vector<int> &preSum, const int &value)
+{
+	auto iter = lower_bound(arr.begin(), arr.end(), value);
+	return preSum[iter - arr.begin()] + (arr.end() - iter)*value;
+}
+
+int SolutionMediumNew::findBestValue(vector<int>& arr, int target)
+{
+	if (arr.empty())
+		return 0;
+	sort(arr.begin(), arr.end());
+	const int n = arr.size();
+	vector<int> preSum(n + 1);
+	for (int i = 1; i <= arr.size(); ++i)
+		preSum[i] = arr[i - 1] + preSum[i - 1];
+	int left = 1, right = arr.back();
+	while (left < right)
+	{
+		int mid = left + (right - left) / 2;
+		int sum = GetSum(arr, preSum, mid);
+		if (sum<target)
+		{
+			left = mid + 1;
+		}
+		else if (sum>target)
+		{
+			right = mid;
+		}
+		else
+		{
+			return mid;
+		}
+	}
+	return abs(GetSum(arr, preSum, left) - target) < abs(GetSum(arr, preSum, left - 1) - target) ? left : left - 1;
+}
+
+//处理一个数字，并将begin移动到下一个 '-' 或者end
+int next_int(string::iterator &begin, string::iterator &end) {
+	int res = 0;
+	while (begin < end && *begin != '-') res = res * 10 + (*(begin++) - '0');
+	return res;
+}
+//返回当前 '-' 个数，并将begin移动到下一个数字或者end
+int cnt_line(string::iterator &begin, string::iterator &end) {
+	auto last = begin;
+	while (begin < end && *begin == '-') begin++;
+	return begin - last;
+}
+
+TreeNode* SolutionMediumNew::recoverFromPreorder(string S)
+{
+	auto begin = S.begin(), end = S.end();
+	TreeNode* node = new TreeNode(next_int(begin, end));
+	stack<TreeNode*> stk({ node });                       //栈初始化加入头节点
+	while (begin < end)
+	{
+		int depth = cnt_line(begin, end);                 //得到深度
+		node = new TreeNode(next_int(begin, end));        //新节点创建
+		while (stk.size() > depth) stk.pop();             //大于等于新节点深度的出栈
+		if (stk.top()->left) stk.top()->right = node;     //左节点已经占用了
+		else stk.top()->left = node;
+		stk.push(node);                                   //新节点入栈
+	}
+	while (stk.size() > 1) stk.pop();                    //得到头节点
+	return stk.top();
+}
+
+int col[9][10] = { 0 };
+int row[9][10] = { 0 };
+int squ[9][10] = { 0 };
+vector<pair<int, int>> blank;
+
+bool backtrack(int n, vector<vector<char>>& board) 
+{
+	if (n >= blank.size()) return true;
+	int r = blank[n].first;
+	int c = blank[n].second;
+	for (int i = 1; i <= 9; i++)
+	{
+		if (col[c][i] == 0 && row[r][i] == 0 && squ[r / 3 * 3 + c / 3][i] == 0)
+		{
+			board[r][c] = '0' + i;
+			col[c][i] = 1;
+			row[r][i] = 1;
+			squ[r / 3 * 3 + c / 3][i] = 1;
+			if (backtrack(n + 1, board)) return true;
+			else 
+			{
+				board[r][c] = '.';
+				col[c][i] = 0;
+				row[r][i] = 0;
+				squ[r / 3 * 3 + c / 3][i] = 0;
+			}
+		}
+	}
+	return false;
+}
+
+void SolutionMediumNew::solveSudoku(vector<vector<char>>& board)
+{
+	if (board.empty())
+	{
+		return;
+	}
+	for (int i = 0; i < 9; i++)
+	{
+		for (int j = 0; j < 9; j++)
+		{
+			if (board[i][j] == '.')
+			{
+				blank.push_back(pair<int, int>(i, j));
+				continue;
+			}
+			int val = board[i][j] - '0';
+			col[j][val] = 1;
+			row[i][val] = 1;
+			squ[i / 3 * 3 + j / 3][val] = 1;
+		}
+	}
+	backtrack(0, board);
+}

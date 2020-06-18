@@ -962,7 +962,6 @@ private:
 //智能指针的简单实现,成员变量是一个普通的指针用于解应用，一个int * 指针用于计数
 
 //随机洗牌算法的实现
-
 void Shuffe(vector<int>&nums)
 {
 	if (nums.empty())
@@ -974,4 +973,16 @@ void Shuffe(vector<int>&nums)
 		srand((unsigned int)time(nullptr));
 		swap(nums[i], nums[rand() % (i + 1)]);
 	}
+}
+
+vector<int> data = { 1, 2, 3, 4, 5 };
+const int size = data.size();
+
+//负载均衡算法的实现,不带权重
+int GetNextData()
+{
+	static int curIndex = 0;
+	int nextData = data[curIndex];
+	curIndex = (curIndex + 1) % size;
+	return nextData;
 }
