@@ -356,7 +356,6 @@ namespace SortSequence{
 		PartionSort(nums, start, rightCur-1);
 		PartionSort(nums, rightCur + 1, end);
 	}
-
 }
 #endif 
 

@@ -65,6 +65,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Common.h" />
+    <ClInclude Include="CNonCopyable.h" />
+    <ClInclude Include="Singleton.h" />
     <ClInclude Include="Solution.h" />
     <ClInclude Include="SolutionMediumNew.h" />
     <ClInclude Include="SortClass.h" />

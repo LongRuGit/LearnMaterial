@@ -1,15 +1,5 @@
 ﻿#include "SolutionMediumNew.h"
 
-
-SolutionMediumNew::SolutionMediumNew()
-{
-}
-
-
-SolutionMediumNew::~SolutionMediumNew()
-{
-}
-
 int SolutionMediumNew::findRepeatNumber(vector<int>& nums)
 {
 	if (nums.size()<2)
@@ -1876,4 +1866,354 @@ void SolutionMediumNew::solveSudoku(vector<vector<char>>& board)
 		}
 	}
 	backtrack(0, board);
+}
+
+int SolutionMediumNew::change(int amount, vector<int>& coins)
+{
+	if (amount <= 0)
+		return 1;
+	if (coins.empty())
+		return 0;
+	vector<int> dp(amount + 1);
+	dp[0] = 1;
+	for (auto &it:coins)
+	{
+		for (int i = it; i <= amount;++i)
+		{
+			// 在上一钟零钱状态的基础上增大
+			// 例如对于总额5，当只有面额为1的零钱时，只有一种可能 5x1
+			// 当加了面额为2的零钱时，除了原来的那一种可能外
+			// 还加上了组合了两块钱的情况，而总额为5是在总额为3的基础上加上两块钱来的
+			// 所以就加上此时总额为3的所有组合情况
+			if (i >= it)
+			{
+				dp[i] += dp[i - it];
+			}
+		}
+	}
+	return dp.back();
+}
+
+void MergeSort(vector<pair<int, int>> &nums, vector<pair<int,int>> &helpNums, const int &left, const int &right, vector<int> &ret)
+{
+	if (left == right)
+	{
+		helpNums[left] = nums[right];
+		return;
+	}
+	const int length = (right - left) >> 1;
+	MergeSort(nums, helpNums, left, left + length, ret);
+	MergeSort(nums, helpNums, left + length + 1, right,ret);
+	//合并两个数组
+	int index = right;
+	int leftCur = left + length, rightCur = right;
+	while (leftCur >= left&&rightCur >= left + length + 1)
+	{
+		if (nums[leftCur].first <= nums[rightCur].first)
+		{
+			helpNums[index--] = nums[rightCur--];
+		}
+		else
+		{
+			ret[nums[leftCur].second] += rightCur - left - length;
+			helpNums[index--] = nums[leftCur--];
+		}
+	}
+	while (leftCur >= left)
+	{
+		helpNums[index--] = nums[leftCur--];
+	}
+	while (rightCur >= left + length + 1)
+	{
+		helpNums[index--] = nums[rightCur--];
+	}
+	for (int i = left; i <= right; ++i)
+	{
+		nums[i] = helpNums[i];
+	}
+}
+
+//要计算某个元素后面比它小的个数，实际上可以统计在归并排序过程中，从它的右侧转移到它左侧的元素的个数。
+//在 merge 中，如果右半部的数组指针指向的位置为 j，左半部数组指针指向了 i，如果 left[i] <= right[j]，
+//则说明 right[0...j) 中所有的元素，
+//都是从 arr[x] 的右侧转移到 arr[x] 左侧的。x 表示 left[i] 元素在原数组中的位置。
+std::vector<int> SolutionMediumNew::countSmaller(vector<int>& nums)
+{
+	if (nums.empty())
+	{
+		return{};
+	}
+	vector<pair<int, int>> numsNew;
+	for (int i = 0; i < nums.size();++i)
+	{
+		numsNew.emplace_back(std::make_pair(nums[i], i));
+	}
+	vector<pair<int, int>> numsHelp(nums.size());
+	vector<int> ret(nums.size());
+	MergeSort(numsNew, numsHelp, 0, nums.size() - 1, ret);
+	return ret;
+}
+
+//dp[i][j]=max(min(dp[i+1][j],dp[i][j+1])−dungeon(i,j),1) dp[i][j]表示从当前到终点的最小路径和
+int SolutionMediumNew::calculateMinimumHP(vector<vector<int>>& dungeon)
+{
+	if (dungeon.empty())
+	{
+		return 0;
+	}
+	vector<vector<int>> dp(dungeon.size(), vector<int>(dungeon[0].size()));
+	for (int i = dungeon.size()-1; i >=0;--i)
+	{
+		for (int j = dungeon[i].size()-1; j >=0;--j)
+		{
+			if (i==dungeon.size()-1)
+			{
+				if (j == dungeon[i].size() - 1)
+				{
+					dp[i][j] = max(1 - dungeon[i][j], 1);
+					continue;
+				}
+				dp[i][j] = max(dp[i][j+1] - dungeon[i][j],1);
+			}
+			else if (j == dungeon[i].size() - 1)
+			{
+				dp[i][j] = max(dp[i+1][j] - dungeon[i][j],1);
+			}
+			else
+			{
+				dp[i][j] = max(min(dp[i + 1][j], dp[i][j + 1]) - dungeon[i][j],1);
+			}
+		}
+	}
+	return dp[0][0];
+}
+
+int SolutionMediumNew::maxCoins(vector<int>& nums)
+{
+	if (nums.empty())
+	{
+		return 0;
+	}
+	const int n = nums.size();
+	vector<int> tempNums(n + 2, 1);
+	for (int i = 0; i < n; ++i)
+	{
+		tempNums[i + 1] = nums[i];
+	}
+	vector<vector<int>> dp(n + 2, vector<int>(n + 2));
+	for (int len = 3; len <= n + 2;++len)
+	{
+		//i表示左侧开区间,k是中间的最后一个打破气球的
+		for (int i = 0; i <= n + 2 - len;++i)
+		{
+			int res = 0;
+			for (int k = i + 1; k < i + len - 1;++k)
+			{
+				res = max(res, dp[i][k] + tempNums[i] * tempNums[k] * tempNums[i + len - 1] 
+					+ dp[k][i + len - 1]);
+			}
+			dp[i][i + len - 1] = res;
+		}
+	}
+	return dp[0][n + 1];
+}
+
+bool SolutionMediumNew::isInterleave(string s1, string s2, string s3)
+{
+	if (s1.size()+s2.size()!=s3.size())
+	{
+		return false;
+	}
+	vector<vector<bool>>  dp(s1.size() + 1, vector<bool>(s2.size() + 1));
+	dp[0][0] = true;
+	for (int i = 1; i <= s1.size();++i)
+	{
+		dp[i][0] = s1[i - 1] == s3[i - 1] ? dp[i - 1][0]:false;
+	}
+	for (int i = 1; i <= s2.size(); ++i)
+	{
+		dp[0][i] = s2[i - 1] == s3[i - 1] ? dp[0][i-1] : false;
+	}
+	for (int i = 1; i <= s1.size();++i)
+	{
+		for (int j = 1; j <= s2.size();++j)
+		{
+			if (s1[i-1]==s3[i+j-1])
+			{
+				dp[i][j] = dp[i - 1][j];
+			}
+			if (s2[j-1]==s3[i+j-1])
+			{
+				dp[i][j] = dp[i][j]||dp[i][j - 1];
+			}
+		}
+	}
+	return dp.back().back();
+}
+
+int SolutionMediumNew::splitArray(vector<int>& nums, int m)
+{
+	/*
+	二分容量
+	分成 m 个子数组，假设整个数组和 为 sum，那么平均下来每个子数组为 sum / k
+	因此二分容量的 最小值 left 为 sum / k, 容量最大值 right 为 sum（当然，最小值可以跟上面那个一样选取元素最大值）
+	如果 容量 mid 可以分成 m 个子数组，那么我们尝试缩减容量
+	如果 容量 mid 分成的子数组个数 > m，表示容量太小，必须增大容量，才能减少分割的子数组的个数
+	比如 m = 3
+	假设容量为 10，即分成的每个子数组最大容量为 10，结果分成的子数组个数为 5 个，那么意味着每个子数组容量为 10 太少了
+	导致每个子数组容纳的数太少，因此才需要多出 2 个子数组来存储，因此我们需要调高容量
+	*/
+	if (nums.empty())
+	{
+		return 0;
+	}
+	long long right = 0;
+	int left = INT_MIN;
+	for (auto &it : nums)
+	{
+		right += it;
+		left = max(left, it);
+	}
+	while (left<right)
+	{
+		long long iTemp = 0, count = 1;
+		long long mid = left + (right - left) / 2;
+		for (auto &it:nums)
+		{
+			if (iTemp>mid)
+			{
+				++count;
+				iTemp = 0;
+			}
+			iTemp += it;
+		}
+		if (count>m)
+		{
+			left = mid+1;
+		}
+		else
+		{
+			right = mid;
+		}
+	}
+	return left;
+}
+
+int SolutionMediumNew::minEatingSpeed(vector<int>& piles, int H)
+{
+	if (H<piles.size())
+	{
+		return -1;
+	}
+	int left = 1,right=0;
+	for (auto &it:piles)
+	{
+		right = max(right, it);
+	}
+	while (left<right)
+	{
+		int count = 0;
+		int mid = left + (right - left) / 2;
+		for (int &it : piles)
+		{
+			if (mid>=it)
+			{
+				++count;
+			}
+			else
+			{
+				count += it / mid;
+				if (it%mid!=0)
+				{
+					++count;
+				}
+			}
+		}
+		if (count>H)
+		{
+			left = mid + 1;
+		}
+		else
+		{
+			right = mid;
+		}
+	}
+	return left;
+}
+
+int SolutionMediumNew::shipWithinDays(vector<int>& weights, int D)
+{
+	if (weights.empty())
+	{
+		return 0;
+	}
+	int left = 0, right = 0;
+	for (auto &it : weights)
+	{
+		right += it;
+		left = max(left, it);
+	}
+	left = max(left, right / D);
+	while (left<right)
+	{
+		int count = 1;
+		int mid = (right + left) >> 1;
+		int iTemp = 0;
+		for (auto &it:weights)
+		{
+			if (iTemp+it>mid)
+			{
+				++count;
+				iTemp = 0;
+			}
+			iTemp += it;
+		}
+		if (count>D)
+		{
+			left = mid + 1;
+		}
+		else
+		{
+			right = mid;
+		}
+	}
+	return left;
+}
+
+int dirTest[4][2] = { { 1, 0 }, { -1, 0 }, { 0, -1 }, { 0, 1 } };
+int DFSBack(vector<vector<int>>&matrix, vector<vector<int>> &vecNums, int curX, int curY)
+{
+	if (vecNums[curX][curY]!=0)
+	{
+		return vecNums[curX][curY];
+	}
+	++vecNums[curX][curY];
+	for (int i = 0; i < 4;++i)
+	{
+		int newX = curX + dirTest[i][0];
+		int newY = curY + dirTest[i][1];
+		if (newX >= 0 && newX<matrix.size() && newY >= 0 && newY<matrix[0].size()
+			 && matrix[newX][newY]>matrix[curX][curY])
+		{
+			vecNums[curX][curY]=max(vecNums[curX][curY],DFSBack(matrix, vecNums, newX, newY)+1);
+		}
+	}
+	return vecNums[curX][curY];
+}
+int SolutionMediumNew::longestIncreasingPath(vector<vector<int>>& matrix)
+{
+	if (matrix.empty())
+	{
+		return 0;
+	}
+	int ret = 0;
+	vector<vector<int>> vecNums(matrix.size(), vector<int>(matrix[0].size()));
+	for (int i = 0; i < matrix.size();++i)
+	{
+		for (int j = 0; j < matrix[0].size();++j)
+		{
+			ret = max(ret, DFSBack(matrix, vecNums, i, j));
+		}
+	}
+	return ret;
 }

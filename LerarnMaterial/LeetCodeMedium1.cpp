@@ -41,7 +41,6 @@ void printSudo(vector<vector<char>>& bb)
 	}
 }
 
-
 int main()
 {
 	//使用智能指针
@@ -132,8 +131,11 @@ int main()
 	vector<char> a8({ '6', '.', '.', '.', '.', '2', '.', '.', '.' });
 	vector<char> a9({ '5', '4', '.', '.', '.', '3', '9', '.', '.' });
 	vector<vector<char>> aa({ a1, a2, a3, a4, a5, a6, a7, a8, a9 });
-	spMe->solveSudoku(aa);
-	printSudo(aa);
+// 	spMe->solveSudoku(aa);
+// 	printSudo(aa);
+
+	vector<int> numsVec = { 3, 6, 7, 11, 1, 15, 6, 1, 1, 1, 1 };
+	SolutionMediumNew::Instance().minEatingSpeed(numsVec, 111);
 
 	system("pause");
 	return 0;
