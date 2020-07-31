@@ -18,7 +18,6 @@
 #include <climits>
 #include <assert.h>
 #include <utility>
-#include <hash_map>
 #include <functional>
 #include <time.h>
 

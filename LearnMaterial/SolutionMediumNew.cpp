@@ -2217,3 +2217,22 @@ int SolutionMediumNew::longestIncreasingPath(vector<vector<int>>& matrix)
 	}
 	return ret;
 }
+
+int SolutionMediumNew::findMagicIndex(vector<int>& nums)
+{
+    if (nums.empty())
+        return -1;
+    int i = 0;
+    while (nums[i] != i)
+	{
+        if (nums[i] > i)
+		{
+            if (nums[i] >= nums.size())
+                return -1;
+            i = nums[i];
+        }
+        if (nums[i] < i)
+            i++;
+    }
+    return i;
+}

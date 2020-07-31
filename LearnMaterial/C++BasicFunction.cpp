@@ -975,18 +975,6 @@ void Shuffe(vector<int>&nums)
 	}
 }
 
-vector<int> data = { 1, 2, 3, 4, 5 };
-const int size = data.size();
-
-//负载均衡算法的实现,不带权重
-int GetNextData()
-{
-	static int curIndex = 0;
-	int nextData = data[curIndex];
-	curIndex = (curIndex + 1) % size;
-	return nextData;
-}
-
 // class Block
 // {
 // public:
