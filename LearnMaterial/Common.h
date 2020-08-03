@@ -21,6 +21,8 @@
 #include <functional>
 #include <time.h>
 
+using namespace std;
+
 struct TreeNode {
 	int val;
 	TreeNode *left;

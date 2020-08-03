@@ -5,6 +5,7 @@
 #include <regex>
 #include "SortClass.h"
 #include "SolutionMediumNew.h"
+#include "AutumnMove.h"
 
 TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
 	if (preorder.empty() || inorder.empty())
@@ -119,7 +120,7 @@ int main()
 	cout << endl;
 	vector<string> res = { "a==b", "b!=a" };
 	shared_ptr<SolutionMediumNew> spMe(new SolutionMediumNew);
-	spMe->equationsPossible(res);
+	//spMe->equationsPossible(res);
 
 	vector<char> a1({ '.', '1', '.', '.', '7', '.', '.', '.', '.' });
 	vector<char> a2({ '.', '.', '.', '.', '.', '1', '2', '9', '.' });
@@ -136,6 +137,7 @@ int main()
 
 	vector<int> numsVec = { 3, 6, 7, 11, 1, 15, 6, 1, 1, 1, 1 };
 	SolutionMediumNew::Instance().minEatingSpeed(numsVec, 111);
+	AutumnMove::Instance().addStrings("0", "0");
 
 	system("pause");
 	return 0;
