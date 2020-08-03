@@ -135,9 +135,8 @@ int main()
 // 	spMe->solveSudoku(aa);
 // 	printSudo(aa);
 
-	vector<int> numsVec = { 3, 6, 7, 11, 1, 15, 6, 1, 1, 1, 1 };
-	SolutionMediumNew::Instance().minEatingSpeed(numsVec, 111);
-	AutumnMove::Instance().addStrings("0", "0");
+	vector<int> numsVec = { 2,3,1,1,4 };
+	AutumnMove::Instance().canJump(numsVec);
 
 	system("pause");
 	return 0;

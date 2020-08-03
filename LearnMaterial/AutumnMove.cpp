@@ -163,7 +163,6 @@ std::vector<int> AutumnMove::smallestRange(vector<vector<int>>& nums)
             left++;
         }
         right++;
-
     }
     if (res == INT_MAX) 
         return {};
@@ -212,4 +211,145 @@ std::string AutumnMove::addStrings(string num1, string num2)
     }
     reverse(ret.begin(), ret.end());
     return ret;
+}
+
+bool AutumnMove::canJump(vector<int>& nums)
+{
+    if (nums.empty())
+    {
+        return false;
+    }
+    int nextIndex = 0;
+    for (int i=0;i<nums.size();++i)
+    {
+        if (nextIndex<i)
+        {
+            return false;
+        }
+        nextIndex = max(nextIndex, i + nums[i]);
+        if (nextIndex>=nums.size()-1)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+void AutumnMove::mergeVector(vector<int>& A, int m, vector<int>& B, int n)
+{
+    if (A.empty()||B.empty())
+    {
+        return;
+    }
+    int index = A.size()-1;
+    --m;
+    --n;
+    while (m>=0&&n>=0)
+    {
+        if (A[m]>B[n])
+        {
+            A[index--] = A[m--];
+        }
+        else
+        {
+            A[index--] = B[n--];
+        }
+    }
+    while (n>=0)
+    {
+        A[index--] = B[n--];
+    }
+}
+
+int AutumnMove::cuttingRope(int n)
+{
+    if (n<=2)
+    {
+        return 1;
+    }
+    if (n==3)
+    {
+        return 2;
+    }
+    vector<int> dp(n + 1);
+    dp[1] = 1;
+    dp[2] = 2;
+    dp[3] = 3;
+    for (int i=4;i<=n;++i)
+    {
+        for (int j=1;2*j<=i;++j)
+        {
+            dp[i] = max(dp[i], dp[j] * dp[i - j]);
+        }
+    }
+    return dp.back();
+}
+
+ListNode* AutumnMove::getIntersectionNode(ListNode* headA, ListNode* headB)
+{
+    if (nullptr ==headA||nullptr==headB)
+    {
+        return nullptr;
+    }
+    ListNode* newHeadA = headA;
+    ListNode* newHeadB = headB;
+    int countA = 0, countB = 0;
+    while (newHeadA)
+    {
+        ++countA;
+        newHeadA = newHeadA->next;
+    }
+    while (newHeadB)
+    {
+        ++countB;
+        newHeadB = newHeadB->next;
+    }
+    int diff = countA - countB;
+    newHeadA = headA;
+    newHeadB = headB;
+    if (diff<0)
+    {
+        while (diff)
+        {
+            ++diff;
+            newHeadB = newHeadB->next;
+        }
+    }
+    else
+    {
+        while (diff)
+        {
+            --diff;
+            newHeadA = newHeadA->next;
+        }
+    }
+    while (NULL != newHeadA&&NULL!=newHeadB)
+    {
+        if (newHeadA==newHeadB)
+        {
+            return newHeadA;
+        }
+        newHeadA = newHeadA->next;
+        newHeadB = newHeadB->next;
+    }
+    return NULL;
+}
+
+double AutumnMove::Sqrt(double target, double diff)
+{
+    if (target<=0)
+    {
+        return 0;
+    }
+    double C = target, x0 = target;
+    while (true) 
+    {
+        double xi = 0.5 * (x0 + C / x0);
+        if (fabs(x0 - xi) < diff)
+        {
+            break;
+        }
+        x0 = xi;
+    }
+    return x0;
 }
