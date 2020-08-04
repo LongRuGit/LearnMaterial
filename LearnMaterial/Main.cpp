@@ -119,9 +119,6 @@ int main()
 // 	} 
 	cout << endl;
 	vector<string> res = { "a==b", "b!=a" };
-	shared_ptr<SolutionMediumNew> spMe(new SolutionMediumNew);
-	//spMe->equationsPossible(res);
-
 	vector<char> a1({ '.', '1', '.', '.', '7', '.', '.', '.', '.' });
 	vector<char> a2({ '.', '.', '.', '.', '.', '1', '2', '9', '.' });
 	vector<char> a3({ '2', '.', '.', '.', '.', '.', '.', '.', '6' });
@@ -134,10 +131,10 @@ int main()
 	vector<vector<char>> aa({ a1, a2, a3, a4, a5, a6, a7, a8, a9 });
 // 	spMe->solveSudoku(aa);
 // 	printSudo(aa);
-
-	vector<int> numsVec = { 2,3,1,1,4 };
-	AutumnMove::Instance().canJump(numsVec);
-
+	int number = 0;
+	vector<int> trap = { 0,1,0,2,1,0,1,3,2,1,2,1 };
+	AutumnMove::Instance().trap(trap);
+	cout << "\n";
 	system("pause");
 	return 0;
 }

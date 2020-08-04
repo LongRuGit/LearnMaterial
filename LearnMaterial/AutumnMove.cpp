@@ -353,3 +353,277 @@ double AutumnMove::Sqrt(double target, double diff)
     }
     return x0;
 }
+
+bool AutumnMove::canFinish(int numCourses, vector<vector<int>>& prerequisites)
+{
+    if (prerequisites.empty())
+    {
+        return true;
+    }
+    vector<int> inVec(numCourses);
+    vector<vector<int>> ouVec(numCourses);
+    for (int i=0;i<prerequisites.size();++i)
+    {
+        inVec[prerequisites[i][0]] += prerequisites[i].size()-1;
+        for (int j=1;j<prerequisites[i].size();++j)
+        {
+            ouVec[prerequisites[i][j]].emplace_back(prerequisites[i][0]);
+        }
+    }
+    queue<int> que;
+    for (int i=0;i<inVec.size();++i)
+    {
+        if (inVec[i]==0)
+        {
+            que.push(i);
+        }
+    }
+    int count = 0;
+    while (!que.empty())
+    {
+        int node = que.front();
+        que.pop();
+        ++count;
+        for (auto &it:ouVec[node])
+        {
+            --inVec[it];
+            if (inVec[it]==0)
+            {
+                que.push(it);
+            }
+        }
+    }
+    return count == numCourses;
+}
+
+ListNode* AutumnMove::addTwoNumbers(ListNode* l1, ListNode* l2)
+{
+    if (nullptr==l1)
+    {
+        return l2;
+    }
+    if (nullptr==l2)
+    {
+        return l1;
+    }
+    ListNode* newHead = new ListNode(0);
+    ListNode* curNode = newHead;
+    int add = 0,sum=0;
+    while (l1&&l2)
+    {
+        sum = l1->val + l2->val + add;
+        curNode->next = new ListNode(sum % 10);
+        add = sum / 10;
+        l1 = l1->next;
+        l2 = l2->next;
+        curNode = curNode->next;
+    }
+    while (l1)
+    {
+        sum = l1->val + add;
+        curNode->next = new ListNode(sum % 10);
+        add = sum / 10;
+        l1 = l1->next;
+        curNode = curNode->next;
+    }
+    while (l2)
+    {
+        sum = l2->val + add;
+        curNode->next = new ListNode(sum % 10);
+        add = sum / 10;
+        l2 = l2->next;
+        curNode = curNode->next;
+    }
+    if (add!=0)
+    {
+        curNode->next= new ListNode(add);
+    }
+    curNode = newHead->next;
+    delete newHead;
+    return curNode;
+}
+
+TreeNode* AutumnMove::lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q)
+{
+    //LCA问题
+    if (nullptr==root|| p == root || q == root)
+    {
+        return root;
+    }
+    TreeNode* left = lowestCommonAncestor(root->left, p, q);
+    TreeNode* right = lowestCommonAncestor(root->right, p, q);
+    if (nullptr!=left&&nullptr!=right)
+    {
+        return root;
+    }
+    else if (nullptr==left&&nullptr==right)
+    {
+        return nullptr;
+    }
+    return nullptr == left ? right : left;
+}
+
+int dfsPathSum(TreeNode* root, int& ret)
+{
+    if (nullptr==root)
+    {
+        return 0;
+    }
+    int leftMax = max(dfsPathSum(root->left, ret), 0);
+    int rightMax = max(dfsPathSum(root->right, ret), 0);
+    ret = max(leftMax + rightMax + root->val, ret);
+    return max(root->val+max(leftMax, rightMax),0);
+}
+
+int AutumnMove::maxPathSum(TreeNode* root)
+{
+    if (nullptr==root)
+    {
+        return 0;
+    }
+    int ret = INT_MIN;
+    dfsPathSum(root, ret);
+    return ret;
+}
+
+void partion(vector<int>& nums, int left, int right)
+{
+    if (left>=right)
+    {
+        return;
+    }
+    int leftCur = left;
+    int rightCur = right + 1;
+    int prio = nums[leftCur];
+    while (leftCur < rightCur)
+    {
+        do 
+        {
+            ++leftCur;
+        } while (leftCur<rightCur&&nums[leftCur]<prio);
+        do 
+        {
+            --rightCur;
+        } while (nums[rightCur]>prio);
+        if (leftCur>=rightCur)
+        {
+            //要填写>=否则会出错
+            break;
+        }
+        swap(nums[leftCur], nums[rightCur]);
+    }
+    swap(nums[left], nums[rightCur]);
+    partion(nums, left, rightCur - 1);
+    partion(nums, rightCur+1, right);
+}
+
+void AutumnMove::QuickSort(vector<int>& nums)
+{
+    if (nums.size()<2)
+    {
+        return;
+    }
+    partion(nums,0,nums.size()-1);
+}
+
+std::vector<int> AutumnMove::preorderTraversal(TreeNode* root)
+{
+    if (nullptr==root)
+    {
+        return {};
+    }
+    stack<TreeNode*> stac;
+    vector<int> ret;
+    stac.push(root);
+    while (!stac.empty())
+    {
+        TreeNode* node = stac.top();
+        stac.pop();
+        ret.emplace_back(node->val);
+        if (node->right)
+        {
+            stac.push(node->right);
+        }
+        if (node->left)
+        {
+            stac.push(node->left);
+        }
+    }
+    return ret;
+}
+
+std::vector<int> AutumnMove::postorderTraversal(TreeNode* root)
+{
+    if (nullptr==root)
+    {
+        return {};
+    }
+    stack<TreeNode*> stac;
+    vector<int> ret;
+    stac.push(root);
+    while (!stac.empty())
+    {
+        TreeNode* node = stac.top();
+        stac.pop();
+        ret.emplace_back(node->val);
+        if (node->left)
+        {
+            stac.push(node->left);
+        }
+        if (node->right)
+        {
+            stac.push(node->right);
+        }
+    }
+    reverse(ret.begin(), ret.end());
+    return ret;
+}
+
+int AutumnMove::longestConsecutive(vector<int>& nums)
+{
+    if (nums.empty())
+    {
+        return 0;
+    }
+    unordered_set<int> hashSet(nums.begin(), nums.end());
+    int ret = 0;
+    for (auto &it:hashSet)
+    {
+        if (hashSet.count(it+1)==0)
+        {
+            int temp = it;
+            int count = 0;
+            while (hashSet.count(temp))
+            {
+                --temp;
+                ++count;
+            }
+            ret = max(count, ret);
+        }
+    }
+    return ret;
+}
+
+int AutumnMove::trap(vector<int>& height)
+{
+    if (height.empty())
+    {
+        return 0;
+    }
+    vector<int> leftVec(height.size()+1);
+    vector<int> rightVec(height.size()+1);
+    for (int i=1;i<=height.size();++i)
+    {
+        leftVec[i] = max(leftVec[i - 1], height[i-1]);
+    }
+    for (int i=height.size()-2;i>=0;--i)
+    {
+        rightVec[i] = max(height[i+1], rightVec[i + 1]);
+    }
+    int ret = 0;
+    for (int i=0;i<height.size();++i)
+    {
+        ret += max(min(leftVec[i], rightVec[i]) - height[i], 0);
+    }
+    return ret;
+}
