@@ -1080,3 +1080,68 @@ void Shuffe(vector<int>&nums)
 //让你设计一个微信发红包的api，你会怎么设计，不能有人领到的红包里面没钱，红包数值精确到分。
 //** 思路** ：
 //假设一共有 N 元，一共有 K 个人，则可以每个人拿到的钱为 random(N - (K - 1) * 0.01)，然后更新N，直到最后一个人就直接 N。
+
+//多线程交替打印ABC
+#include <iostream>
+#include <thread>
+#include <mutex>
+#include <condition_variable>
+
+std::mutex g_data_mutex;
+std::condition_variable g_con_var;
+bool g_flag = true;
+
+static int countOfNum = 0;
+
+void PrintA()
+{
+    while (true)
+    {
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+        std::unique_lock<std::mutex> lck(g_data_mutex);
+        g_con_var.wait(lck, [] {return g_flag; });
+        if (countOfNum >= 10)
+        {
+            g_flag = !g_flag;
+            g_con_var.notify_one();
+            return;
+        }
+        std::cout << "this thread id is " << std::this_thread::get_id() << " prinf: A\n";
+        ++countOfNum;
+        g_flag = !g_flag;
+        g_con_var.notify_one();
+    }
+}
+
+void PrintB()
+{
+    while (true)
+    {
+        std::unique_lock<std::mutex> lck(g_data_mutex);
+        g_con_var.wait(lck, [] {return !g_flag; });
+        if (countOfNum >= 10)
+        {
+            return;
+        }
+        std::cout << "this thread id is " << std::this_thread::get_id() << " prinf: B\n";
+        g_flag = !g_flag;
+        ++countOfNum;
+        g_con_var.notify_one();
+    }
+}
+
+char ch[3] = { 'a','b','c' };
+char message = 'a';
+
+void PrintChar(int key)
+{
+    for (int i = 0; i < 1; ++i)
+    {
+        std::unique_lock<std::mutex> lc(g_data_mutex);
+        g_con_var.wait(lc, [=] {return message == key + 'a'; });
+        std::cout << "this thread id is " << std::this_thread::get_id() << " prinf: " << message << "\n";
+        message = ch[(key + 1) % 3];
+        lc.unlock();
+        g_con_var.notify_all();
+    }
+}

@@ -132,8 +132,17 @@ int main()
 // 	spMe->solveSudoku(aa);
 // 	printSudo(aa);
 	int number = 0;
-	vector<int> trap = { 0,1,0,2,1,0,1,3,2,1,2,1 };
-	AutumnMove::Instance().trap(trap);
+	vector<int> trap = { 0,1,0,2,1,0,1,3,2,1,2,1 ,-1,-241241,-11,-5453,-21};
+    for (auto& it : trap)
+    {
+        cout << it << " ";
+    }
+	cout << "\n";
+	AutumnMove::Instance().MergeSort(trap);
+	for (auto &it:trap)
+	{
+		cout << it << " ";
+	}
 	cout << "\n";
 	system("pause");
 	return 0;

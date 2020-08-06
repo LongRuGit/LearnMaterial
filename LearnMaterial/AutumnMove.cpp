@@ -627,3 +627,85 @@ int AutumnMove::trap(vector<int>& height)
     }
     return ret;
 }
+
+unordered_map<TreeNode*,int> hashM;
+int dfsRob3(TreeNode* root)
+{
+    if (nullptr==root)
+    {
+        return 0;
+    }
+    if (hashM.count(root))
+    {
+        return hashM[root];
+    }
+    int ret1 = root->val;
+    if (root->left)
+    {
+        ret1 += dfsRob3(root->left->left) + dfsRob3(root->left->right);
+    }
+    if (root->right)
+    {
+        ret1+= dfsRob3(root->right->left) + dfsRob3(root->right->right);
+    }
+    int ret2 = dfsRob3(root->left) + dfsRob3(root->right);
+    hashM[root] = max(ret1, ret2);
+    return hashM[root];
+}
+
+int AutumnMove::rob(TreeNode* root)
+{
+    if (NULL==root)
+    {
+        return 0;
+    }
+    return dfsRob3(root);
+}
+
+void Merge(vector<int>& nums, vector<int>& helpNums, int start, int end)
+{
+    if (start>=end)
+    {
+        helpNums[end] = nums[end];
+        return;
+    }
+    const int len = (end-start)/2;
+    Merge(nums, helpNums, start, start + len);
+    Merge(nums, helpNums, start + len + 1, end);
+    int startIndex = start + len;
+    int endIndex = end;
+    int curIndex = end;
+    while (startIndex >=start&&endIndex>=start+len+1)
+    {
+        if (nums[startIndex]<nums[endIndex])
+        {
+            helpNums[curIndex--] = nums[endIndex--];
+        }
+        else
+        {
+            helpNums[curIndex--] = nums[startIndex--];
+        }
+    }
+    while (startIndex >= start)
+    {
+        helpNums[curIndex--] = nums[startIndex--];
+    }
+    while (endIndex >= start + len + 1)
+    {
+        helpNums[curIndex--] = nums[endIndex--];
+    }
+    for (int i=start;i<=end;++i)
+    {
+        nums[i] = helpNums[i];
+    }
+}
+
+void AutumnMove::MergeSort(vector<int>& nums)
+{
+    if (nums.size()<2)
+    {
+        return;
+    }
+    vector<int> helpNums(nums.size());
+    Merge(nums, helpNums, 0, nums.size() - 1);
+}
