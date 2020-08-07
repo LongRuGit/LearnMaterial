@@ -132,17 +132,15 @@ int main()
 // 	spMe->solveSudoku(aa);
 // 	printSudo(aa);
 	int number = 0;
-	vector<int> trap = { 0,1,0,2,1,0,1,3,2,1,2,1 ,-1,-241241,-11,-5453,-21};
-    for (auto& it : trap)
-    {
-        cout << it << " ";
-    }
-	cout << "\n";
-	AutumnMove::Instance().MergeSort(trap);
-	for (auto &it:trap)
+	vector<int> vecNums = { 1,2,3,4,5 };
+	ListNode* newHead = new ListNode(1);
+	ListNode* curNode = newHead;
+	for (int i=1;i<vecNums.size();++i)
 	{
-		cout << it << " ";
+		curNode->next = new ListNode(vecNums[i]);
+		curNode = curNode->next;
 	}
+	AutumnMove::Instance().generateMatrix(3);
 	cout << "\n";
 	system("pause");
 	return 0;

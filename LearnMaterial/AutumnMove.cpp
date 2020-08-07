@@ -709,3 +709,136 @@ void AutumnMove::MergeSort(vector<int>& nums)
     vector<int> helpNums(nums.size());
     Merge(nums, helpNums, 0, nums.size() - 1);
 }
+
+bool AutumnMove::isSameTree(TreeNode* p, TreeNode* q)
+{
+    if (nullptr==p&&nullptr==q)
+    {
+        return true;
+    }
+    if (nullptr==p||nullptr==q)
+    {
+        return false;
+    }
+    if (p->val!=q->val)
+    {
+        return false;
+    }
+    return isSameTree(p->left, q->left) && isSameTree(p->right, q->right);
+}
+
+ListNode* AutumnMove::reverseList(ListNode* head)
+{
+    if (nullptr==head)
+    {
+        return head;
+    }
+    ListNode* pre = nullptr;
+    ListNode* pTemp = nullptr;
+    while (head)
+    {
+        pTemp = head->next;
+        head->next = pre;
+        pre = head;
+        head = pTemp;
+    }
+    return pre;
+}
+
+std::pair<ListNode*, ListNode*> myReverse(ListNode* head, ListNode* tail)
+{
+    ListNode* pre = tail->next;
+    ListNode* p = head;
+    while (pre !=tail)
+    {
+        ListNode* nex = p->next;
+        p->next = pre;
+        pre = p;
+        p = nex;
+    }
+    return { tail,head };
+}
+
+ListNode* AutumnMove::reverseKGroup(ListNode* head, int k)
+{
+    if (nullptr==head||k<2)
+    {
+        return head;
+    }
+    ListNode* newHead = new ListNode(0);
+    newHead->next = head;
+    ListNode* pre = newHead;
+    while (head)
+    {
+        ListNode* tail = pre;
+        for (int i=0;i<k;++i)
+        {
+            tail = tail->next;
+            if (!tail)
+            {
+                return newHead->next;
+            }
+        }
+        ListNode* nex = tail->next;
+        std::pair<ListNode*, ListNode*> res = myReverse(head, tail);
+        head = res.first;
+        tail = res.second;
+        // 把子链表重新接回原链表
+        pre->next = head;
+        tail->next = nex;
+        pre = tail;
+        head = tail->next;
+    }
+    return newHead->next;
+}
+
+std::vector<std::vector<int>> AutumnMove::generateMatrix(int n)
+{
+    if (n<1)
+    {
+        return {};
+    }
+    vector<vector<int>> ret(n, vector<int>(n));
+    int leftNum = 0, rightNum = n-1, top = 0, low = n-1;
+    int number = 1;
+    while (true)
+    {
+        for (int i=leftNum;i<= rightNum;++i)
+        {
+            ret[top][i] = number++;
+        }
+        ++top;
+        if (top>low)
+        {
+            break;
+        }
+        for (int i=top;i<=low;++i)
+        {
+            ret[i][rightNum] = number++;
+        }
+        --rightNum;
+        if (rightNum<leftNum)
+        {
+            break;
+        }
+        for (int i=rightNum;i>=leftNum;--i)
+        {
+            ret[low][i] = number++;
+        }
+        --low;
+        if (low<top)
+        {
+            break;
+        }
+        for (int i=low;i>=top;--i)
+        {
+            ret[i][leftNum] = number++;
+        }
+        ++leftNum;
+        if (leftNum>rightNum)
+        {
+            break;
+        }
+    }
+    return ret;
+}
