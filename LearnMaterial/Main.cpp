@@ -42,6 +42,17 @@ void printSudo(vector<vector<char>>& bb)
 	}
 }
 
+template<typename T>
+void PrintVec(const vector<T>& nums)
+{
+	cout << "\n";
+	for (auto &it:nums)
+	{
+		cout << it << " ";
+	}
+	cout << "\n";
+}
+
 int main()
 {
 	//使用智能指针
@@ -129,19 +140,11 @@ int main()
 	vector<char> a8({ '6', '.', '.', '.', '.', '2', '.', '.', '.' });
 	vector<char> a9({ '5', '4', '.', '.', '.', '3', '9', '.', '.' });
 	vector<vector<char>> aa({ a1, a2, a3, a4, a5, a6, a7, a8, a9 });
-// 	spMe->solveSudoku(aa);
-// 	printSudo(aa);
 	int number = 0;
-	vector<int> vecNums = { 1,2,3,4,5 };
-	ListNode* newHead = new ListNode(1);
-	ListNode* curNode = newHead;
-	for (int i=1;i<vecNums.size();++i)
-	{
-		curNode->next = new ListNode(vecNums[i]);
-		curNode = curNode->next;
-	}
-	AutumnMove::Instance().generateMatrix(3);
-	cout << "\n";
+	vector<int> vecNums = { 1,2,3,4,5 ,-1,-111,-13123,2313,231,21,23123,-2313,21313,-1231};
+	PrintVec(vecNums);
+	AutumnMove::Instance().HeapSort(vecNums);
+	PrintVec(vecNums);
 	system("pause");
 	return 0;
 }

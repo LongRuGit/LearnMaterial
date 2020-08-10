@@ -842,3 +842,150 @@ std::vector<std::vector<int>> AutumnMove::generateMatrix(int n)
     }
     return ret;
 }
+
+int AutumnMove::countBinarySubstrings(string s)
+{
+    if (s.size()<2)
+    {
+        return 0;
+    }
+    int preCount = 0;
+    int ret = 0;
+    int left = 0;
+    while (left<s.size())
+    {
+        int curCount = 0;
+        int preIndex = left;
+        while (left<s.size()&&s[left]==s[preIndex])
+        {
+            ++left;
+            ++curCount;
+        }
+        ret += min(curCount, preCount);
+        preCount = curCount;
+    }
+    return ret;
+}
+
+const int block = 4;
+
+void BackIpAddresses(const string& str, int piece, int start, vector<int>& path, vector<string>& ret)
+{
+    if (start>str.size())
+    {
+        return;
+    }
+    if (piece==block)
+    {
+        if (start==str.size())
+        {
+            string strTemp;
+            for (int i = 0; i < path.size(); ++i)
+            {
+                strTemp += to_string(path[i]);
+                if (i != path.size() - 1)
+                {
+                    strTemp.push_back(',');
+                }
+            }
+            ret.emplace_back(strTemp);
+        }
+        return;
+    }
+    if (str[start]=='0')
+    {
+        path.emplace_back(0);
+        BackIpAddresses(str, piece + 1, start + 1, path, ret);
+        path.pop_back();
+        return;
+    }
+    int num=0;
+    for (int i=0;i<3;++i)
+    {
+        num = str[start+i] - '0' + num * 10;
+        if (num>255)
+        {
+            break;
+        }
+        path.emplace_back(num);
+        BackIpAddresses(str, piece + 1, start + i+1, path, ret);
+        path.pop_back();
+    }
+}
+
+std::vector<std::string> AutumnMove::restoreIpAddresses(string s)
+{
+    if (s.size()<2)
+    {
+        return {};
+    }
+    vector<int> path;
+    vector<string> ret;
+    BackIpAddresses(s, 0, 0, path, ret);
+    return ret;
+}
+
+void HeapHelp(vector<int>& nums, int start,const int len)
+{
+    int nextIndex = 2 * start + 1;
+    int tempNode = nums[start];
+    while (nextIndex<len)
+    {
+        if (nextIndex+1<len&&nums[nextIndex]<nums[nextIndex+1])
+        {
+            ++nextIndex;
+        }
+        if (tempNode>nums[nextIndex])
+        {
+            break;
+        }
+        nums[start] = nums[nextIndex];
+        start =nextIndex;
+        nextIndex = 2 * start + 1;
+    }
+    nums[start] = tempNode;
+}
+
+void AutumnMove::HeapSort(vector<int>& nums)
+{
+    if (nums.size()<2)
+    {
+        return;
+    }
+    const int len = nums.size();
+    for (int i=len/2-1;i>=0;--i)
+    {
+        HeapHelp(nums, i, len);
+    }
+    for (int i=len-1;i>=0;--i)
+    {
+        std::swap(nums[i], nums[0]);
+        HeapHelp(nums, 0, i);
+    }
+}
+
+TreeNode* AutumnMove::buildTree(vector<int>& preorder, vector<int>& inorder)
+{
+    if (preorder.size()!=inorder.size())
+    {
+        return nullptr;
+    }
+    if (preorder.empty())
+    {
+        return nullptr;
+    }
+    if (preorder.size()==1)
+    {
+        return new TreeNode(preorder.front());
+    }
+    TreeNode* root = new TreeNode(preorder.front());
+    auto node = find(inorder.begin(), inorder.end(), root->val);
+    int len = node - inorder.begin();
+    vector<int> preLeft(preorder.begin() + 1, preorder.begin() + len+1);
+    vector<int> preRight(preorder.begin() + len + 1, preorder.end());
+    vector<int> inorLeft(inorder.begin(), node);
+    vector<int> inorRight(node + 1, inorder.end());
+    root->left = buildTree(preLeft, inorLeft);
+    root->right = buildTree(preRight, inorRight);
+    return root;
+}
