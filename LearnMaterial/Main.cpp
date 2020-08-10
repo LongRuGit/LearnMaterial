@@ -5,6 +5,7 @@
 #include <regex>
 #include "SortClass.h"
 #include "SolutionMediumNew.h"
+#include "AutumnMove.h"
 
 TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
 	if (preorder.empty() || inorder.empty())
@@ -39,6 +40,17 @@ void printSudo(vector<vector<char>>& bb)
 		}
 		cout << endl;
 	}
+}
+
+template<typename T>
+void PrintVec(const vector<T>& nums)
+{
+	cout << "\n";
+	for (auto &it:nums)
+	{
+		cout << it << " ";
+	}
+	cout << "\n";
 }
 
 int main()
@@ -118,9 +130,6 @@ int main()
 // 	} 
 	cout << endl;
 	vector<string> res = { "a==b", "b!=a" };
-	shared_ptr<SolutionMediumNew> spMe(new SolutionMediumNew);
-	spMe->equationsPossible(res);
-
 	vector<char> a1({ '.', '1', '.', '.', '7', '.', '.', '.', '.' });
 	vector<char> a2({ '.', '.', '.', '.', '.', '1', '2', '9', '.' });
 	vector<char> a3({ '2', '.', '.', '.', '.', '.', '.', '.', '6' });
@@ -131,12 +140,11 @@ int main()
 	vector<char> a8({ '6', '.', '.', '.', '.', '2', '.', '.', '.' });
 	vector<char> a9({ '5', '4', '.', '.', '.', '3', '9', '.', '.' });
 	vector<vector<char>> aa({ a1, a2, a3, a4, a5, a6, a7, a8, a9 });
-// 	spMe->solveSudoku(aa);
-// 	printSudo(aa);
-
-	vector<int> numsVec = { 3, 6, 7, 11, 1, 15, 6, 1, 1, 1, 1 };
-	SolutionMediumNew::Instance().minEatingSpeed(numsVec, 111);
-
+	int number = 0;
+	vector<int> vecNums = { 1,2,3,4,5 ,-1,-111,-13123,2313,231,21,23123,-2313,21313,-1231};
+	PrintVec(vecNums);
+	AutumnMove::Instance().HeapSort(vecNums);
+	PrintVec(vecNums);
 	system("pause");
 	return 0;
 }
