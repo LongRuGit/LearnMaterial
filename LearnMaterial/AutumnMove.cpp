@@ -989,3 +989,112 @@ TreeNode* AutumnMove::buildTree(vector<int>& preorder, vector<int>& inorder)
     root->right = buildTree(preRight, inorRight);
     return root;
 }
+
+int dirSolve[4][2] = { {1,0},{-1,0},{0,1},{0,-1} };
+void dfsSolve(vector<vector<char>>& board, int curX, int curY)
+{
+    if (board[curX][curY]!='O')
+    {
+        return;
+    }
+    board[curX][curY] = 'F';
+    for (int i=0;i<4;++i)
+    {
+        int newX = curX + dirSolve[i][0];
+        int newY = curY + dirSolve[i][1];
+        if (newX>=0&&newX<board.size()&&newY>=0&&newY<board[0].size()&&board[newX][newY]=='O')
+        {
+            dfsSolve(board, newX, newY);
+        }
+    }
+}
+
+void AutumnMove::solve(vector<vector<char>>& board)
+{
+    if (board.empty())
+    {
+        return;
+    }
+    const int raw = board.size();
+    const int col = board[0].size();
+    for (int i=0;i< raw;++i)
+    {
+        if (board[i][0]=='O')
+        {
+            dfsSolve(board,i, 0);
+        }
+        if (board[i][col -1]=='O')
+        {
+            dfsSolve(board, i, col-1);
+        }
+    }
+    for (int i=0;i<col;++i)
+    {
+        if (board[0][i] == 'O')
+        {
+            dfsSolve(board, 0, i);
+        }
+        if (board[raw - 1][i] == 'O')
+        {
+            dfsSolve(board, raw-1,i);
+        }
+    }
+    for (auto &it:board)
+    {
+        for (auto &itsec:it)
+        {
+            if (itsec=='F')
+            {
+                itsec = 'O';
+            }
+            else if(itsec=='O')
+            {
+                itsec = 'X';
+            }
+        }
+    }
+}
+
+bool dfsHasPathSum(TreeNode* root, int sum, const int& target)
+{
+    if (nullptr==root)
+    {
+        return false;
+    }
+    sum += root->val;
+    if (nullptr==root->left&&nullptr==root->right)
+    {
+        if (target==sum)
+        {
+            return true;
+        }
+    }
+    if (dfsHasPathSum(root->left,sum,target))
+    {
+        return true;
+    }
+    if (dfsHasPathSum(root->right,sum,target))
+    {
+        return true;
+    }
+    return false;
+}
+
+bool AutumnMove::hasPathSum(TreeNode* root, int sum)
+{
+    if (nullptr==root)
+    {
+        return false;
+    }
+    return dfsHasPathSum(root, 0, sum);
+}
+
+std::vector<std::vector<int>> AutumnMove::pathSum(TreeNode* root, int sum)
+{
+    if (nullptr==root)
+    {
+        return {};
+    }
+    return {};
+}
+
