@@ -143,7 +143,7 @@ int main()
 	int number = 0;
 	vector<int> vecNums = { 1,2,3,4,5 ,-1,-111,-13123,2313,231,21,23123,-2313,21313,-1231};
 	PrintVec(vecNums);
-	AutumnMove::Instance().HeapSort(vecNums);
+	AutumnMove::Instance().multiply("11","11");
 	PrintVec(vecNums);
 	system("pause");
 	return 0;

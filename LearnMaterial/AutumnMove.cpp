@@ -1089,12 +1089,148 @@ bool AutumnMove::hasPathSum(TreeNode* root, int sum)
     return dfsHasPathSum(root, 0, sum);
 }
 
+void dfsPathSumVec(TreeNode* root, const int& target, vector<int>& path, vector<vector<int>>& ret, int add)
+{
+    if (nullptr==root)
+    {
+        return;
+    }
+    add += root->val;
+    path.emplace_back(root->val);
+    if (nullptr==root->left&&nullptr==root->right)
+    {
+        if (target==add)
+        {
+            ret.emplace_back(path);
+        }
+        path.pop_back();
+        return;
+    }
+    dfsPathSumVec(root->left, target, path, ret, add);
+    dfsPathSumVec(root->right, target, path, ret, add);
+    path.pop_back();
+}
+
 std::vector<std::vector<int>> AutumnMove::pathSum(TreeNode* root, int sum)
 {
     if (nullptr==root)
     {
         return {};
     }
-    return {};
+    vector<int> path;
+    vector<vector<int>> ret;
+    dfsPathSumVec(root, sum,path,ret, 0);
+    return ret;
+}
+
+std::string AutumnMove::multiply(string num1, string num2)
+{
+    if (num1.empty()||num2.empty())
+    {
+        return "0";
+    }
+    vector<int> nums(num1.size() + num2.size() + 1);
+    int index = 0;
+    for (int i=num1.size()-1;i>=0;--i)
+    {
+        int curIndex = index++;
+        for (int j= num2.size()-1;j>=0;--j)
+        {
+            nums[curIndex++] += (num1[i] - '0') * (num2[j] - '0');
+        }
+    }
+    string ret(nums.size(),'0');
+    int add = 0;
+    for (int i=0;i<nums.size();++i)
+    {
+        int sum = nums[i] + add;
+        add = sum / 10;
+        ret[i] = sum % 10 + '0';
+    }
+    for (int j=ret.size()-1;j>=1;--j)
+    {
+        if (ret[j]=='0')
+        {
+            ret.pop_back();
+        }
+        else
+        {
+            break;
+        }
+    }
+    reverse(ret.begin(), ret.end());
+    return ret;
+}
+
+std::vector<std::vector<int>> AutumnMove::merge(vector<vector<int>>& intervals)
+{
+    if (intervals.empty())
+    {
+        return {};
+    }
+    sort(intervals.begin(), intervals.end(), [](const vector<int>& leftVec, const vector<int>& rightVec)
+        {
+            if (leftVec.front()!=rightVec.front())
+            {
+                return leftVec.front() < rightVec.front();
+            }
+            return leftVec.back() < rightVec.back();
+        });
+    int left = intervals[0].front(), right = intervals[0].back();
+    vector<vector<int>> ret;
+    for (int i=1;i<intervals.size();++i)
+    {
+        if (right<intervals[i].front())
+        {
+            vector<int> temp = { left,right };
+            ret.emplace_back(temp);
+            left = intervals[i].front();
+            right = intervals[i].back();
+        }
+        else
+        {
+            right = max(right, intervals[i].back());
+        }
+    }
+    vector<int> temp = { left,right };
+    ret.emplace_back(temp);
+    return ret;
+}
+
+std::string AutumnMove::reverseWords(string s)
+{
+    if (s.empty())
+    {
+        return s;
+    }
+    reverse(s.begin(),s.end());
+    int index = 0;
+    string ret;
+    while (index<s.size()&& s[index] == ' ')
+    {
+        ++index;
+    }
+    while (index<s.size())
+    {
+        int curIndex = index;
+        while (curIndex<s.size()&&s[curIndex]!=' ')
+        {
+            ++curIndex;
+        }
+        for (int j=curIndex-1;j>=index;--j)
+        {
+            ret.push_back(s[j]);
+        }
+        if (curIndex!=index)
+        {
+            ret += " ";
+        }
+        index = curIndex + 1;
+    }
+    if (!ret.empty())
+    {
+        ret.pop_back();
+    }
+    return ret;
 }
 
