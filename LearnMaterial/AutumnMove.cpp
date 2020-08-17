@@ -1234,3 +1234,33 @@ std::string AutumnMove::reverseWords(string s)
     return ret;
 }
 
+std::unordered_map<TreeNode*, int> depthMap;
+int GetTreeDepth(TreeNode* root)
+{
+    if (nullptr==root)
+    {
+        return 0;
+    }
+    if (depthMap.count(root))
+    {
+        return depthMap[root];
+    }
+    int leftDepth = GetTreeDepth(root->left);
+    int rightDepth = GetTreeDepth(root->right);
+    depthMap[root] = 1 + max(leftDepth, rightDepth);
+    return depthMap[root];
+}
+
+bool AutumnMove::isBalanced(TreeNode* root)
+{
+    if (nullptr==root)
+    {
+        return true;
+    }
+    if (abs(GetTreeDepth(root->left)-GetTreeDepth(root->right))>1)
+    {
+        return false;
+    }
+    return isBalanced(root->left) && isBalanced(root->right);
+}
+
