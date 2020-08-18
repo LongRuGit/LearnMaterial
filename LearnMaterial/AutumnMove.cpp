@@ -1264,3 +1264,34 @@ bool AutumnMove::isBalanced(TreeNode* root)
     return isBalanced(root->left) && isBalanced(root->right);
 }
 
+TreeNode* AutumnMove::sortedListToBST(ListNode* head)
+{
+    if (nullptr==head)
+    {
+        return nullptr;
+    }
+    if (nullptr==head->next)
+    {
+        return new TreeNode(head->val);
+    }
+    ListNode* pre = head;
+    //ÕÒµ½ÖÐµã
+    ListNode* slow = head;
+    ListNode* fast = head;
+    while (fast&&fast->next)
+    {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+    while (pre->next!=slow)
+    {
+        pre = pre->next;
+    }
+    fast = slow->next;
+    pre->next = nullptr;
+    TreeNode* root = new TreeNode(slow->val);
+    root->left = sortedListToBST(head);
+    root->right = sortedListToBST(fast);
+    return root;
+}
+
