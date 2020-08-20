@@ -7,29 +7,6 @@
 #include "SolutionMediumNew.h"
 #include "AutumnMove.h"
 
-TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
-	if (preorder.empty() || inorder.empty())
-		return NULL;
-	TreeNode * pNode = new TreeNode(preorder[0]);
-	int index = 0;
-	for (int i = 0; i < inorder.size(); ++i)
-	{
-		if (inorder[i] == pNode->val)
-		{
-			index = i;
-			break;
-		}
-	}
-	int leftLength = index;
-	vector<int> leftPre(preorder.begin() + 1, preorder.begin() + leftLength + 1);
-	vector<int> rightPre(preorder.begin() + leftLength + 1, preorder.end());
-	vector<int> leftIno(inorder.begin(), inorder.begin() + leftLength + 1);
-	vector<int> rightIno(inorder.begin() + leftLength + 1, inorder.end());
-	pNode->left = buildTree(leftPre, leftIno);
-	pNode->right = buildTree(rightPre, rightIno);
-	return pNode;
-}
-
 void printSudo(vector<vector<char>>& bb) 
 {
 	for (int i = 0; i < 9; i++)
@@ -141,10 +118,17 @@ int main()
 	vector<char> a9({ '5', '4', '.', '.', '.', '3', '9', '.', '.' });
 	vector<vector<char>> aa({ a1, a2, a3, a4, a5, a6, a7, a8, a9 });
 	int number = 0;
-	vector<int> vecNums = { 1,2,3,4,5 ,-1,-111,-13123,2313,231,21,23123,-2313,21313,-1231};
-	PrintVec(vecNums);
-	AutumnMove::Instance().multiply("11","11");
-	PrintVec(vecNums);
+    vector<int> vec;
+    srand((unsigned int)time(NULL));
+    for (int i = 0; i < 10; ++i)
+    {
+        vec.emplace_back(rand());
+    }
+	PrintVec(vec);
+    sort(vec.begin(), vec.end());
+	PrintVec(vec);
+	sort(vec.begin(), vec.end(), std::greater<int>());
+	PrintVec(vec);
 	system("pause");
 	return 0;
 }

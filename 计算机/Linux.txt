@@ -5,3 +5,74 @@
 (2) 运行并调试一个新的进程 ：运行gdb，通过命令行参数或file指定目标调试程序，如gdb ./test ；输入run命令，gdb执行下述操作： 通过fork()系统调用创建一个新进程 。在新创建的子进程中调用ptrace(PTRACE_TRACEME，0,0,0） 。
 在子进程中通过execv（）系统调用加载用户指定的可执行文件 
 (3) 远程调试目标主机上新创建的进程 ：gdb运行在调试机，gdbserver运行在目标机，通过二者之间定义的数据格式进行通信。
+
+2 task_struct结构内部的数据
+（1）进程的PID 进程组PPID
+（2）进程的状态 volatile long state state的可能取值是：
+#define TASK_RUNNING 0//进程要么正在执行，要么准备执行
+#define TASK_INTERRUPTIBLE 1 //可中断的睡眠，可以通过一个信号唤醒；
+#define TASK_UNINTERRUPTIBLE 2 //不可中断睡眠，不可以通过信号进行唤醒；
+#define __TASK_STOPPED 4 //进程停止执行；
+#define __TASK_TRACED 8 //进程被追踪
+（3）进程的优先级 long priority  程序计数器：程序中即将被执行的下一条指令的地址。
+内存指针：包括程序代码和进程相关数据的指针，还有和其他进程共享的内存块的指针。
+上下文数据：进程执行时处理器的寄存器中的数据。
+I／O状态信息：包括显示的I/O请求,分配给进程的I／O设备（如磁带驱动器）和被进程使用的文件列表。
+审计信息：可包括处理器时间总和，使用的时钟数总和，时间限制，审计号等。
+（4）进程调度信息
+（5）进程通信有关信息（IPC：Inter_Process Communication）
+unsigned long signal：进程接收到的信号。每位表示一种信号，共32种。置位有效。
+unsigned long blocked：进程所能接受信号的位掩码。置位表示屏蔽，复位表示不屏蔽。
+Spinlock_t sigmask_lock：信号掩码的自旋锁
+Long blocked：信号掩码
+Struct sem_undo *semundo：为避免死锁而在信号量上设置的取消操作
+Struct sem_queue *semsleeping：与信号量操作相关的等待队列
+struct signal_struct *sig：信号处理函数
+（6）进程信息
+　　Linux中存在多进程，而多进程中进程之间的关系可能是父子关系，兄弟关系。
+　　除了祖先进程外，其他进程都有一个父进程，通过folk创建出子进程来执行程序。除了表示各自的pid外，子进程的绝大多数信息都是拷贝父进程的信息。且父进程对子进程手握生杀大权，即子进程时是父进程创建出来的，而父进程也可以发送命令杀死子进程。
+（7）时间信息
+Start_time：进程创建时间
+Per_cpu_utime：进程在执行时在用户态上耗费的时间。
+Pre_cpu_stime：进程在执行时在系统态上耗费的时间。
+ITIMER_REAL：实时定时器，不论进程是否运行，都在实时更新。
+ITIMER_VIRTUAL：虚拟定时器，只有进程运行在用户态时才会更新。
+ITIMER_PROF：概况定时器，进程在运行处于用户态和系统态时更新。
+（8）文件信息
+　　文件的打开和关闭都是资源的一种操作，Linux中的task_struct中有两个结构体储存这两个信息。
+Sruct fs_struct *fs：进程的可执行映象所在的文件系统，有两个索引点，称为root和pwd，分别指向对应的根目录和当前目录。
+Struct files_struct *files：进程打开的文件
+（8）地址空间/虚拟内存信息
+　　每个进程都有自己的一块虚拟内存空间，用mm_struct来表示，mm_struct中使用两个指针表示一段虚拟地址空间，然后在最终时通过页表映射到真正的物理内存上。
+（9）页面管理信息
+Int swappable：进程占用的内存页面是否可换出。
+Unsigned long min_flat,maj_flt,nswap：进程累计换出、换入页面数。
+Unsigned long cmin_flat,cmaj_flt,cnswap：本进程作为祖先进程，其所有层次子进程的累计换出、换入页面数。
+（10）对称对处理机信息
+Int has_cpu： 进程是否当前拥有CPU
+Int processor： 进程当前正在使用的CPU
+Int lock_depth： 上下文切换时内核锁的深度
+（11）上下文信息：
+struct desc_struct *ldt：进程关于CPU段式存储管理的局部描述符表的指针。
+struct thread_struct tss：任务状态段。与Intel的TSS进行互动，当前运行的TSS保存在PCB的tss中，新选中的的进程的tss保存在TSS。
+（12）信号量数据成员
+struct sem_undo *semundo：进程每一次操作一次信号量，都会生成一个undo操作。保存在sem_undo结构体中，最终在进程异常终止结束的时候，sem_undo的成员semadj就会指向一个数组，这个数组中每个成员都表示之前每次undo的量。
+truct sem_queue *semsleeping：进程在操作信号量造成堵塞时，进程会被送入semsleeping指示的关于该信号量的sem_queue队列。
+（13）进程队列指针
+struct task_struct *next_task，*prev_task：所有进程均有各自的PCB。且各个PCB会串在一起，形成一个双向链表。其next_task和prev_task就表示上一个或下一个PCB，即前后指针。进程链表的头和尾都是0号进程。
+struct task_struct *next_run，*prev_run：由进程的run_queue中产生作用的，指向上一个或下一个可运行的进程，链表的头和尾都是0号进程。
+struct task_struct *p_opptr：原始父进程（祖先进程）
+struct task_struct *p_pptr ：父进程
+struct task_struct *p_cptr：子进程
+struct task_struct *p_ysptr：弟进程
+struct task_struct *p_osptr：兄进程
+　　以上分别是指向原始父进程(original parent)、父进程(parent)、子进程(youngest child)及新老兄弟进程(younger sibling，older sibling)的指针。
+current：当前正在运行进程的指针。
+struct task_struct init_task：0号进程的PCB，进程的跟=根，始终是INIT_TASK。
+char comm[16]：进程正在执行的可执行文件的文件名。
+int errno：进程最后一次出错的错误号。0表示无错误。
+
+3 MESI协议
+[1] M(Modified): cache line数据有效，但是数据被修改过了，本Cache中的数据是最新的，内存的数据是老的，需要在适当时候将Cache数据写回内存。因此，处于modified状态的cacheline也可以说是被该CPU独占。而又因为只有该CPU的cache保存了最新的数据（最终的memory中都没有更新），所以，该cache需要对该数据负责到底。例如根据请求，该cache将数据及其控制权传递到其他cache中，或者cache需要负责将数据写回到memory中，而这些操作都需要在reuse该cache line之前完成。
+[2] E(Exclusive)：cache line数据有效，并且cache和memory中的数据是一致的，同时数据只在本cache中有效。exclusive状态和modified状态非常类似，唯一的区别是对应CPU还没有修改cacheline中的数据，也正因为还没有修改数据，因此memory中对应的data也是最新的。在exclusive状态下，cpu也可以不通知其他CPU cache而直接对cacheline进行操作，因此，exclusive状态也可以被认为是被该CPU独占。由于memory中的数据和cacheline中的数据都是最新的，因此，cpu不需对exclusive状态的cacheline执行写回的操作或者将数据以及归属权转交其他cpu cache，而直接reuse该cacheline（将cacheine中的数据丢弃，用作他用）。
+[3] S(Shared)：cache line的数据有效，并且cache和memory中的数据是一致的，同时该数据在多个cpu cache中也是有效的。和exclusive状态类似，处于share状态的cacheline对应的memory中的数据也是最新的，因此，cpu也可以直接丢弃cacheline中的数据而不必将其转交给其他CPU cache或者写回到memory中。 [4] I(Invalid)：本cache line的数据已经是无效的。处于invalid状态的cacheline是空的，没有数据。当新的数据要进入cache的时候，优选状态是invalid的cacheline，之所以如此是因为如果选中其他状态的cacheline，则说明需要替换cacheline数据，而未来如果再次访问这个被替换掉的cacheline数据的时候将遇到开销非常大的cache miss。

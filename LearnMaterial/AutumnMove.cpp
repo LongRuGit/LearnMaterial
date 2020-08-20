@@ -1295,3 +1295,30 @@ TreeNode* AutumnMove::sortedListToBST(ListNode* head)
     return root;
 }
 
+int GetSubString(const string& str, int left, int right)
+{
+    int ret = 0;
+    while (left>=0&&right<str.size()&&str[left]==str[right])
+    {
+        --left;
+        ++right;
+        ++ret;
+    }
+    return ret;
+}
+
+int AutumnMove::countSubstrings(string s)
+{
+    if (s.empty())
+    {
+        return 0;
+    }
+    int ret = 0;
+    for (int i=0;i<s.size();++i)
+    {
+        ret += GetSubString(s, i, i);
+        ret += GetSubString(s, i, i + 1);
+    }
+    return ret;
+}
+
