@@ -124,11 +124,7 @@ int main()
     {
         vec.emplace_back(rand());
     }
-	PrintVec(vec);
-    sort(vec.begin(), vec.end());
-	PrintVec(vec);
-	sort(vec.begin(), vec.end(), std::greater<int>());
-	PrintVec(vec);
+	AutumnMove::Instance().findContinuousSequence(9);
 	system("pause");
 	return 0;
 }

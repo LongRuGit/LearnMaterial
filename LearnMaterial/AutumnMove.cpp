@@ -1322,3 +1322,163 @@ int AutumnMove::countSubstrings(string s)
     return ret;
 }
 
+int dir_x[8] = { 0, 1, 0, -1, 1, 1, -1, -1 };
+int dir_y[8] = { 1, 0, -1, 0, 1, -1, 1, -1 };
+void dfsBoard(vector<vector<char>>& board, int x, int y)
+{
+    int cnt = 0;
+    for (int i = 0; i < 8; ++i) 
+    {
+        int tx = x + dir_x[i];
+        int ty = y + dir_y[i];
+        if (tx < 0 || tx >= board.size() || ty < 0 || ty >= board[0].size())
+        {
+            continue;
+        }
+        // 不用判断 M，因为如果有 M 的话游戏已经结束了
+        cnt += board[tx][ty] == 'M';
+    }
+    if (cnt > 0) 
+    {
+        // 规则 3
+        board[x][y] = cnt + '0';
+    }
+    else 
+    {
+        // 规则 2
+        board[x][y] = 'B';
+        for (int i = 0; i < 8; ++i) 
+        {
+            int tx = x + dir_x[i];
+            int ty = y + dir_y[i];
+            // 这里不需要在存在 B 的时候继续扩展，因为 B 之前被点击的时候已经被扩展过了
+            if (tx < 0 || tx >= board.size() || ty < 0 || ty >= board[0].size() || board[tx][ty] != 'E') 
+            {
+                continue;
+            }
+            dfsBoard(board, tx, ty);
+        }
+    }
+}
+std::vector<std::vector<char>> AutumnMove::updateBoard(vector<vector<char>>& board, vector<int>& click)
+{
+    int x = click[0], y = click[1];
+    if (board[x][y] == 'M')
+    {
+        // 规则 1
+        board[x][y] = 'X';
+    }
+    else
+    {
+        dfsBoard(board, x, y);
+    }
+    return board;
+}
+
+std::vector<std::vector<int>> AutumnMove::findContinuousSequence(int target)
+{
+    if (target<=1)
+    {
+        return {};
+    }
+    vector<vector<int>> ret;
+    int left = 1,right=2,sum=3;
+    while (right<=(target+1)/2)
+    {
+        while (sum > target)
+        {
+            sum -= left++;
+        }
+        if (sum==target)
+        {
+            vector<int> temp;
+            for (int i=left;i<=right;++i)
+            {
+                temp.emplace_back(i);
+            }
+            ret.emplace_back(temp);
+        }
+        sum += ++right;
+    }
+    return ret;
+}
+
+void AutumnMove::nextPermutation(vector<int>& nums)
+{
+    if (nums.size()<2)
+    {
+        return;
+    }
+    int nextIndex = -1;
+    for (int i=0;i<nums.size()-1;++i)
+    {
+        if (nums[i]<nums[i+1])
+        {
+            nextIndex = i;
+        }
+    }
+    if (-1==nextIndex)
+    {
+        reverse(nums.begin(), nums.end());
+    }
+    else
+    {
+        int curIndex = nextIndex + 1;
+        for (int i=curIndex+1;i<nums.size();++i)
+        {
+            if (nums[i]>nums[nextIndex]&&nums[i]<nums[curIndex])
+            {
+                curIndex = i;
+            }
+        }
+        swap(nums[curIndex], nums[nextIndex]);
+        sort(nums.begin() + nextIndex + 1, nums.end());
+    }
+}
+
+int AutumnMove::firstMissingPositive(vector<int>& nums)
+{
+    if (nums.empty())
+    {
+        return 1;
+    }
+    const int length = nums.size();
+    int ret = length;
+    for (int i = 0; i < length; ++i)
+    {
+        while (nums[i] > 0 && nums[i] <= length && nums[i] != nums[nums[i] - 1])
+        {
+            swap(nums[i], nums[nums[i] - 1]);
+        }
+    }
+    for (int i = 0; i < nums.size(); ++i)
+    {
+        if (nums[i] != i + 1)
+        {
+            return i + 1;
+        }
+    }
+    return length + 1;
+}
+
+void rightSide(TreeNode* root, vector<int>& ret,int depth)
+{
+    if (nullptr==root)
+    {
+        return;
+    }
+    if (ret.size()==depth)
+    {
+        ret.emplace_back(root->val);
+    }
+    rightSide(root->right, ret, depth + 1);
+    rightSide(root->left, ret, depth + 1);
+}
+
+std::vector<int> AutumnMove::rightSideView(TreeNode* root)
+{
+    vector<int> ret;
+    rightSide(root, ret, 0);
+    return ret;
+}
+
