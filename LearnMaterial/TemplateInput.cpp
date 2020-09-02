@@ -4,7 +4,16 @@
 
 using namespace std;
 
-//将输入的字符按照符号进行分割
+/******************************************************************************
+ 函数名称： SplitStringBySymbol
+ 功能说明： 将输入的字符按照符号进行分割
+ 参    数： const string & iStr 
+ 参    数： const string & symbol 
+ 参    数： vector<string> & ioVecStr 
+ 返 回 值： void
+ 作    者： Ru Long
+ 日    期： 2020/09/01
+******************************************************************************/
 void SplitStringBySymbol(const string& iStr, const string& symbol, vector<string>& ioVecStr)
 {
     if (iStr.empty())

@@ -30,7 +30,7 @@ void PrintVec(const vector<T>& nums)
 	cout << "\n";
 }
 
-int main()
+int main(int argc,char* argv)
 {
 	//使用智能指针
 	shared_ptr<Solution> s_ptr;

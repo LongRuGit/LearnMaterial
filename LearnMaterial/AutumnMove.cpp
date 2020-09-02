@@ -1482,3 +1482,98 @@ std::vector<int> AutumnMove::rightSideView(TreeNode* root)
     return ret;
 }
 
+bool AutumnMove::PredictTheWinner(vector<int>& nums)
+{
+	if (nums.empty())
+	{
+		return true;
+	}
+	if (nums.size()%2==0)
+	{
+		return true;
+	}
+	//i j 代表 i到j两玩家分数差值的最大值
+	vector<vector<int>> dp(nums.size(), vector<int>(nums.size()));
+	for (int i = 0; i < nums.size();++i)
+	{
+		dp[i][i] = nums[i];
+	}
+	for (int i = nums.size() - 2; i >= 0;--i)
+	{
+		for (int j = i+1; j <nums.size();++j)
+		{
+			dp[i][j] = max(nums[i] - dp[i + 1][j], nums[j] - dp[i][j - 1]);
+		}
+	}
+	return dp[0][nums.size() - 1]>=0;
+}
+
+bool AutumnMove::isNumber(string s)
+{
+	if (s.empty())
+	{
+		return false;
+	}
+	int ipos = 0;
+	while (s[ipos] == ' ')
+	{
+		++ipos;
+	}
+	if (ipos != 0)
+	{
+		return isNumber(s.substr(ipos));
+	}
+	while (s.back() == ' ')
+	{
+		s.pop_back();
+	}
+	int pointNumber = 0;
+	int number = 0;
+	if (s[ipos] == '+' || s[ipos] == '-')
+	{
+		++ipos;
+	}
+	while (ipos < s.size() && s[ipos] != 'E'&&s[ipos] != 'e')
+	{
+		if (s[ipos] == '.')
+		{
+			++pointNumber;
+		}
+		else if (s[ipos] >= '0'&&s[ipos] <= '9')
+		{
+			++number;
+		}
+		else
+		{
+			return false;
+		}
+		++ipos;
+	}
+	if (pointNumber > 1 || number == 0)
+	{
+		return false;
+	}
+	if (ipos == s.size())
+	{
+		return true;
+	}
+	++ipos;
+	if (ipos == s.size())
+	{
+		return false;
+	}
+	if (s[ipos] == '+' || s[ipos] == '-')
+	{
+		++ipos;
+	}
+	if (ipos == s.size())
+	{
+		return false;
+	}
+	while (ipos < s.size() && s[ipos] >= '0'&&s[ipos] <= '9')
+	{
+		++ipos;
+	}
+	return ipos == s.size();
+}
+
