@@ -1577,3 +1577,127 @@ bool AutumnMove::isNumber(string s)
 	return ipos == s.size();
 }
 
+void BackPermute(vector<vector<int>>& ret, vector<int>& nums, vector<int>&path, int start)
+{
+	if (start==nums.size())
+	{
+		ret.push_back(path);
+		return;
+	}
+	for (int i = start; i < nums.size();++i)
+	{
+		swap(nums[i], nums[start]);
+		path.emplace_back(nums[start]);
+		BackPermute(ret, nums, path, start + 1);
+		path.pop_back();
+		swap(nums[i], nums[start]);
+	}
+}
+
+std::vector<std::vector<int>> AutumnMove::permute(vector<int>& nums)
+{
+	if (nums.empty())
+	{
+		return{};
+	}
+	vector<int> path;
+	vector<vector<int>> ret;
+	BackPermute(ret, nums, path, 0);
+	return ret;
+}
+
+void BackPermute2(vector<vector<int>>& ret, vector<int>& nums, vector<int>&path, int start)
+{
+	if (start == nums.size())
+	{
+		ret.push_back(path);
+		return;
+	}
+	unordered_map<int, int> hashM;
+	for (int i = start; i < nums.size(); ++i)
+	{
+		if (hashM[nums[i]]) continue;
+		hashM[nums[i]] = 1;
+		swap(nums[i], nums[start]);
+		path.emplace_back(nums[start]);
+		BackPermute2(ret, nums, path, start + 1);
+		path.pop_back();
+		swap(nums[i], nums[start]);
+	}
+}
+
+std::vector<std::vector<int>> AutumnMove::permute2(vector<int>& nums)
+{
+	if (nums.empty())
+	{
+		return{};
+	}
+	sort(nums.begin(), nums.end());
+	vector<vector<int>> ret;
+	vector<int> path;
+	BackPermute2(ret, nums, path, 0);
+	return ret;
+}
+
+bool CheckNQueens(vector<int>& path, int start)
+{
+	if (path.empty())
+	{
+		return true;
+	}
+	for (int i = 0; i < path.size();++i)
+	{
+		if (abs(path[i] - start) == abs((int)path.size() - i))
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
+void BackNQueens(vector<vector<int>>& ret, vector<int>& nums, vector<int>&path, int start)
+{
+	if (start == nums.size())
+	{
+		ret.push_back(path);
+		return;
+	}
+	for (int i = start; i < nums.size(); ++i)
+	{
+		if (!CheckNQueens(path,nums[i]))
+		{
+			continue;
+		}
+		swap(nums[i], nums[start]);
+		path.emplace_back(nums[start]);
+		BackNQueens(ret, nums, path, start + 1);
+		path.pop_back();
+		swap(nums[i], nums[start]);
+	}
+}
+
+std::vector<std::vector<std::string>> AutumnMove::solveNQueens(int n)
+{
+	vector<int> nums;
+	for (int  i = 0; i < n; ++i)
+	{
+		nums.emplace_back(i);
+	}
+	vector<vector<int>> ret;
+	vector<int> path;
+	BackNQueens(ret, nums, path, 0);
+	vector<vector<string>> resStr;
+	for (auto &it : ret)
+	{
+		vector<string> strTempVec;
+		for (auto & itVec : it)
+		{
+			string strTemp(it.size(), '.');
+			strTemp[itVec] = 'Q';
+			strTempVec.push_back(strTemp);
+		}
+		resStr.push_back(strTempVec);
+	}
+	return resStr;
+}
+
