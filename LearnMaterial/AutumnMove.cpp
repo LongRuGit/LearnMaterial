@@ -1701,3 +1701,102 @@ std::vector<std::vector<std::string>> AutumnMove::solveNQueens(int n)
 	return resStr;
 }
 
+void DFSTree(TreeNode* root, vector<string>&ret, vector<int>& path)
+{
+	if (nullptr==root)
+	{
+		return;
+	}
+	if (nullptr==root->left&&nullptr==root->right)
+	{
+		std::string str;
+		for (int i = 0; i < path.size(); ++i)
+		{
+			str += to_string(path[i]) + "->";
+		}
+		str += to_string(root->val);
+		ret.emplace_back(str);
+		return;
+	}
+	path.push_back(root->val);
+	DFSTree(root->left, ret, path);
+	DFSTree(root->right, ret, path);
+	path.pop_back();
+}
+
+std::vector<std::string> AutumnMove::binaryTreePaths(TreeNode* root)
+{
+	if (nullptr==root)
+	{
+		return{};
+	}
+	vector<string> ret;
+	vector<int> path;
+	DFSTree(root, ret, path);
+	return ret;
+}
+
+struct  ListNodeCom
+{
+	ListNodeCom(ListNode* node) :m_pNode(node) {}
+	ListNode* m_pNode;
+	//一定要加上const
+	bool operator < (const ListNodeCom &right) const
+	{
+		return m_pNode->val > right.m_pNode->val;
+	}
+};
+
+ListNode* AutumnMove::mergeKLists(vector<ListNode*>& lists)
+{
+	if (lists.empty())
+	{
+		return nullptr;
+	}
+	priority_queue<ListNodeCom> prioHelp;
+	for (auto &it:lists)
+	{
+		if (nullptr==it)
+		{
+			continue;
+		}
+		prioHelp.push(ListNodeCom(it));
+	}
+	ListNode* newHead = new ListNode(0);
+	ListNode* curNode = newHead;
+	while (!prioHelp.empty())
+	{
+		auto node = prioHelp.top();
+		prioHelp.pop();
+		curNode->next = new ListNode(node.m_pNode->val);
+		if (nullptr!=node.m_pNode->next)
+		{
+			prioHelp.push(ListNodeCom(node.m_pNode->next));
+		}
+		curNode = curNode->next;
+	}
+	curNode = newHead->next;
+	delete newHead;
+	return curNode;
+}
+
+std::string AutumnMove::getPermutation(int n, int k)
+{
+	string ret;
+	string num = "123456789";
+	vector<int> f(n, 1);
+	for (int i = 1; i < n;++i)
+	{
+		f[i] = i*f[i - 1];
+	}
+	--k;
+	for (int i = n; i >= 1; --i)
+	{
+		int key = k / f[i - 1];
+		k %= f[i - 1];
+		ret.push_back(num[key]);
+		num.erase(key,1);
+	}
+	return ret;
+}
+
