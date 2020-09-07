@@ -1130,7 +1130,7 @@ void PrintB()
     }
 }
 
-char ch[3] = { 'a','b','c' };
+char ch[4] = { 'a','b','c','d'};
 char message = 'a';
 
 void PrintChar(int key)
@@ -1140,7 +1140,7 @@ void PrintChar(int key)
         std::unique_lock<std::mutex> lc(g_data_mutex);
         g_con_var.wait(lc, [=] {return message == key + 'a'; });
         std::cout << "this thread id is " << std::this_thread::get_id() << " prinf: " << message << "\n";
-        message = ch[(key + 1) % 3];
+        message = ch[(key + 1) % 4];
         lc.unlock();
         g_con_var.notify_all();
     }

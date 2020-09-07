@@ -1800,3 +1800,31 @@ std::string AutumnMove::getPermutation(int n, int k)
 	return ret;
 }
 
+std::vector<int> AutumnMove::topKFrequent(vector<int>& nums, int k)
+{
+	if (nums.empty())
+	{
+		return{};
+	}
+	unordered_map<int, int> hashM;
+	for (auto &it:nums)
+	{
+		++hashM[it];
+	}
+	vector<pair<int,int>> numsVec;
+	for (auto &it:hashM)
+	{
+		numsVec.emplace_back(std::make_pair(it.first, it.second));
+	}
+	sort(numsVec.begin(), numsVec.end(), [](const pair<int, int>& left, const pair<int, int>& right)
+	{
+		return left.second > right.second;
+	});
+	vector<int> ret;
+	for (int i = 0; i < k;++i)
+	{
+		ret.emplace_back(numsVec[i].first);
+	}
+	return ret;
+}
+
