@@ -523,6 +523,36 @@ public:
 	 日    期： 2020/09/07
 	******************************************************************************/
 	vector<int> topKFrequent(vector<int>& nums, int k);
+	/******************************************************************************
+	 函数名称： combinationSum
+	 功能说明： 组合总数-39
+	 参    数： vector<int> & candidates 
+	 参    数： int target 
+	 返 回 值： std::vector<std::vector<int>>
+	 作    者： Ru Long
+	 日    期： 2020/09/09
+	******************************************************************************/
+	vector<vector<int>> combinationSum(vector<int>& candidates, int target);
+	/******************************************************************************
+	 函数名称： combine
+	 功能说明： k个数组合-77
+	 参    数： int n 
+	 参    数： int k 
+	 返 回 值： std::vector<std::vector<int>>
+	 作    者： Ru Long
+	 日    期： 2020/09/09
+	******************************************************************************/
+	vector<vector<int>> combine(int n, int k);
+	/******************************************************************************
+	 函数名称： combinationSum2
+	 功能说明： 组合总数-40
+	 参    数： vector<int> & candidates 
+	 参    数： int target 
+	 返 回 值： std::vector<std::vector<int>>
+	 作    者： Ru Long
+	 日    期： 2020/09/10
+	******************************************************************************/
+	vector<vector<int>> combinationSum2(vector<int>& candidates, int target);
 };
 
 #endif

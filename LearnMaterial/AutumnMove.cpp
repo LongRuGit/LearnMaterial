@@ -1828,3 +1828,101 @@ std::vector<int> AutumnMove::topKFrequent(vector<int>& nums, int k)
 	return ret;
 }
 
+void BackComBina(vector<int>& candidates, vector<vector<int>>&ret, vector<int>& path, const int target, int sum,int start)
+{
+	if (sum>target)
+	{
+		return;
+	}
+	if (sum==target)
+	{
+		ret.emplace_back(path);
+		return;
+	}
+	for (int i = start; i < candidates.size();++i)
+	{
+		path.emplace_back(candidates[i]);
+		BackComBina(candidates, ret, path, target, sum + candidates[i], i);
+		path.pop_back();
+	}
+}
+
+std::vector<std::vector<int>> AutumnMove::combinationSum(vector<int>& candidates, int target)
+{
+	if (candidates.empty())
+	{
+		return{};
+	}
+	sort(candidates.begin(), candidates.end());
+	vector<vector<int>> ret;
+	vector<int> path;
+	BackComBina(candidates, ret, path, target, 0, 0);
+	return ret;
+}
+
+void BackCombine(vector<int>& nums, vector<vector<int>>& ret, vector<int>& path, int start,const int k)
+{
+	if (path.size()==k)
+	{
+		ret.emplace_back(path);
+		return;
+	}
+	for (int i = start; i < nums.size(); ++i)
+	{
+		swap(nums[start], nums[i]);
+		path.emplace_back(nums[start]);
+		BackCombine(nums, ret, path, i+1, k);
+		swap(nums[start], nums[i]);
+		path.pop_back();
+	}
+}
+
+std::vector<std::vector<int>> AutumnMove::combine(int n, int k)
+{
+	vector<int> nums(n);
+	for (int i = 1; i <= n;++i)
+	{
+		nums[i - 1] = i;
+	}
+	vector<vector<int>> ret;
+	vector<int> path;
+	BackCombine(nums, ret, path, 0, k);
+	return ret;
+}
+
+void BackCombineSum2(vector<vector<int>>& ret,vector<int>& candidates,vector<int>& path, int start,int target)
+{
+	if (target < 0)
+	{
+		return;
+	}
+	if (target==0)
+	{
+		ret.emplace_back(path);
+		return;
+	}
+	for (int i = start; i < candidates.size(); ++i)
+	{
+		if (i!=start&&candidates[i]==candidates[i-1])
+		{
+			continue;
+		}
+		path.emplace_back(candidates[i]);
+		BackCombineSum2(ret, candidates, path, i + 1, target - candidates[i]);
+		path.pop_back();
+	}
+}
+
+std::vector<std::vector<int>> AutumnMove::combinationSum2(vector<int>& candidates, int target)
+{
+	if (candidates.empty())
+	{
+		return{};
+	}
+	sort(candidates.begin(), candidates.end());
+	vector<vector<int>> ret;
+	vector<int> path;
+	BackCombineSum2(ret, candidates, path, 0, target);
+	return ret;
+}
+

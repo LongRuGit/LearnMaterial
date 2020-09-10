@@ -124,7 +124,8 @@ int main(int argc,char* argv)
     {
         vec.emplace_back(rand());
     }
-	AutumnMove::Instance().findContinuousSequence(9);
+	//AutumnMove::Instance().findContinuousSequence(9);
+	AutumnMove::Instance().combine(4, 2);
 	system("pause");
 	return 0;
 }
