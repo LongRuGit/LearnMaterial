@@ -1926,3 +1926,22 @@ std::vector<std::vector<int>> AutumnMove::combinationSum2(vector<int>& candidate
 	return ret;
 }
 
+int AutumnMove::findNthDigit(int n)
+{
+	if (n<10)
+	{
+		return n;
+	}
+	int count = 1;
+	while (n>9*pow(10,count-1)*count)
+	{
+		n -= 9 * pow(10, count-1)*count;
+		++count;
+	}
+	string strNum=to_string(pow(10, count - 1) + (n - 1) / count);
+	if (n%count)
+	{
+		return strNum[n%count - 1] - '0';
+	}
+	return strNum[(n - 1) % count] - '0';
+}
