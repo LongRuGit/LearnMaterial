@@ -3,7 +3,6 @@
 
 #include "Common.h"
 #include "Singleton.h"
-
 class AutumnMove :public Singleton<AutumnMove>
 {
 public:
@@ -571,6 +570,15 @@ public:
 	 日    期： 2020/09/15
 	******************************************************************************/
 	string simplifyPath(string path);
+	/******************************************************************************
+	 函数名称： sortList
+	 功能说明： 148-排序链表
+	 参    数： ListNode * head 
+	 返 回 值： ListNode*
+	 作    者： Ru Long
+	 日    期： 2020/09/16
+	******************************************************************************/
+	ListNode* sortList(ListNode* head);
 };
 
 #endif
