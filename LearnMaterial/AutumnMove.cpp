@@ -1945,3 +1945,52 @@ int AutumnMove::findNthDigit(int n)
 	}
 	return strNum[(n - 1) % count] - '0';
 }
+
+std::string AutumnMove::simplifyPath(string path)
+{
+	if (path.empty())
+	{
+		return "";
+	}
+	stack<string> stacHelp;
+	int index = 0;
+	string prePath;
+	path += "/";
+	while (index<path.size())
+	{
+		if (path[index]=='/')
+		{
+			if (prePath=="..")
+			{
+				if (!stacHelp.empty())
+				{
+					stacHelp.pop();
+				}
+			}
+			else if (prePath!=".")
+			{
+				if (prePath!="")
+				{
+					stacHelp.push(prePath);
+				}
+			}
+			prePath = "";
+		}
+		else
+		{
+			prePath.push_back(path[index]);
+		}
+		++index;
+	}
+	if (stacHelp.empty())
+	{
+		return "/";
+	}
+	string ret;
+	while (!stacHelp.empty())
+	{
+		ret = "/" + stacHelp.top()+ret;
+		stacHelp.pop();
+	}
+	return ret;
+}

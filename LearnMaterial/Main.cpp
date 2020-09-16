@@ -125,7 +125,7 @@ int main(int argc,char* argv)
         vec.emplace_back(rand());
     }
 	//AutumnMove::Instance().findContinuousSequence(9);
-	AutumnMove::Instance().combine(4, 2);
+	AutumnMove::Instance().simplifyPath("/a//b////c/d//././/..");
 	system("pause");
 	return 0;
 }
