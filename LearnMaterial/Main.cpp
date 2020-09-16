@@ -126,6 +126,7 @@ int main(int argc,char* argv)
     }
 	//AutumnMove::Instance().findContinuousSequence(9);
 	AutumnMove::Instance().simplifyPath("/a//b////c/d//././/..");
+	cout << "\n";
 	system("pause");
 	return 0;
 }
