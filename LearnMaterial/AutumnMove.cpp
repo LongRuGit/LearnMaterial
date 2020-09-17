@@ -1994,3 +1994,17 @@ std::string AutumnMove::simplifyPath(string path)
 	}
 	return ret;
 }
+
+TreeNode* AutumnMove::invertTree(TreeNode* root)
+{
+	if (nullptr==root)
+	{
+		return root;
+	}
+	TreeNode* node = root->left;
+	root->left = root->right;
+	root->right = node;
+	invertTree(root->left);
+	invertTree(root->right);
+	return root;
+}
