@@ -1997,7 +1997,7 @@ std::string AutumnMove::simplifyPath(string path)
 
 TreeNode* AutumnMove::invertTree(TreeNode* root)
 {
-	if (nullptr==root)
+	if (nullptr == root)
 	{
 		return root;
 	}
@@ -2007,4 +2007,64 @@ TreeNode* AutumnMove::invertTree(TreeNode* root)
 	invertTree(root->left);
 	invertTree(root->right);
 	return root;
+}
+
+void SwapList(ListNode* left, ListNode* right)
+{
+	if (nullptr==left||nullptr==right)
+	{
+		return;
+	}
+	if (left->val==right->val)
+	{
+		return;
+	}
+	left->val ^= right->val;
+	right->val ^= left->val;
+	left->val ^= right->val;
+}
+
+void QuickListNodeSort(ListNode* left, ListNode* right)
+{
+	if (nullptr==left||nullptr==right||left==right)
+	{
+		return;
+	}
+	int prio = right->val;
+	ListNode* preNode = nullptr;
+	ListNode* leftCur = left;
+	ListNode* p = left;
+	while (p!=right)
+	{
+		if (p->val<prio)
+		{
+			SwapList(p, leftCur);
+			preNode = leftCur;
+			leftCur = leftCur->next;
+		}
+		p = p->next;
+	}
+	if (leftCur!=right)
+	{
+		SwapList(leftCur, right);
+		preNode = leftCur;
+		leftCur = leftCur->next;
+	}
+	QuickListNodeSort(left, preNode);
+	QuickListNodeSort(leftCur, right);
+}
+
+ListNode* AutumnMove::sortList(ListNode* head)
+{
+	if (nullptr==head)
+	{
+		return nullptr;
+	}
+	ListNode* tail = head;
+	while (tail&&tail->next)
+	{
+		tail = tail->next;
+	}
+	QuickListNodeSort(head, tail);
+	return head;
 }
