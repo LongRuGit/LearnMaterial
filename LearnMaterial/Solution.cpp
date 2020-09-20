@@ -4324,6 +4324,23 @@ std::vector<int> Solution::largestDivisibleSubset(vector<int>& nums)
 	}
 	return res;
 }
+//范型快速乘法非递归版本带取模
+template<typename T, typename U>
+T multi(T a, U b, T m)
+{
+	T ans = 0;
+	while (b)
+	{
+		if (b & 1)
+		{
+			(ans += a) %= m;
+		}
+		(a <<= 1) %= m;
+		b >>= 1;
+	}
+	return ans;
+}
+
 //泛型快速幂非递归版本带取模
 template<typename T,typename U>
 T qpow(T x, U n,int mod)
