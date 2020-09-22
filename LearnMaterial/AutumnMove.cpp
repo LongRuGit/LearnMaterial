@@ -2068,3 +2068,53 @@ ListNode* AutumnMove::sortList(ListNode* head)
 	QuickListNodeSort(head, tail);
 	return head;
 }
+
+void ConvertTree(TreeNode* root, int &ret)
+{
+	if (nullptr==root)
+	{
+		return;
+	}
+	ConvertTree(root->right,ret);
+	int temp = ret;
+	ret += root->val;
+	root->val += temp;
+	ConvertTree(root->left, ret);
+}
+
+TreeNode* AutumnMove::convertBST(TreeNode* root)
+{
+	if (nullptr==root)
+	{
+		return root;
+	}
+	int ret = 0;
+	ConvertTree(root, ret);
+	return root;
+}
+
+int ans = 0;
+int dfs(TreeNode* root)
+{
+	if (root == NULL)
+		return 2;
+	int left_state = dfs(root->left);
+	int right_state = dfs(root->right);
+	if (left_state == 0 || right_state == 0) 
+	{
+		ans++;
+		return 1;
+	}
+	else if (left_state == 1 || right_state == 1)
+		return 2;
+	return 0;
+}
+
+int AutumnMove::minCameraCover(TreeNode* root)
+{
+	if (nullptr==root)
+	{
+		return 0;
+	}
+	return dfs(root) == 0 ? ans + 1 : ans;
+}
