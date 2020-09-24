@@ -2118,3 +2118,106 @@ int AutumnMove::minCameraCover(TreeNode* root)
 	}
 	return dfs(root) == 0 ? ans + 1 : ans;
 }
+
+TreeNode* AutumnMove::mergeTrees(TreeNode* t1, TreeNode* t2)
+{
+	if (NULL==t1&&NULL==t2)
+	{
+		return NULL;
+	}
+	if (NULL==t1)
+	{
+		return t2;
+	}
+	if (NULL==t2)
+	{
+		return t1;
+	}
+	TreeNode* root = new TreeNode(0);
+	root->val = t1->val + t2->val;
+	root->left = mergeTrees(t1->left, t2->left);
+	root->right = mergeTrees(t1->right, t2->right);
+	return root;
+}
+
+bool CheckIsBack(const string & str,int left,int right)
+{
+	while (left<right)
+	{
+		if (str[left]!=str[right])
+		{
+			return false;
+		}
+		++left;
+		--right;
+	}
+	return true;
+}
+
+void BackCheck(vector<vector<string>>& ret, vector<string>& path, int start, const string& s)
+{
+	if (start==s.size())
+	{
+		ret.emplace_back(path);
+		return;
+	}
+	for (int i = start + 1; i <= s.size();++i)
+	{
+		if (CheckIsBack(s,start,i-1))
+		{
+			path.emplace_back(s.substr(start, i - start));
+			BackCheck(ret, path, i, s);
+			path.pop_back();
+		}
+	}
+}
+
+std::vector<std::vector<std::string>> AutumnMove::partitionString(string s)
+{
+	if (s.empty())
+	{
+		return{};
+	}
+	vector<vector<string>> ret;
+	vector<string> path;
+	BackCheck(ret, path, 0, s);
+	return ret;
+}
+
+void VisitedNode(TreeNode* root, TreeNode* &pre, int &curMaxTimes, int &maxTimes, vector<int>&res)
+{	
+	if (nullptr==root)
+	{
+		return;
+	}
+	VisitedNode(root->left, pre, curMaxTimes, maxTimes, res);
+	if (pre)
+	{
+		curMaxTimes = root->val == pre->val ? ++curMaxTimes : 1;
+	}
+	if (maxTimes == curMaxTimes)
+	{
+		res.emplace_back(root->val);
+	}
+	else if (curMaxTimes>maxTimes)
+	{
+		res.clear();
+		res.emplace_back(root->val);
+		maxTimes = curMaxTimes;
+	}
+	pre = root;
+	VisitedNode(root->right, pre, curMaxTimes, maxTimes, res);
+}
+
+std::vector<int> AutumnMove::findMode(TreeNode* root)
+{
+	if (nullptr==root)
+	{
+		return{};
+	}
+	vector<int> ret;
+	int curTimes = 1, maxTimes = 0;
+	TreeNode* pre = nullptr;
+	VisitedNode(root, pre, curTimes, maxTimes, ret);
+	return ret;
+}
