@@ -10,7 +10,7 @@
 3.在左边栏中依次选择：Configuration Properties->Linker->System,然后在右边栏的SubSystem对应的项改为CONSOLE(/SUBSYSTEM:CONSOLE)
 
 
-//教程
+# 教程
 1. 首先去茹龙仓库clone ： git clone https://github.com/RL-PCGit/LearnMaterial.git
 2. github去fork茹龙仓库
 3. git remote add xxx 自己的仓库地址，xxx是自己远程仓库的别名
