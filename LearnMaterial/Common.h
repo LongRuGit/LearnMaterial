@@ -51,24 +51,30 @@ public:
 		}
 	}
 
-	int find(int iNode)
-	{
-		while (iNode != m_vecParent[iNode])
-		{
-			//Â·¾¶Ñ¹ËõËã·¨
-			m_vecParent[iNode] = m_vecParent[m_vecParent[iNode]];
-			iNode = m_vecParent[iNode];
-		}
-		return m_vecParent[iNode];
-	}
-
 	void Union(int iLeftNode,int iRightNode)
 	{
-		m_vecParent[find(iLeftNode)] = find(iRightNode);
+		int x = find(iLeftNode);
+		int y = find(iRightNode);
+		if (x!=y)
+		{
+			m_vecParent[x] = y;
+		}
+	}
+
+	bool IsConnect(int leftNode, int rightNode)
+	{
+		int x = find(leftNode);
+		int y = find(rightNode);
+		return x == y;
 	}
 
 private:
 	vector<int> m_vecParent;
+
+	int find(int iNode)
+	{
+		return iNode == m_vecParent[iNode] ? iNode : (m_vecParent[iNode] = find(m_vecParent[iNode]));
+	}
 };
 
 #endif 

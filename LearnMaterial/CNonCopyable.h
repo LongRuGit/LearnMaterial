@@ -5,7 +5,7 @@ class CNonCopyable
 {
 private:
 	CNonCopyable(const CNonCopyable&);
-	const CNonCopyable& operator=(const CNonCopyable&);
+	CNonCopyable& operator=(const CNonCopyable&);
 protected:
 	CNonCopyable() { }
 	~CNonCopyable() { }

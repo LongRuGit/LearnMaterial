@@ -30,6 +30,18 @@ void PrintVec(const vector<T>& nums)
 	cout << "\n";
 }
 
+//取二进制（非符号位）的最高位1
+uint64_t hight_bitCur(uint64_t x){//0010 1100 0000 0000 0000 0000 0000 0000 0000 0001
+	x = x | (x >> 1);              //0011 1110 0000 0000 0000 0000 0000 0000 0000 0000
+	x = x | (x >> 2);              //0011 1111 1000 0000 0000 0000 0000 0000 0000 0000
+	x = x | (x >> 4);              //0011 1111 1111 1000 0000 0000 0000 0000 0000 0000
+	x = x | (x >> 8);              //0011 1111 1111 1111 1111 1000 0000 0000 0000 0000
+	x = x | (x >> 16);             //0011 1111 1111 1111 1111 1111 1111 1111 1111 1111
+	x = x | (x >> 32);
+	// 如果数特别大， 这里感觉会溢出， 所以这里只使用于小于数据最大值1/2的数。
+	return (x + 1);        //0100 0000 0000 0000 0000 0000 0000 0000 0000 0000
+}
+
 int main(int argc,char* argv)
 {
 	//使用智能指针
@@ -125,8 +137,7 @@ int main(int argc,char* argv)
         vec.emplace_back(rand());
     }
 	//AutumnMove::Instance().findContinuousSequence(9);
-	AutumnMove::Instance().simplifyPath("/a//b////c/d//././/..");
-    cout << endl;
+	cout << hight_bitCur(64);
 	system("pause");
 	return 0;
 }

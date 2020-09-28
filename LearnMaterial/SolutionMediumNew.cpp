@@ -1739,8 +1739,10 @@ bool SolutionMediumNew::equationsPossible(vector<string>& equations)
 	{
 		if (it[1] == '!')
 		{
-			if (uniF.find(it[0] - 'a') == uniF.find(it[3] - 'a'))
+			if (uniF.IsConnect(it[0] - 'a', it[3] - 'a'))
+			{
 				return false;
+			}		
 		}
 	}
 	return true;
