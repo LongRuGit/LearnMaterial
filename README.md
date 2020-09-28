@@ -1,5 +1,5 @@
-# LearnMaterial
-编译出错
+﻿# LearnMaterial
+使用VS编译出错
 如果是windows程序：
 1.菜单中选择 Project->Properties, 弹出Property Pages窗口
 2.在左边栏中依次选择：Configuration Properties->C/C++->Preprocessor,然后在右边栏的Preprocessor Definitions对应的项中删除_CONSOLE, 添加_WINDOWS.
