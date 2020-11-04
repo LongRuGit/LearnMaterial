@@ -634,6 +634,16 @@ public:
 	 日    期： 2020/09/24
 	******************************************************************************/
 	vector<int> findMode(TreeNode* root);
+	/******************************************************************************
+	 函数名称： insertVec
+	 功能说明： 57-插入区间
+	 参    数： vector<vector<int>> & intervals 
+	 参    数： vector<int> & newInterval 
+	 返 回 值： std::vector<std::vector<int>>
+	 作    者： Ru Long
+	 日    期： 2020/11/04
+	******************************************************************************/
+	vector<vector<int>> insertVec(vector<vector<int>>& intervals, vector<int>& newInterval);
 };
 
 #endif
