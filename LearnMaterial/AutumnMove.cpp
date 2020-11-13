@@ -2252,3 +2252,107 @@ std::vector<std::vector<int>> AutumnMove::insertVec(vector<vector<int>>& interva
 	}
 	return ans;
 }
+
+int AutumnMove::ladderLength(string beginWord, string endWord, vector<string>& wordList)
+{
+	if (beginWord==endWord)
+	{
+		return 0;
+	}
+	unordered_set<string> hashSet(wordList.begin(), wordList.end());
+	queue<string> queHelp;
+	unordered_set<string> hashUsed;
+	queHelp.push(beginWord);
+	hashUsed.insert(beginWord);
+	int ret = 0;
+	while (!queHelp.empty())
+	{
+		++ret;
+		int len = queHelp.size();
+		for (int i = 0; i < len;++i)
+		{
+			auto str = queHelp.front();
+			queHelp.pop();
+			for (int j = 0; j < str.size();++j)
+			{
+				char ch = str[j];
+				for (int k = 0; k < 26; ++k)
+				{
+					str[j] = 'a' + k;
+					if (hashUsed.count(str)==0&&hashSet.count(str))
+					{
+						if (str==endWord)
+						{
+							return ret + 1;
+						}
+						hashUsed.insert(str);
+						queHelp.push(str);
+					}
+				}
+				str[j] = ch;
+			}
+		}
+	}
+	return 0;
+}
+
+int AutumnMove::findRotateSteps(string ring, string key)
+{
+	int n = ring.size(), m = key.size();
+	vector<int> pos[26];
+	for (int i = 0; i < n; ++i) {
+		pos[ring[i] - 'a'].push_back(i);
+	}
+	vector<vector<int>> dp(m, vector<int>(n, 0x3f3f3f3f));
+	for (auto& i : pos[key[0] - 'a']) {
+		dp[0][i] = std::min(i, n - i) + 1;
+	}
+	// 更新公式， 在前一个字符匹配的情况下， 求下一个字符匹配所需要的最小步数
+	// dp[i][j] = min(dp[i][j], dp[i-1][k] + j与k之间的最小距离 + 1(打印);
+	for (int i = 1; i < m; ++i) {
+		for (auto& j : pos[key[i] - 'a']) {
+			for (auto& k : pos[key[i - 1] - 'a']) {
+				dp[i][j] = std::min(dp[i][j], dp[i - 1][k] + std::min(abs(j - k), n - abs(j - k)) + 1);
+			}
+		}
+	}
+	int res = INT_MAX;
+	// 可能有多个字符和key的最后一个字符匹配， 取最小那个
+	for (int i = 0; i < m; i++) {
+		if (ring[i] == key[n - 1]) {
+			res = min(res, dp[n - 1][i]);
+		}
+	}
+	return res;
+}
+
+ListNode* AutumnMove::oddEvenList(ListNode* head)
+{
+	if (!head)
+	{
+		return head;
+	}
+	ListNode *headOdd = new ListNode(0);
+	ListNode *headEven = new ListNode(0);
+	ListNode *preOdd = headOdd;
+	ListNode *preEven = headEven;
+	int iNumber = 1;
+	while (head)
+	{
+		if (iNumber % 2)
+		{
+			preOdd->next = head;
+			preOdd = head;
+		}
+		else
+		{
+			preEven->next = head;
+			preEven = head;
+		}
+		++iNumber;
+		head = head->next;
+	}
+	preEven->next = NULL;
+	preOdd->next = headEven->next;
+	return headOdd->next;
+}

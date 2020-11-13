@@ -644,6 +644,36 @@ public:
 	 日    期： 2020/11/04
 	******************************************************************************/
 	vector<vector<int>> insertVec(vector<vector<int>>& intervals, vector<int>& newInterval);
+	/******************************************************************************
+	 函数名称： ladderLength
+	 功能说明： 127-单词接龙
+	 参    数： string beginWord 
+	 参    数： string endWord 
+	 参    数： vector<string> & wordList 
+	 返 回 值： int
+	 作    者： Ru Long
+	 日    期： 2020/11/05
+	******************************************************************************/
+	int ladderLength(string beginWord, string endWord, vector<string>& wordList);
+	/******************************************************************************
+	 函数名称： findRotateSteps
+	 功能说明： 514-自由之路
+	 参    数： string ring 
+	 参    数： string key 
+	 返 回 值： int
+	 作    者： Ru Long
+	 日    期： 2020/11/11
+	******************************************************************************/
+	int findRotateSteps(string ring, string key);
+	/******************************************************************************
+	 函数名称： oddEvenList
+	 功能说明： 328-奇偶链表
+	 参    数： ListNode * head 
+	 返 回 值： ListNode*
+	 作    者： Ru Long
+	 日    期： 2020/11/13
+	******************************************************************************/
+	ListNode* oddEvenList(ListNode* head);
 };
 
 #endif

@@ -42,6 +42,20 @@ uint64_t hight_bitCur(uint64_t x){//0010 1100 0000 0000 0000 0000 0000 0000 0000
 	return (x + 1);        //0100 0000 0000 0000 0000 0000 0000 0000 0000 0000
 }
 
+ListNode* GetListNode(vector<int>& nums)
+{
+	ListNode* ret = new ListNode;
+	ListNode* cur = ret;
+	for (auto &it : nums)
+	{
+		cur->next = new ListNode(it);
+		cur = cur->next;
+	}
+	cur = ret->next;
+	delete ret;
+	return cur;
+}
+
 int main(int argc,char* argv)
 {
 	//使用智能指针
@@ -137,7 +151,8 @@ int main(int argc,char* argv)
         vec.emplace_back(rand());
     }
 	//AutumnMove::Instance().findContinuousSequence(9);
-	cout << hight_bitCur(64);
+	vector<int> numsNode = { 1, 2, 3, 4, 5 };
+	AutumnMove::Instance().oddEvenList(GetListNode(numsNode));
 	system("pause");
 	return 0;
 }
