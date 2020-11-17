@@ -2356,3 +2356,82 @@ ListNode* AutumnMove::oddEvenList(ListNode* head)
 	preOdd->next = headEven->next;
 	return headOdd->next;
 }
+
+std::string AutumnMove::removeKdigits(string num, int k)
+{
+	if (num.size()<=k)
+	{
+		return "0";
+	}
+	std::string ret;
+	int len = num.size() - k;
+	for (auto &it:num)
+	{
+		while (k&&!ret.empty() && ret.back() > it)
+		{
+			ret.pop_back();
+		}
+		--k;
+		ret.push_back(it);
+	}
+	ret.resize(len);
+	while (!ret.empty()&&ret.front()=='0')
+	{
+		ret.erase(ret.begin());
+	}
+	return ret.empty() ? "0" : ret;
+}
+
+std::vector<std::vector<int>> AutumnMove::reconstructQueue(vector<vector<int>>& people)
+{
+	if (people.empty())
+	{
+		return people;
+	}
+	sort(people.begin(), people.end(), [](const vector<int>& left,const vector<int>& right)
+	{
+		if (left[1]!=right[1])
+		{
+			return left[1] < right[1];
+		}
+		return left[0] > right[0];
+	});
+	std::vector<vector<int>> ret;
+	for (auto& it:people)
+	{
+		ret.insert(ret.begin() + it[1], it);
+	}
+	return ret;
+}
+
+std::vector<std::vector<int>> AutumnMove::allCellsDistOrder(int R, int C, int r0, int c0)
+{
+	queue<pair<int, int>> queHelp;
+	vector<vector<int>> ret;
+	int dir[4][2] = { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
+	vector<vector<bool>> visit(R, vector<bool>(C, true));
+	visit[r0][c0] = false;
+	queHelp.push(std::make_pair(r0, c0));
+	while (!queHelp.empty())
+	{
+		int len = queHelp.size();
+		for (int i = 0; i < len;++i)
+		{
+			int curX = queHelp.front().first;
+			int curY = queHelp.front().second;
+			ret.push_back({ curX, curY });
+			queHelp.pop();
+			for (int j = 0; j < 4;++j)
+			{
+				int newX = curX + dir[j][0];
+				int newY = curY + dir[j][1];
+				if (newX>=0&&newX<R&&newY>=0&&newY<C&&visit[newX][newY])
+				{
+					queHelp.push(std::make_pair(newX, newY));
+					visit[newX][newY] = false;
+				}
+			}
+		}
+	}
+	return ret;
+}
