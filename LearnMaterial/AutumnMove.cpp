@@ -2435,3 +2435,37 @@ std::vector<std::vector<int>> AutumnMove::allCellsDistOrder(int R, int C, int r0
 	}
 	return ret;
 }
+
+int AutumnMove::canCompleteCircuit(vector<int>& gas, vector<int>& cost)
+{
+	if (gas.empty()||cost.empty())
+	{
+		return -1;
+	}
+	int i = 0;
+	while (i<gas.size())
+	{
+		int sumOfGas = 0, sumOfCos = 0;
+		int cnt = 0;
+		while (cnt<gas.size())
+		{
+			int j = (i + cnt) % gas.size();
+			sumOfGas += gas[j];
+			sumOfCos += cost[j];
+			if (sumOfCos>sumOfGas)
+			{
+				break;
+			}
+			++cnt;
+		}
+		if (cnt==gas.size())
+		{
+			return i;
+		}
+		else
+		{
+			i = i + cnt + 1;
+		}
+	}
+	return -1;
+}

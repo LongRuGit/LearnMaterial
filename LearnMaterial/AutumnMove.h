@@ -705,6 +705,16 @@ public:
 	 日    期： 2020/11/17
 	******************************************************************************/
 	vector<vector<int>> allCellsDistOrder(int R, int C, int r0, int c0);
+	/******************************************************************************
+	 函数名称： canCompleteCircuit
+	 功能说明： 134-加油站
+	 参    数： vector<int> & gas 
+	 参    数： vector<int> & cost 
+	 返 回 值： int
+	 作    者： Ru Long
+	 日    期： 2020/11/18
+	******************************************************************************/
+	int canCompleteCircuit(vector<int>& gas, vector<int>& cost);
 };
 
 #endif
