@@ -152,7 +152,7 @@ int main(int argc,char* argv)
     }
 	//AutumnMove::Instance().findContinuousSequence(9);
 	vector<int> numsNode = { 1, 2, 3, 4, 5 };
-	AutumnMove::Instance().oddEvenList(GetListNode(numsNode));
+	AutumnMove::Instance().sortString("aaaabbbbcccc");
 	system("pause");
 	return 0;
 }
