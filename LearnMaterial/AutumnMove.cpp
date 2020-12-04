@@ -2500,3 +2500,41 @@ std::string AutumnMove::sortString(string s)
 	}
 	return ret;
 }
+
+bool AutumnMove::isPossible(vector<int>& nums)
+{
+	if (nums.size()<3)
+	{
+		return false;
+	}
+	unordered_map<int, std::priority_queue<int, vector<int>, greater<int>>> mH;
+	for (auto &it:nums)
+	{
+		if (mH.count(it)==0)
+		{
+			mH[it] = std::priority_queue<int, vector<int>, greater<int>>();
+		}
+		if (mH.count(it-1))
+		{
+			int preLen = mH[it - 1].top();
+			mH[it - 1].pop();
+			if (mH[it - 1].empty())
+			{
+				mH.erase(it - 1);
+			}
+			mH[it].push(preLen + 1);
+		}
+		else
+		{
+			mH[it].push(1);
+		}
+	}
+	for (auto &it:mH)
+	{
+		if (it.second.top()<3)
+		{
+			return false;
+		}
+	}
+	return true;
+}
