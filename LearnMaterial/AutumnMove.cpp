@@ -2538,3 +2538,36 @@ bool AutumnMove::isPossible(vector<int>& nums)
 	}
 	return true;
 }
+
+std::vector<int> AutumnMove::maxSlidingWindow(vector<int>& nums, int k)
+{
+    if (nums.size()<k||k<1)
+    {
+        return{};
+    }
+    std::deque<int> deHelp;
+    for (int i = 0; i < k; ++i)
+    {
+        while (!deHelp.empty()&&nums[i]>nums[deHelp.back()])
+        {
+            deHelp.pop_back();
+        }
+        deHelp.push_back(i);
+    }
+    std::vector<int> ret;
+    for (int i=k;i<nums.size();++i)
+    {
+        ret.push_back(nums[deHelp.front()]);
+        while (!deHelp.empty()&&(i-deHelp.front())>=k)
+        {
+            deHelp.pop_front();
+        }
+        while (!deHelp.empty() && nums[i] > nums[deHelp.back()])
+        {
+            deHelp.pop_back();
+        }
+        deHelp.push_back(i);
+    }
+    ret.push_back(nums[deHelp.front()]);
+    return ret;
+}

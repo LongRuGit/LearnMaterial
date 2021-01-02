@@ -288,7 +288,7 @@ namespace SortSequence{
 	}
 
 	template<typename T>
-	void SortClass::Merge(vector<int>& nums, vector<T>& helpNums, const int start, const int end)
+	void SortClass::Merge(vector<T>& nums, vector<T>& helpNums, const int start, const int end)
 	{
 		if (start == end)
 		{

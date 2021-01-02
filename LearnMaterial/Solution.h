@@ -1472,7 +1472,7 @@ T Solution::Select(T a[], int n, int k)
 {
 	if (k<1||k>n)
 	{
-		return T[0];
+		return a[0];
 	}
 	int maxPos = 0;
 	for (int i = 1; i < n;++i)
