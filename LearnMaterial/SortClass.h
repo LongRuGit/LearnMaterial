@@ -93,7 +93,7 @@ namespace SortSequence{
 		SortClass & operator =(const SortClass& ist);
 	private:
 		template<typename T>
-		void Merge(vector<int>& nums, vector<T>& helpNums, const int start, const int end);
+		void Merge(vector<T>& nums, vector<T>& helpNums, const int start, const int end);
 		template<typename T>
 		void PartionSort(vector<T>&nums, const int start,const int end);
 		template<typename T>
@@ -102,7 +102,7 @@ namespace SortSequence{
 	};
 
 	template<typename T>
-	void SortClass::BuppleSort(vector<T>&nums)
+	void SortSequence::SortClass::BuppleSort(vector<T>&nums)
 	{
 		if (nums.size() < 2)
 			return;
@@ -127,7 +127,7 @@ namespace SortSequence{
 	}
 
 	template<typename T>
-	void SortClass::SelectSort(vector<T>&nums)
+	void SortSequence::SortClass::SelectSort(vector<T>&nums)
 	{
 		if (nums.size() < 2)
 		{
@@ -147,7 +147,7 @@ namespace SortSequence{
 	}
 
 	template<typename T>
-	void SortClass::InsertSort(vector<T>&nums)
+	void SortSequence::SortClass::InsertSort(vector<T>&nums)
 	{
 		if (nums.size() < 2)
 			return;

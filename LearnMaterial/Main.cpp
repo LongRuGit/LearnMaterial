@@ -6,6 +6,7 @@
 #include "SortClass.h"
 #include "SolutionMediumNew.h"
 #include "AutumnMove.h"
+#include "FormalWork.h"
 
 void printSudo(vector<vector<char>>& bb) 
 {
@@ -152,7 +153,10 @@ int main(int argc,char* argv)
     }
 	//AutumnMove::Instance().findContinuousSequence(9);
 	vector<int> numsNode = { 1, 2, 3, 4, 5 };
-	AutumnMove::Instance().sortString("aaaabbbbcccc");
+	vector<vector<string>> str = { { "a", "c" }, { "b", "e" }, { "c", "d" }, { "e", "d" } };
+	vector<double> var = { 2.0, 3.0, 0.5, 5.0 };
+	vector<vector<string>> quer = { { "a", "b" } };
+	FormalWork::Instance().calcEquation(str, var, quer);
 	system("pause");
 	return 0;
 }
