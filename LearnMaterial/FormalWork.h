@@ -16,5 +16,14 @@ public:
 	 日    期： 2021/01/06
 	******************************************************************************/
 	vector<double> calcEquation(vector<vector<string>>& equations, vector<double>& values, vector<vector<string>>& queries);
+	/******************************************************************************
+	 函数名称： findCircleNum
+	 功能说明： 省份数量-547
+	 参    数： vector<vector<int>> & isConnected 
+	 返 回 值： int
+	 作    者： Ru Long
+	 日    期： 2021/01/07
+	******************************************************************************/
+	int findCircleNum(vector<vector<int>>& isConnected);
 };
 

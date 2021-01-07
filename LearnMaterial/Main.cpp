@@ -153,10 +153,8 @@ int main(int argc,char* argv)
     }
 	//AutumnMove::Instance().findContinuousSequence(9);
 	vector<int> numsNode = { 1, 2, 3, 4, 5 };
-	vector<vector<string>> str = { { "a", "c" }, { "b", "e" }, { "c", "d" }, { "e", "d" } };
-	vector<double> var = { 2.0, 3.0, 0.5, 5.0 };
-	vector<vector<string>> quer = { { "a", "b" } };
-	FormalWork::Instance().calcEquation(str, var, quer);
+	vector<vector<int>> numsT = { {1, 0, 0, 1}, {0, 1, 1, 0}, {0, 1, 1, 1}, {1, 0, 1, 1} };
+	FormalWork::Instance().findCircleNum(numsT);
 	system("pause");
 	return 0;
 }

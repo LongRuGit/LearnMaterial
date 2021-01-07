@@ -55,3 +55,42 @@ std::vector<double> FormalWork::calcEquation(vector<vector<string>>& equations, 
 	}
 	return ret;
 }
+
+int GetFather(vector<int>& parent, int node)
+{
+	return parent[node]==node?node:parent[node]=GetFather(parent,parent[node]);
+}
+
+void Union(vector<int>& parent, int left, int right)
+{
+	parent[GetFather(parent, left)] = GetFather(parent, right);
+}
+
+int FormalWork::findCircleNum(vector<vector<int>>& isConnected)
+{
+	if (isConnected.empty())
+	{
+		return 0;
+	}
+	vector<int> parent(isConnected[0].size());
+	for (int i = 0; i < parent.size();++i)
+	{
+		parent[i] = i;
+	}
+	for (int k = 0; k < isConnected.size();++k)
+	{
+		for (int i = k+1; i < isConnected[k].size(); ++i)
+		{
+			if (isConnected[k][i] == 1)
+			{
+				Union(parent, k, i);
+			}
+		}
+	}
+	std::set<int> ret;
+	for (auto &it:parent)
+	{
+		ret.insert(GetFather(parent,it));
+	}
+	return ret.size();
+}
