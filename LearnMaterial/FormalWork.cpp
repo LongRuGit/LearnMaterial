@@ -106,3 +106,37 @@ void FormalWork::rotate(vector<int>& nums, int k)
 	reverse(nums.begin() + nums.size() - k, nums.end());
 	reverse(nums.begin(), nums.end());
 }
+
+std::vector<std::string> FormalWork::summaryRanges(vector<int>& nums)
+{
+	if (nums.empty())
+	{
+		return{};
+	}
+	if (nums.empty())
+		return{};
+	std::set<int> sHelp(nums.begin(), nums.end());
+	vector<string> ret;
+	for (auto it = sHelp.begin(); it != sHelp.end();)
+	{
+		auto preIt = it;
+		auto nexIt = it;
+		++nexIt;
+		while (nexIt != sHelp.end() && *nexIt==*preIt+1)
+		{
+			preIt = nexIt;
+			++nexIt;
+		}
+		if (*preIt == *it)
+		{
+			ret.emplace_back(to_string(*it));
+			++it;
+		}
+		else
+		{
+			ret.emplace_back(to_string(*it) + "->" + to_string(*preIt));
+			it = nexIt;
+		}
+	}
+	return ret;
+}
