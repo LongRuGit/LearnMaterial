@@ -140,3 +140,31 @@ std::vector<std::string> FormalWork::summaryRanges(vector<int>& nums)
 	}
 	return ret;
 }
+
+std::string FormalWork::smallestStringWithSwaps(string s, vector<vector<int>>& pairs)
+{
+	if (pairs.empty()||s.empty())
+	{
+		return s;
+	}
+	vector<int> parent(s.size());
+	for (int i = 0; i < parent.size(); ++i)
+	{
+		parent[i] = i;
+	}
+	for (int k = 0; k < pairs.size(); ++k)
+	{
+		Union(parent, pairs[k][0],pairs[k][1]);
+	}
+	unordered_map<int, priority_queue<int,vector<int>,greater<int>>> hashM;
+	for (int i = 0; i < parent.size();++i)
+	{
+		hashM[GetFather(parent,i)].push(s[i]);
+	}
+	for (int i = 0; i < s.size();++i)
+	{
+		s[i] = hashM[GetFather(parent, i)].top();
+		hashM[GetFather(parent, i)].pop();
+	}
+	return s;
+}

@@ -44,5 +44,15 @@ public:
 	 日    期： 2021/01/10
 	******************************************************************************/
 	vector<string> summaryRanges(vector<int>& nums);
+	/******************************************************************************
+	 函数名称： smallestStringWithSwaps
+	 功能说明： 1202-交换字符串
+	 参    数： string s 
+	 参    数： vector<vector<int>> & pairs 
+	 返 回 值： std::string
+	 作    者： Ru Long
+	 日    期： 2021/01/11
+	******************************************************************************/
+	string smallestStringWithSwaps(string s, vector<vector<int>>& pairs);
 };
 
