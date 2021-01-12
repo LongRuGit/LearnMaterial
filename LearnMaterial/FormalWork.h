@@ -54,5 +54,17 @@ public:
 	 日    期： 2021/01/11
 	******************************************************************************/
 	string smallestStringWithSwaps(string s, vector<vector<int>>& pairs);
+	/******************************************************************************
+	 函数名称： sortItems
+	 功能说明： 项目管理-1203
+	 参    数： int n 
+	 参    数： int m 
+	 参    数： vector<int> & group 
+	 参    数： vector<vector<int>> & beforeItems 
+	 返 回 值： std::vector<int>
+	 作    者： Ru Long
+	 日    期： 2021/01/12
+	******************************************************************************/
+	vector<int> sortItems(int n, int m, vector<int>& group, vector<vector<int>>& beforeItems);
 };
 
