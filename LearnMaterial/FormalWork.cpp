@@ -272,3 +272,29 @@ std::vector<int> FormalWork::sortItems(int n, int m, vector<int>& group, vector<
 	}
 	return ans;
 }
+
+std::vector<int> FormalWork::findRedundantConnection(vector<vector<int>>& edges)
+{
+	if (edges.empty())
+	{
+		return{};
+	}
+	vector<int> parent(edges.size() + 1);
+	for (int i = 0; i < parent.size();++i)
+	{
+		parent[i] = i;
+	}
+	for (auto ed:edges)
+	{
+		int node1 = ed[0], node2 = ed[1];
+		if (GetFather(parent,node1)!=GetFather(parent,node2))
+		{
+			Union(parent, node1, node2);
+		}
+		else
+		{
+			return ed;
+		}
+	}
+	return{};
+}

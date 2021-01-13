@@ -66,5 +66,14 @@ public:
 	 日    期： 2021/01/12
 	******************************************************************************/
 	vector<int> sortItems(int n, int m, vector<int>& group, vector<vector<int>>& beforeItems);
+	/******************************************************************************
+	 函数名称： findRedundantConnection
+	 功能说明： 684-冗余连接
+	 参    数： vector<vector<int>> & edges 
+	 返 回 值： std::vector<int>
+	 作    者： Ru Long
+	 日    期： 2021/01/13
+	******************************************************************************/
+	vector<int> findRedundantConnection(vector<vector<int>>& edges);
 };
 
