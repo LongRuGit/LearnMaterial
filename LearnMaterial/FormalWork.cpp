@@ -298,3 +298,20 @@ std::vector<int> FormalWork::findRedundantConnection(vector<vector<int>>& edges)
 	}
 	return{};
 }
+
+vector<bool> FormalWork::prefixesDivBy5(vector<int>& A)
+{
+	if (A.empty())
+	{
+		return{};
+	}
+	vector<bool> ret(A.size());
+	int num = 0;
+	for (int i = 0; i < A.size(); ++i)
+	{
+		num = num * 2 + A[i];
+		num %= 5;
+		ret[i] = num % 5 == 0 ? true : false;
+	}
+	return ret;
+}
