@@ -315,3 +315,63 @@ vector<bool> FormalWork::prefixesDivBy5(vector<int>& A)
 	}
 	return ret;
 }
+
+class DisjoinSetUnion
+{
+public:
+	int find(int x)
+	{
+		if (!f.count(x))
+		{
+			f[x] = x;
+			rank[x] = 1;
+		}
+		return f[x] == x ? x : f[x] = find(f[x]);
+	}
+
+	void UnionSet(int x, int y)
+	{
+		int fx = find(x), fy = find(y);
+		if (fx==fy)
+		{
+			return;
+		}
+		if (rank[fx]<rank[fy])
+		{
+			std::swap(fx, fy);
+		}
+		rank[fx] += rank[fy];
+		f[fy] = fx;
+	}
+
+	int numerOfConnectedCompnent()
+	{
+		int num = 0;
+		for (auto &it:f)
+		{
+			if (it.first==it.second)
+			{
+				++num;
+			}
+		}
+		return num;
+	}
+
+private:
+	unordered_map<int, int> f, rank;
+};
+
+int FormalWork::removeStones(vector<vector<int>> &stones)
+{
+	if (stones.empty())
+	{
+		return 0;
+	}
+	int n = stones.size();
+	DisjoinSetUnion dsu;
+	for (int i = 0; i < n;++i)
+	{
+		dsu.UnionSet(stones[i][0], stones[i][1] + 10001);
+	}
+	return n - dsu.numerOfConnectedCompnent();
+}
