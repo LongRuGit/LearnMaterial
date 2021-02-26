@@ -93,5 +93,15 @@ public:
 	 日    期： 2021/01/15
 	******************************************************************************/
 	int removeStones(vector<vector<int>> &stones);
+	/******************************************************************************
+	 函数名称： findNumOfValidWords
+	 功能说明： 猜字谜-1178
+	 参    数： vector<string> & words 
+	 参    数： vector<string> & puzzles 
+	 返 回 值： std::vector<int>
+	 作    者： Ru Long
+	 日    期： 2021/02/26
+	******************************************************************************/
+	vector<int> findNumOfValidWords(vector<string>& words, vector<string>& puzzles);
 };
 

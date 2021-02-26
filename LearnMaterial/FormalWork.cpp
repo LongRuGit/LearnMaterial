@@ -375,3 +375,58 @@ int FormalWork::removeStones(vector<vector<int>> &stones)
 	}
 	return n - dsu.numerOfConnectedCompnent();
 }
+
+int CountNumberOfOne(int target)
+{
+	int ret = 0;
+	while (target)
+	{
+		target &= (target - 1);
+		++ret;
+	}
+	return ret;
+}
+
+std::vector<int> FormalWork::findNumOfValidWords(vector<string>& words, vector<string>& puzzles)
+{
+	if (words.empty()||puzzles.empty())
+	{
+		return{};
+	}
+	unordered_map<int,int> hashM;
+	for (int i = 0; i < words.size();++i)
+	{
+		int mask = 0;
+		for (auto &ch:words[i])
+		{
+			mask |= (1 << (ch - 'a'));
+		}
+		if (CountNumberOfOne(mask)<=7)
+		{
+			++hashM[mask];
+		}
+	}
+	vector<int> ret;
+	for (auto &puzz:puzzles)
+	{
+		int mask = 0;
+		for (int i = 1; i < 7;++i)
+		{
+			mask |= (1 << (puzz[i] - 'a'));
+		}
+		int total = 0;
+		int subset = mask;
+		do 
+		{
+			int s = subset | (1 << (puzz[0] - 'a'));
+			if (hashM.count(s))
+			{
+				total += hashM[s];
+			}
+			//求二进制中所有几何的子集
+			subset = (subset - 1) & mask;
+		} while (subset != mask);
+		ret.push_back(total);
+	}
+	return ret;
+}
