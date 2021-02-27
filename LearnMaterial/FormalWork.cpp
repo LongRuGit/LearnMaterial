@@ -423,10 +423,38 @@ std::vector<int> FormalWork::findNumOfValidWords(vector<string>& words, vector<s
 			{
 				total += hashM[s];
 			}
-			//求二进制中所有几何的子集
+			//求二进制中所有集合的子集
 			subset = (subset - 1) & mask;
 		} while (subset != mask);
 		ret.push_back(total);
 	}
 	return ret;
+}
+
+int FormalWork::longestSubstring(string s, int k)
+{
+	if (s.size()<k)
+	{
+		return 0;
+	}
+	vector<int> num(26);
+	for (auto &it:s)
+	{
+		++num[it - 'a'];
+	}
+	int split = 0;
+	while (split < s.size() && num[s[split] - 'a' ]>=k)
+	{
+		++split;
+	}
+	if (split==s.size())
+	{
+		return split;
+	}
+	int leftRet = longestSubstring(s.substr(0, split), k);
+	while (split < s.size() && num[s[split] - 'a'] < k)
+	{
+		++split;
+	}
+	return std::max(leftRet, longestSubstring(s.substr(split), k));
 }
