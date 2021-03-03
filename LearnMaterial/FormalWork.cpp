@@ -458,3 +458,14 @@ int FormalWork::longestSubstring(string s, int k)
 	}
 	return std::max(leftRet, longestSubstring(s.substr(split), k));
 }
+
+std::vector<int> FormalWork::countBits(int num)
+{
+	vector<int> ret(num+1,0);
+	for (int i = 1; i <= num;++i)
+	{
+		int pre = i&(i - 1);
+		ret[i] = 1 + ret[pre];
+	}
+	return ret;
+}
