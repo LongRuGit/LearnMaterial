@@ -469,3 +469,29 @@ std::vector<int> FormalWork::countBits(int num)
 	}
 	return ret;
 }
+
+int FormalWork::maxEnvelopes(vector<vector<int>>& envelopes)
+{
+	if (envelopes.empty())
+	{
+		return 0;
+	}
+	sort(envelopes.begin(), envelopes.end(), [&](const vector<int>& e1, const vector<int>& e2)
+	{
+		return (e1[0]<e2[0]) || (e1[0] == e2[0] && e1[1]>e2[1]);
+	});
+	vector<int> num(envelopes.size(), 1);
+	int ret = 1;
+	for (int i = 0; i < envelopes.size();++i)
+	{
+		for (int j = 0; j < i; ++j)
+		{
+			if (envelopes[i][1]>envelopes[j][1])
+			{
+				num[i] = std::max(num[i], 1+num[j]);
+			}
+			ret = std::max(num[i], ret);
+		}
+	}
+	return ret;
+}

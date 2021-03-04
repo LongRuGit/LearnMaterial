@@ -57,6 +57,210 @@ ListNode* GetListNode(vector<int>& nums)
 	return cur;
 }
 
+typedef std::vector<int> HFHZGraghLoop;
+
+int pMatrix[100][100];
+
+int V;
+
+static bool LoopBIsSameToA(const HFHZGraghLoop& iA, const HFHZGraghLoop& iB)
+{
+	if (iA.size() != iB.size())
+	{
+		return false;
+	}
+	for (size_t i = 0; i < iA.size(); ++i)
+	{
+		if (iA[i] != iB[i])
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
+void UniqueLoops(std::vector<HFHZGraghLoop>& ioLoops)
+{
+	if (ioLoops.size() > 1)
+	{
+		//排序去重，默认所有的loop都是重复的
+		std::vector<HFHZGraghLoop> allSortedLoops;
+		//记录allSortedLoops是ioLoops中的哪几个loop
+		std::vector<size_t>	allSortedLoopsIndex;
+		std::vector<HFHZGraghLoop> tempLoops = ioLoops;
+		for (size_t i = 0; i < tempLoops.size(); ++i)
+		{
+			std::sort(tempLoops[i].begin(), tempLoops[i].end());
+			if (std::unique(tempLoops[i].begin(), tempLoops[i].end()) == tempLoops[i].end())
+			{
+				//说明没有重复的
+				allSortedLoops.push_back(tempLoops[i]);
+				allSortedLoopsIndex.push_back(i);
+			}
+		}
+		//1 -- 表示需要的结果
+		//0 -- 表示没有被检查过
+		//-1-- 表示重复的结果
+		std::vector<int> allUniqueLoop(allSortedLoops.size(), 0);
+		for (size_t i = 0; i < allSortedLoops.size(); ++i)
+		{
+			if (allUniqueLoop[i] == 0)
+			{
+				allUniqueLoop[i] = 1;
+			}
+			else
+			{
+				continue;
+			}
+			for (size_t j = i + 1; j < allSortedLoops.size(); ++j)
+			{
+				if (allUniqueLoop[j] != 0)
+					continue;
+				if (LoopBIsSameToA(allSortedLoops[i], allSortedLoops[j]))
+				{
+					allUniqueLoop[j] = -1;
+				}
+			}
+		}
+		std::vector<HFHZGraghLoop> tempResult;
+		for (size_t i = 0; i < allUniqueLoop.size(); ++i)
+		{
+			if (allUniqueLoop[i] == 1)
+			{
+				//修改时间：2020/09/29 ，修改人：konghaijiao
+				//修改原因：返回的loop之前弄错了
+				tempResult.push_back(ioLoops[allSortedLoopsIndex[i]]);
+			}
+		}
+		ioLoops = tempResult;
+	}
+}
+
+void ShortestCirclesFromVertex(int iVertex, std::vector<HFHZGraghLoop>& ovCircles, bool ibWeigth/* = true*/)
+{
+	ovCircles.clear();
+
+	std::vector<HFHZGraghLoop> allMinLoops;
+	// To store length of the shortest cycle 
+	int ans = INT_MAX;
+	// Make distance maximum 
+	std::vector<int> dist(V, (int)(1e9));
+
+	// Take a imaginary parent 
+	std::vector<int> par(V, -1);
+
+	// Distance of source to source is 0 
+	dist[iVertex] = 0;
+	std::queue<int> q;
+
+	// Push the source element 
+	q.push(iVertex);
+
+	// Continue until queue is not empty 
+	while (!q.empty())
+	{
+		// Take the first element 
+		int x = q.front();
+		q.pop();
+
+		// Traverse for all it's childs 
+		for (int child = 0; child < V; ++child)
+		{
+			//0 -- 说明两者没有直接相连
+			if (0 == pMatrix[x][child])
+			{
+				continue;
+			}
+			//修改时间：2020/07/20 ，修改人：konghaijiao
+			//修改原因：增加权重
+			int weight = ibWeigth ? pMatrix[x][child] : 1;
+			// If it is not visited yet 
+			if (dist[child] == (int)(1e9))
+			{
+				// Increase distance by 1（权重） 
+				dist[child] = weight + dist[x];
+
+				// Change parent 
+				par[child] = x;
+
+				// Push into the queue 
+				q.push(child);
+			}
+			// If it is already visited 
+			else if (par[x] != child && par[child] != x)
+			{
+				//ans = min(ans, dist[x] + dist[child] + 1);
+				if (ans >= dist[x] + dist[child] + weight)
+				{
+					if (INT_MAX != ans)
+					{
+						if (ans > dist[x] + dist[child] + weight)
+						{
+							//需要清空之前存储的loop
+							allMinLoops.clear();
+						}
+						//存储新的loop
+						int tempIndex = x;
+						HFHZGraghLoop tempLoop;
+						while (par[tempIndex] != iVertex)
+						{
+							tempLoop.push_back(tempIndex);
+							tempIndex = par[tempIndex];
+						}
+						if (par[tempIndex] == iVertex)
+						{
+							tempLoop.push_back(tempIndex);
+						}
+						tempIndex = child;
+						while (par[tempIndex] != iVertex)
+						{
+							//tempLoop.push_back(tempIndex);
+							tempLoop.insert(tempLoop.begin(), tempIndex);
+							tempIndex = par[tempIndex];
+						}
+						if (par[tempIndex] == iVertex)
+						{
+							//tempLoop.push_back(tempIndex);
+							tempLoop.insert(tempLoop.begin(), tempIndex);
+						}
+						tempLoop.push_back(iVertex);
+						allMinLoops.push_back(tempLoop);
+					}
+					ans = dist[x] + dist[child] + weight;
+				}
+			}
+		}
+	}
+	//去重
+	UniqueLoops(allMinLoops);
+	ovCircles = allMinLoops;
+}
+
+void MinCircles(std::vector<HFHZGraghLoop>& ovCircles)
+{
+	std::vector<HFHZGraghLoop> allMinLoops;
+	// For all vertices 
+	for (int i = 0; i < V; i++)
+	{
+		std::vector<HFHZGraghLoop> tempMinLoops;
+		ShortestCirclesFromVertex(i, tempMinLoops, false);
+		for (size_t j = 0; j < tempMinLoops.size(); ++j)
+		{
+			allMinLoops.push_back(tempMinLoops[j]);
+		}
+	}
+	std::vector<HFHZGraghLoop> tempMinLoops;
+	ShortestCirclesFromVertex(0, tempMinLoops, false);
+	for (size_t j = 0; j < tempMinLoops.size(); ++j)
+	{
+		allMinLoops.push_back(tempMinLoops[j]);
+	}
+	//去重
+	UniqueLoops(allMinLoops);
+	ovCircles = allMinLoops;
+}
+
 int main(int argc,char* argv)
 {
 	//使用智能指针
