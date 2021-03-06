@@ -495,3 +495,24 @@ int FormalWork::maxEnvelopes(vector<vector<int>>& envelopes)
 	}
 	return ret;
 }
+
+std::vector<int> FormalWork::nextGreaterElements(vector<int>& nums)
+{
+	if (nums.empty())
+	{
+		return{};
+	}
+	vector<int> ret(nums.size(),-1);
+	stack<int> stac;
+	//Ñ­»·Êý×é
+	for (int i = 0; i < 2 * nums.size() - 1;++i)
+	{
+		while (!stac.empty() && nums[stac.top()] < nums[i%nums.size()])
+		{
+			ret[stac.top()] = nums[i%nums.size()];
+			stac.pop();
+		}
+		stac.push(i%nums.size());
+	}
+	return ret;
+}
