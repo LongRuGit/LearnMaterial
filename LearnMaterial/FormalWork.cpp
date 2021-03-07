@@ -516,3 +516,47 @@ std::vector<int> FormalWork::nextGreaterElements(vector<int>& nums)
 	}
 	return ret;
 }
+
+bool CheckIsBack(const string& target,int left,int right)
+{
+	while (left<right)
+	{
+		if (target[left]!=target[right])
+		{
+			return false;
+		}
+		++left;
+		--right;
+	}
+	return true;
+}
+
+void BFSPartion(vector<vector<string>>& ret, vector<string>& path, int start, const string &Target)
+{
+	if (start==Target.size())
+	{
+		ret.push_back(path);
+		return;
+	}
+	for (int i = start+1; i <= Target.size();++i)
+	{
+		if (CheckIsBack(Target,start,i-1))
+		{
+			path.push_back(Target.substr(start, i - start));
+			BFSPartion(ret, path, i, Target);
+			path.pop_back();
+		}
+	}
+}
+
+std::vector<std::vector<std::string>> FormalWork::partition(string s)
+{
+	if (s.empty())
+	{
+		return{};
+	}
+	vector<vector<string>> ret;
+	vector<string> path;
+	BFSPartion(ret, path, 0, s);
+	return ret;
+}
