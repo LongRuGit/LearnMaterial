@@ -517,7 +517,7 @@ std::vector<int> FormalWork::nextGreaterElements(vector<int>& nums)
 	return ret;
 }
 
-bool CheckIsBack(const string& target,int left,int right)
+bool CheckIsBackNew(const string& target,int left,int right)
 {
 	while (left<right)
 	{
@@ -540,7 +540,7 @@ void BFSPartion(vector<vector<string>>& ret, vector<string>& path, int start, co
 	}
 	for (int i = start+1; i <= Target.size();++i)
 	{
-		if (CheckIsBack(Target,start,i-1))
+		if (CheckIsBackNew(Target, start, i - 1))
 		{
 			path.push_back(Target.substr(start, i - start));
 			BFSPartion(ret, path, i, Target);
@@ -559,4 +559,41 @@ std::vector<std::vector<std::string>> FormalWork::partition(string s)
 	vector<string> path;
 	BFSPartion(ret, path, 0, s);
 	return ret;
+}
+
+int FormalWork::minCut(string s)
+{
+	if (s.empty())
+	{
+		return 0;
+	}
+	const int len = s.size();
+	vector<vector<bool>> g(len,vector<bool>(len, true));
+	for (int i = len - 1; i >= 0;--i)
+	{
+		for (int j = len - 1; j >= i+1;--j)
+		{
+			g[i][j] = (s[i] == s[j]) && g[i + 1][j - 1];
+		}
+	}
+	vector<int> num(len, INT_MAX);
+	num[0] = 0;
+	for (int i = 1; i < len;++i)
+	{
+		if (g[0][i])
+		{
+			num[i] = 0;
+		}
+		else
+		{
+			for (int j = 0; j < i; ++j)
+			{
+				if (g[j + 1][i])
+				{
+					num[i] = std::min(num[i], num[j] + 1);
+				}
+			}
+		}
+	}
+	return num.back();
 }

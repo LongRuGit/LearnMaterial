@@ -358,7 +358,7 @@ int main(int argc,char* argv)
 	//AutumnMove::Instance().findContinuousSequence(9);
 	vector<int> numsNode = { 1, 2, 3, 4, 5 };
 	vector<vector<int>> numsT = { { 0, 3}, {1,2}};
-	FormalWork::Instance().smallestStringWithSwaps("dcab",numsT);
+	FormalWork::Instance().minCut("aab");
 	system("pause");
 	return 0;
 }
