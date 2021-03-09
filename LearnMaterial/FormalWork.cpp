@@ -597,3 +597,24 @@ int FormalWork::minCut(string s)
 	}
 	return num.back();
 }
+
+std::string FormalWork::removeDuplicates(string S)
+{
+	if (S.empty())
+	{
+		return "";
+	}
+	string ret;
+	for (int i = 0; i < S.size();++i)
+	{
+		if (!ret.empty() && ret.back() == S[i])
+		{
+			ret.pop_back();
+		}
+		else
+		{
+			ret.push_back(S[i]);
+		}
+	}
+	return ret;
+}
