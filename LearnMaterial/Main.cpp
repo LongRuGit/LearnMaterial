@@ -359,6 +359,7 @@ int main(int argc,char* argv)
 	vector<int> numsNode = { 1, 2, 3, 4, 5 };
 	vector<vector<int>> numsT = { { 0, 3}, {1,2}};
 	FormalWork::Instance().minCut("aab");
+	FormalWork::Instance().calculate("2147483647");
 	system("pause");
 	return 0;
 }

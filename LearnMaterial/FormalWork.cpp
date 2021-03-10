@@ -608,12 +608,63 @@ std::string FormalWork::removeDuplicates(string S)
 	for (int i = 0; i < S.size();++i)
 	{
 		if (!ret.empty() && ret.back() == S[i])
-		{
+		{	
 			ret.pop_back();
 		}
 		else
 		{
 			ret.push_back(S[i]);
+		}
+	}
+	return ret;
+}
+
+int FormalWork::calculate(string s)
+{
+	if (s.empty())
+	{
+		return 0;
+	}
+	stack<int> numStac;
+	numStac.push(1);
+	int ret = 0;
+	int sign = 1;
+	int index = 0;
+	while (index<s.size())
+	{
+		if (s[index]==' ')
+		{
+			++index;
+		}
+		else if (s[index]=='+')
+		{
+			sign = numStac.top();
+			++index;
+		}
+		else if (s[index]=='-')
+		{
+			sign = -numStac.top();
+			++index;
+		}
+		else if (s[index]=='(')
+		{
+			numStac.push(sign);
+			++index;
+		}
+		else if (s[index]==')')
+		{
+			numStac.pop();
+			++index;
+		}
+		else
+		{
+			int temp = 0;
+			while (index<s.size()&&s[index]>='0'&&s[index]<='9')
+			{
+				temp = temp * 10 + (s[index] - '0');
+				++index;
+			}
+			ret += sign*temp;
 		}
 	}
 	return ret;
