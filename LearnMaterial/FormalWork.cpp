@@ -669,3 +669,43 @@ int FormalWork::calculate(string s)
 	}
 	return ret;
 }
+
+int FormalWork::calculate2(string s)
+{
+	if (s.empty())
+	{
+		return 0;
+	}
+	char preSymbol = '+';
+	vector<int> numVec;
+	int index = 0;
+	int preNum = 0;
+	while (index<s.size())
+	{
+		if (isdigit(s[index]))
+		{
+			preNum = preNum * 10 + (s[index] - '0');
+		}
+		if (s[index] != ' '&&!isdigit(s[index])|| index == s.size() - 1)
+		{
+			switch (preSymbol)
+			{
+			case '+':
+				numVec.push_back(preNum);
+				break;
+			case '-':numVec.push_back(-preNum);
+				break;
+			case '*':numVec.back() *= preNum;
+				break;
+			case '/':numVec.back() /= preNum;
+				break;
+			default:
+				break;
+			}
+			preSymbol = s[index];
+			preNum = 0;
+		}
+		++index;
+	}
+	return accumulate(numVec.begin(),numVec.end(),0);
+}

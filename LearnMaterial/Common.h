@@ -20,6 +20,7 @@
 #include <utility>
 #include <functional>
 #include <time.h>
+#include <numeric>
 
 using namespace std;
 
