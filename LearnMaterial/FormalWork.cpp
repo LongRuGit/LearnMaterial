@@ -709,3 +709,36 @@ int FormalWork::calculate2(string s)
 	}
 	return accumulate(numVec.begin(),numVec.end(),0);
 }
+
+bool FormalWork::isValidSerialization(string preorder)
+{
+	if (preorder.empty())
+	{
+		return false;
+	}
+	int slot = 1;
+	for (int i = 0; i < preorder.size();++i)
+	{
+		if (slot==0)
+		{
+			return false;
+		}
+		if (preorder[i]== ',')
+		{
+			continue;
+		}
+		else if (preorder[i]=='#')
+		{
+			slot--;
+		}
+		else
+		{
+			while (i<preorder.size()&&isdigit(preorder[i]))
+			{
+				++i;
+			}
+			++slot;
+		}
+	}
+	return slot == 0;
+}
