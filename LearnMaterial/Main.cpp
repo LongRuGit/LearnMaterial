@@ -57,10 +57,9 @@ ListNode* GetListNode(vector<int>& nums)
 	return cur;
 }
 
+
 typedef std::vector<int> HFHZGraghLoop;
-
 int pMatrix[100][100];
-
 int V;
 
 static bool LoopBIsSameToA(const HFHZGraghLoop& iA, const HFHZGraghLoop& iB)
@@ -259,6 +258,154 @@ void MinCircles(std::vector<HFHZGraghLoop>& ovCircles)
 	//去重
 	UniqueLoops(allMinLoops);
 	ovCircles = allMinLoops;
+}
+
+//两个顶点之间的最短路径
+/*
+佛洛伊德算法思想：
+1）设置两个矩阵A和Path，初始时将图的邻接矩阵赋值给A,将矩阵Path中元素全部设置为-1
+2）以顶点k为中间顶点，k取0——n-1(n为图中顶点个位)，为图中所有顶点对{i,j}进行如下检测与修改：
+如果A[i][j]>A[i][k]+A[k][j],则将A[i][j]改为A[i][k]+A[k][j]的值，将path[i][j]改为k,否则
+什么都不做。
+佛洛伊德算法的时间复杂度分析：
+由算法代码可知，本算法的主要部分是一个三层顺序，取内层循环的操作作为基本操作，则
+基本操作的执行次数为n^3,因此时间复杂度为O(n^3)。
+*/
+#define INF 100//INF为比图中任何权值都大的数
+#define maxSize 4   //图的顶点数
+#define number 8   //图的边数
+typedef struct {//图的定义
+	int edges[maxSize][maxSize];//邻接矩阵的定义
+	int n, e;   //分别为顶点数和边数
+}MGraph;
+void Floyd(MGraph g, int A[][maxSize], int path[][maxSize]);//佛洛伊德算法
+void printPath(int u, int v, int path[][maxSize]);/*递归输出从u到v的最短路径顶点序列*/
+
+void Floyd(MGraph g, int A[][maxSize], int path[][maxSize])
+{
+	int i, j, k;
+	//对数组A[][]和path[][]进行初始化
+	for (i = 0; i < g.n; ++i)
+	{
+		for (j = 0; j < g.n; ++j)
+		{
+			A[i][j] = g.edges[i][j];
+			path[i][j] = -1;
+		}
+	}
+
+	/*下面这个三层循环是本算法的主要操作，完成了以k为中间点对所有顶点对{i,j}
+	进行检测和修改*/
+	for (k = 0; k < g.n; ++k)
+	{
+		for (i = 0; i < g.n; ++i)
+		{
+			for (j = 0; j < g.n; ++j)
+			{
+				if (A[i][j] >(A[i][k] + A[k][j]))
+				{
+					A[i][j] = A[i][k] + A[k][j];
+					path[i][j] = k;
+				}
+			}
+		}
+	}
+}
+
+void printPath(int u, int v, int path[][maxSize])	/*递归输出从u到v的最短路径顶点序列*/
+{
+	if (path[u][v] == -1)
+		return;
+	else
+	{
+		cout << path[u][v] << " ";
+		int mid = path[u][v];
+		printPath(u, mid, path);//处理mid前半段路径
+		printPath(mid, v, path);//处理mid后半段路径
+	}
+}
+
+//源节点到目标节点的最短路径 迪杰斯特拉算法
+
+struct GraphDijkNode
+{
+	int node;
+	int weight;
+	bool operator<(const GraphDijkNode& right)
+	{
+		return weight > right.weight;
+	}
+};
+
+void Dijkstra(vector<vector<int>>& graph, const int &orignVertex,vector<int>& dis,vector<int>&fatherNode)
+{
+	if (graph.empty() || orignVertex<0 || orignVertex>=graph.size())
+	{
+		return;
+	}
+	const int V = graph.size();
+	vector<bool> visit(V, true);
+	for (int i = 0; i < V; ++i)
+	{
+		dis[i] = graph[orignVertex][i];
+		fatherNode[i] = 0;
+	}
+	visit[orignVertex] = false;
+	dis[orignVertex] = 0;
+	//使用默认版本
+	for (int i = 0; i < V;++i)
+	{
+		int ans = INT_MAX,newNode;
+		for (int j = 0; j < V;++j)
+		{
+			if (visit[j]&&dis[j]<ans)
+			{
+				ans = dis[j];
+				newNode = j;
+			}
+		}
+		visit[newNode] = false;
+		if (ans==INT_MAX)
+		{
+			break;
+		}
+		for (int j = 0; j < V;++j)
+		{
+			if (visit[j]&&(graph[newNode][j]+dis[newNode])<dis[j])
+			{
+				dis[j] = graph[newNode][j] + dis[newNode];
+				fatherNode[j] = newNode;
+			}
+		}
+	}
+	//使用堆进行优化
+	priority_queue<GraphDijkNode> prioH;
+	GraphDijkNode orT;
+	orT.node = orignVertex;
+	orT.weight = 0;
+	prioH.push(orT);
+	while (!prioH.empty())
+	{
+		GraphDijkNode nodeG = prioH.top();
+		prioH.pop();
+		if (!visit[nodeG.node])
+		{
+			continue;
+		}
+		visit[nodeG.node] = false;
+		for (int j = 0; j < V; ++j)
+		{
+			if (visit[j] && (graph[nodeG.node][j] + dis[nodeG.node]) < dis[j])
+			{
+				dis[j] = graph[nodeG.node][j] + dis[nodeG.node];
+				fatherNode[j] = nodeG.node;
+				GraphDijkNode newNode;
+				newNode.node = j;
+				newNode.weight = dis[j];
+				prioH.push(newNode);
+			}
+		}
+	}
 }
 
 int main(int argc,char* argv)
