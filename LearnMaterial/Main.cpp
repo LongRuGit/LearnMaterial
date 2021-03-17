@@ -331,7 +331,7 @@ struct GraphDijkNode
 {
 	int node;
 	int weight;
-	bool operator<(const GraphDijkNode& right)
+	bool operator<(const GraphDijkNode& right) const
 	{
 		return weight > right.weight;
 	}
@@ -495,7 +495,7 @@ int main(int argc,char* argv)
 	vector<char> a8({ '6', '.', '.', '.', '.', '2', '.', '.', '.' });
 	vector<char> a9({ '5', '4', '.', '.', '.', '3', '9', '.', '.' });
 	vector<vector<char>> aa({ a1, a2, a3, a4, a5, a6, a7, a8, a9 });
-	int number = 0;
+	int numberN = 0;
     vector<int> vec;
     srand((unsigned int)time(NULL));
     for (int i = 0; i < 10; ++i)

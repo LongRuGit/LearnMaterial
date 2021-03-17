@@ -778,3 +778,33 @@ int FormalWork::minDistance(string word1, string word2)
 	}
 	return dp.back().back();
 }
+
+int FormalWork::numDistinct(string s, string t)
+{
+	if (s.size()<t.size())
+	{
+		return 0;
+	}
+	vector<vector<long long>> dp(s.size() + 1, vector<long long>(t.size() + 1,0));
+	for (int i = 0; i < dp.size();++i)
+	{
+		//空字符串肯定是子序列
+		dp[i][0] = 1;
+	}
+	for (int i = 1;i < dp.size(); ++i)
+	{
+		for (int j = 1; j < dp[0].size();++j)
+		{
+			if (s[i-1]==t[j-1])
+			{
+				//可以选择也可以不选
+				dp[i][j] = dp[i - 1][j - 1] + dp[i-1][j];
+			}
+			else
+			{
+				dp[i][j] = dp[i - 1][j];
+			}
+		}
+	}
+	return dp.back().back();
+}
