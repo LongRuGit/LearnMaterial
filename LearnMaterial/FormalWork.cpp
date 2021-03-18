@@ -808,3 +808,38 @@ int FormalWork::numDistinct(string s, string t)
 	}
 	return dp.back().back();
 }
+
+ListNode* FormalWork::reverseBetween(ListNode* head, int left, int right)
+{
+	if (nullptr == head)
+	{
+		return nullptr;
+	}
+	ListNode* firstBack = new ListNode(0);
+	ListNode* curHead = head;
+	int num = left;
+	right -= left;
+	while (--left)
+	{
+		firstBack->next = head;
+		firstBack = firstBack->next;
+		head = head->next;
+	}
+	//反转中间这一段链表
+	ListNode* newBack = nullptr;
+	ListNode* curNode = head;
+	while (right-- >= 0)
+	{
+		ListNode* temp = head->next;
+		head->next = newBack;
+		newBack = head;
+		head = temp;
+	}
+	curNode->next = head;
+	if (num == 1)
+	{
+		return newBack;
+	}
+	firstBack->next = newBack;
+	return curHead;
+}
