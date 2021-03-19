@@ -843,3 +843,44 @@ ListNode* FormalWork::reverseBetween(ListNode* head, int left, int right)
 	firstBack->next = newBack;
 	return curHead;
 }
+
+int dirLongest[4][2] = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
+int DFSBackLongest(vector<vector<int>>&matrix, vector<vector<int>>& visited,int curX, int curY)
+{
+	if (visited[curX][curY]!=0)
+	{
+		return visited[curX][curY];
+	}
+	++visited[curX][curY];
+	for (int i = 0; i < 4;++i)
+	{
+		int newX = curX + dirLongest[i][0];
+		int newY = curY + dirLongest[i][1];
+		if (newX>=0&&newX<matrix.size()&&newY>=0&&newY<matrix[0].size()
+			&&visited[curX][curY]&&matrix[newX][newY]>matrix[curX][curY])
+		{
+			visited[curX][curY] = max(visited[curX][curY], 1 + DFSBackLongest(matrix, visited, newX, newY));
+		}
+	}
+	return visited[curX][curY];
+}
+
+int FormalWork::longestIncreasingPath(vector<vector<int>>& matrix)
+{
+	if (matrix.empty())
+	{
+		return 0;
+	}
+	vector<vector<int>> visited(matrix.size(), vector<int>(matrix[0].size(), 0));
+	int ret = 1;
+	for (int i = 0; i < matrix.size();++i)
+	{
+		for (int j = 0; j < matrix[0].size();++j)
+		{
+			int num = 1;
+			DFSBackLongest(matrix, visited, i, j);
+			ret = max(ret, visited[i][j]);
+		}
+	}
+	return ret;
+}

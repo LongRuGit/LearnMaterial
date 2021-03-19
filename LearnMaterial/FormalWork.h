@@ -3,7 +3,7 @@
 #include "Singleton.h"
 
 class FormalWork :public Singleton<FormalWork>
-{
+{	
 public:
 	/******************************************************************************
 	 函数名称： calcEquation
@@ -225,5 +225,14 @@ public:
 	 日    期： 2021/03/18
 	******************************************************************************/
 	ListNode* reverseBetween(ListNode* head, int left, int right);
+	/******************************************************************************
+	 函数名称： longestIncreasingPath
+	 功能说明： 矩阵中的最长递增路径-329
+	 参    数： vector<vector<int>> & matrix 
+	 返 回 值： int
+	 作    者： Ru Long
+	 日    期： 2021/03/19
+	******************************************************************************/
+	int longestIncreasingPath(vector<vector<int>>& matrix);
 };
 
