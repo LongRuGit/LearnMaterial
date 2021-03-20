@@ -884,3 +884,46 @@ int FormalWork::longestIncreasingPath(vector<vector<int>>& matrix)
 	}
 	return ret;
 }
+
+int FormalWork::evalRPN(vector<string>& tokens)
+{
+	if (tokens.empty())
+	{
+		return 0;
+	}
+	stack<int> stacH;
+	for (auto &it:tokens)
+	{
+		if (isdigit(it[0]) || isdigit(it[1]))
+		{
+			//可能有符号，所以要多判断一位
+			stacH.push(atoi(it.c_str()));
+		}
+		else
+		{
+			int curNumber = stacH.top();
+			stacH.pop();
+			int preNumber = stacH.top();
+			stacH.pop();
+			switch (it[0])
+			{
+			case '+':
+				curNumber += preNumber;
+				break;
+			case '-':
+				curNumber = preNumber - curNumber;
+				break;
+			case '*':
+				curNumber = preNumber * curNumber;
+				break;
+			case '/':
+				curNumber = preNumber / curNumber;
+				break;
+			default:
+				break;
+			}
+			stacH.push(curNumber);
+		}
+	}
+	return stacH.top();
+}
