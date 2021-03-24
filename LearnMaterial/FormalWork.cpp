@@ -927,3 +927,31 @@ int FormalWork::evalRPN(vector<string>& tokens)
 	}
 	return stacH.top();
 }
+
+bool FormalWork::find132pattern(vector<int>& nums)
+{
+	if (nums.size()<3)
+	{
+		return false;
+	}
+	stack<int> stacH;
+	int max_k = INT_MIN;
+	stacH.push(nums.back());
+	for (int i = nums.size() - 2; i >= 0;--i)
+	{
+		if (nums[i]<max_k)
+		{
+			return true;
+		}
+		while (!stacH.empty()&&nums[i]>stacH.top())
+		{
+			max_k = stacH.top();
+			stacH.pop();
+		}
+		if (nums[i]>max_k)
+		{
+			stacH.push(nums[i]);
+		}
+	}
+	return false;
+}
