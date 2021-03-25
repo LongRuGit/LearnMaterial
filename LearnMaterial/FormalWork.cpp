@@ -955,3 +955,32 @@ bool FormalWork::find132pattern(vector<int>& nums)
 	}
 	return false;
 }
+
+ListNode* FormalWork::deleteDuplicates(ListNode* head)
+{
+	if (nullptr==head||nullptr==head->next)
+	{
+		return head;
+	}
+	ListNode* newHead = new ListNode(0);
+	ListNode* curNode = newHead;
+	while (head)
+	{
+		if (nullptr==head->next||head->next->val!=head->val)
+		{
+			curNode->next = head;
+			head = head->next;
+			curNode = curNode->next;
+			curNode->next = nullptr;
+		}
+		else
+		{
+			int pTemp = head->val;
+			while (head&&head->val==pTemp)
+			{
+				head = head->next;
+			}
+		}
+	}
+	return newHead->next;
+}
