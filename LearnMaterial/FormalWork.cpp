@@ -984,3 +984,26 @@ ListNode* FormalWork::deleteDuplicates(ListNode* head)
 	}
 	return newHead->next;
 }
+
+ListNode* FormalWork::deleteDuplicates2(ListNode* head)
+{
+	if (nullptr==head)
+	{
+		return head;
+	}
+	ListNode* newHead = new ListNode(0);
+	ListNode* curNode = newHead;
+	ListNode* preNode = nullptr;
+	while (head)
+	{
+		if (nullptr == preNode || preNode->val != head->val)
+		{
+			curNode->next = head;
+			curNode = curNode->next;
+			preNode = head;
+		}
+		head = head->next;
+	}
+	curNode->next = nullptr;
+	return newHead->next;
+}
