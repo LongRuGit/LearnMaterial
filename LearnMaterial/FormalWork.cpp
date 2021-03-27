@@ -1007,3 +1007,40 @@ ListNode* FormalWork::deleteDuplicates2(ListNode* head)
 	curNode->next = nullptr;
 	return newHead->next;
 }
+
+ListNode* FormalWork::rotateRight(ListNode* head, int k)
+{
+	if (nullptr == head || k == 0)
+	{
+		return head;
+	}
+	int len = 0;
+	ListNode* tempNode = head;
+	while (tempNode)
+	{
+		++len;
+		tempNode = tempNode->next;
+	}
+	k %= len;
+	k = len - k;
+	if (k == 0 || len == 1)
+	{
+		return head;
+	}
+	tempNode = head;
+	while (--k)
+	{
+		tempNode = tempNode->next;
+	}
+	ListNode* newHead = tempNode->next;
+	tempNode->next = nullptr;
+	tempNode = newHead;
+	while (tempNode&&tempNode->next)
+	{
+		tempNode = tempNode->next;
+	}
+	if (tempNode == nullptr)
+		return head;
+	tempNode->next = head;
+	return newHead;
+}
