@@ -1044,3 +1044,31 @@ ListNode* FormalWork::rotateRight(ListNode* head, int k)
 	tempNode->next = head;
 	return newHead;
 }
+
+bool FormalWork::searchMatrix(vector<vector<int>>& matrix, int target)
+{
+	if (matrix.empty())
+	{
+		return false;
+	}
+	int left = 0, right = matrix.size()*matrix[0].size() - 1;
+	while (left<=right)
+	{
+		int mid = left + (right - left) / 2;
+		int newRow = mid/matrix[0].size();
+		int newCol = mid%matrix[0].size();
+		if (matrix[newRow][newCol]==target)
+		{
+			return true;
+		}
+		else if (matrix[newRow][newCol]>target)
+		{
+			right = mid - 1;
+		}
+		else
+		{
+			left = mid + 1;
+		}
+	}
+	return false;
+}
