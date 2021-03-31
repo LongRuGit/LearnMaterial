@@ -1072,3 +1072,38 @@ bool FormalWork::searchMatrix(vector<vector<int>>& matrix, int target)
 	}
 	return false;
 }
+
+void BackTraceDup(vector<vector<int>>&ret, const vector<int>&nums, vector<int>&path, int start,int len)
+{
+	if (start == len)
+	{
+		ret.emplace_back(path);
+		return;
+	}
+	for (int i = start; i < nums.size();++i)
+	{
+		if (i!=start&&nums[i]==nums[i-1])
+		{
+			continue;
+		}
+		path.emplace_back(nums[i]);
+		BackTraceDup(ret, nums, path, i + 1,len);
+		path.pop_back();
+	}
+}
+
+std::vector<std::vector<int>> FormalWork::subsetsWithDup(vector<int>& nums)
+{
+	if (nums.empty())
+	{
+		return{};
+	}
+	sort(nums.begin(), nums.end());
+	vector<vector<int>> ret;
+	vector<int> path;
+	for (int i = 0; i <=nums.size();++i)
+	{
+		BackTraceDup(ret, nums, path, 0, i);
+	}
+	return ret;
+}
