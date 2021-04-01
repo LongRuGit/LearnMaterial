@@ -1107,3 +1107,37 @@ std::vector<std::vector<int>> FormalWork::subsetsWithDup(vector<int>& nums)
 	}
 	return ret;
 }
+
+int FormalWork::clumsy(int N)
+{
+	string ret;
+	vector<char> symbolVec = { '*', '/', '+', '-' };
+	int indexSym = 0;
+	vector<int> vecNumber;
+	vecNumber.push_back(0);
+	char preSymbol = '+';
+	int preNumber = 0;
+	for (int i = N; i >= 1;--i)
+	{
+		switch (preSymbol)
+		{
+		case '+':
+			vecNumber.push_back(i);
+			break;
+		case '-':
+			vecNumber.push_back(-i);
+			break;
+		case '*':
+			vecNumber.back() *= i;
+			break;
+		case '/':
+			vecNumber.back() /= i;
+			break;
+		default:
+			break;
+		}
+		preSymbol = symbolVec[indexSym];
+		indexSym = (indexSym + 1) % symbolVec.size();
+	}
+	return accumulate(vecNumber.begin(), vecNumber.end(), 0);
+}
