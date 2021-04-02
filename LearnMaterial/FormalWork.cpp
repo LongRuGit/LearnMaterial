@@ -1141,3 +1141,27 @@ int FormalWork::clumsy(int N)
 	}
 	return accumulate(vecNumber.begin(), vecNumber.end(), 0);
 }
+
+int FormalWork::trap(vector<int>& height)
+{
+	if (height.empty())
+	{
+		return 0;
+	}
+	vector<int> leftHeight(height.size()+1);
+	for (int i = 1; i <=height.size();++i)
+	{
+		leftHeight[i] = max(leftHeight[i - 1], height[i - 1]);
+	}
+	vector<int> rightHeight(height.size()+1);
+	for (int i = height.size()-2; i>=0;--i)
+	{
+		rightHeight[i] = max(rightHeight[i + 1], height[i+1]);
+	}
+	int ret = 0;
+	for (int i = 0; i < height.size();++i)
+	{
+		ret += max(min(leftHeight[i], rightHeight[i]) - height[i],0);
+	}
+	return ret;
+}
