@@ -1165,3 +1165,22 @@ int FormalWork::trap(vector<int>& height)
 	}
 	return ret;
 }
+
+int FormalWork::numRabbits(vector<int>& answers)
+{
+	if (answers.empty())
+	{
+		return 0;
+	}
+	unordered_map<int, int> hashM;
+	for (auto &it:answers)
+	{
+		++hashM[it];
+	}
+	int ret = 0;
+	for (auto &it:hashM)
+	{
+		ret += (it.second + it.first ) / (it.first + 1)*(it.first + 1);
+	}
+	return ret;
+}
