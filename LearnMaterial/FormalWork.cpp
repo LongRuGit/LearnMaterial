@@ -1228,3 +1228,81 @@ bool FormalWork::search(vector<int>& nums, int target)
 	}
 	return false;
 }
+
+bool canMake(vector<int>& bloomDay, int days, int m, int k)
+{
+	int flowers = 0;
+	int bouquets = 0;
+	for (int i = 0; i < bloomDay.size() && bouquets < m;++i)
+	{
+		if (bloomDay[i]<=days)
+		{
+			++flowers;
+			if (flowers>=k)
+			{
+				bouquets++;
+				flowers = 0;
+			}
+		}
+		else
+		{
+			flowers = 0;
+		}
+	}
+	return bouquets >= m;
+}
+
+int FormalWork::minDays(vector<int>& bloomDay, int m, int k)
+{
+	if (bloomDay.size()<m*k)
+	{
+		return -1;
+	}
+	int low = 1, high = 1;
+	for (auto &it:bloomDay)
+	{
+		high = max(high, it);
+	}
+	while (low<high)
+	{
+		int mid = low + (high - low) / 2;
+		if (canMake(bloomDay,mid,m,k))
+		{
+			high = mid;
+		}
+		else
+		{
+			low = mid + 1;
+		}
+	}
+	return low;
+}
+
+std::string FormalWork::reverseParentheses(string s)
+{
+	if (s.empty())
+	{
+		return s;
+	}
+	stack<string> stacHelp;
+	string ret;
+	for (auto &ch:s)
+	{
+		if (ch=='(')
+		{
+			stacHelp.push(ret);
+			ret = "";
+		}
+		else if (ch == ')')
+		{
+			reverse(ret.begin(), ret.end());
+			ret = stacHelp.top() + ret;
+			stacHelp.pop();
+		}
+		else
+		{
+			ret.push_back(ch);
+		}
+	}
+	return ret;
+}
